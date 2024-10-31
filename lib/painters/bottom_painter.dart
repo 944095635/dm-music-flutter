@@ -32,6 +32,7 @@ class BottomPainter extends CustomPainter {
     matrix.scale(scale);
     Path drawPath = Path();
     drawPath = path.transform(matrix.storage);
+    canvas.drawShadow(drawPath, Colors.black, 10, false);
     canvas.drawPath(drawPath, pathPaint);
 
     var gradient = Gradient.linear(

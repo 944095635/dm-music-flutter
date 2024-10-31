@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         cardColor: const Color.fromRGBO(255, 255, 255, 0.5),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        shadowColor: const Color.fromARGB(31, 163, 163, 163),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           scrolledUnderElevation: 0,
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,
         cardColor: const Color.fromRGBO(0, 0, 0, 0.5),
+        shadowColor: Colors.white10,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           scrolledUnderElevation: 0,

@@ -69,9 +69,9 @@ class HomePage extends GetView<HomeController> {
         physics: const BouncingScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 20,
-          childAspectRatio: 3 / 4,
+          mainAxisSpacing: 5,
+          crossAxisSpacing: 10,
+          childAspectRatio: 3 / 3.8,
         ),
         itemCount: controller.musics.length,
         itemBuilder: (BuildContext context, int index) {
@@ -154,46 +154,57 @@ class HomePage extends GetView<HomeController> {
 
   /// 歌曲单项
   Widget _buildMusicItem(BuildContext context, Music music) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          CachedNetworkImage(
-            imageUrl: music.image,
-            fit: BoxFit.cover,
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: BlurWidget(
-              radius: const BorderRadius.vertical(
-                bottom: Radius.circular(10),
-              ),
-              hasTopBorder: true,
-              backgroundColor: Theme.of(context).cardColor,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      music.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      music.auth,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
+    return Container(
+      margin: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(11),
+        border: Border.all(
+          color: Theme.of(context).shadowColor,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CachedNetworkImage(
+              imageUrl: music.image,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: BlurWidget(
+                radius: const BorderRadius.vertical(
+                  bottom: Radius.circular(10),
+                ),
+                hasTopBorder: true,
+                backgroundColor: Theme.of(context).cardColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        music.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Text(
+                        music.auth,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
