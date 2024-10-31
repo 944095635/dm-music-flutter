@@ -1,18 +1,15 @@
-# dm_music_flutter
-
-A new Flutter project.
-
-## Getting Started
+# Flutter 音乐播放器DEMO
 
 <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/builds/preview.png" width='600'>
 
-This project is a starting point for a Flutter application.
+#### 可以学习到的东西
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 白色主题
+- 黑色主题
+- 高斯模糊组件
+- 高斯模糊AppBar
+- CustomPainter 与 Path绘制Shadow
+- Matrix4 矩阵变化
+- animate_do 动画组件
+- just_audio 音频播放
+- cached_network_image 图片缓存
