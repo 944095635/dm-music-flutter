@@ -39,6 +39,9 @@ class MyApp extends StatelessWidget {
             color: Color(0xFF666666),
           ),
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Color(0xFF9570FF),
+        ),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
@@ -65,8 +68,12 @@ class MyApp extends StatelessWidget {
             color: Color(0xFFEEEEEE),
           ),
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Color(0xFF9570FF),
+        ),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
   }

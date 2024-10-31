@@ -8,6 +8,12 @@ class HomeController extends GetxController
   /// 正在播放
   late RxBool playing = false.obs;
 
+  /// 显示音频信息
+  late RxBool showMusicInfo = false.obs;
+
+  /// 当前进度
+  ValueNotifier<double> progress = ValueNotifier(0);
+
   late AnimationController controller;
 
   /// 音乐列表
@@ -87,6 +93,13 @@ class HomeController extends GetxController
         ..url = "http://www.dmskin.com/music/tabushini.mp4"
         ..image = "http://www.dmskin.com/music/a1.jpg",
     );
+
+    player.positionStream.listen((event) {
+      if (player.duration != null) {
+        progress.value = event.inMicroseconds / player.duration!.inMicroseconds;
+        //debugPrint("百分比:$progress");
+      }
+    });
   }
 
   /// 更新播放按钮状态
@@ -108,6 +121,7 @@ class HomeController extends GetxController
     if (currentMusic.value != null) {
       playing.value = true;
       player.play();
+      showMusicInfo.value = true;
       updatePlayIcon();
     }
   }

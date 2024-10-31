@@ -1,13 +1,23 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:path_drawing/path_drawing.dart';
+import 'package:flutter/material.dart' hide Gradient;
 
 final Path path = parseSvgPathData(
-    "M0,19.9933C130.949,-6.57198,212.947,-6.75674,375,19.9933C375,19.9933,375,99.9933,375,99.9933C375,99.9933,0,99.9933,0,99.9933C0,99.9933,0,19.9933,0,19.9933C0,19.9933,0,19.9933,0,19.9933Z");
+    "M0,21.8798C49.6423,7.36726,113.618,0,190,0C266.382,0,330.358,7.36726,380,21.8798L380,103L0,103L0,21.8798Z");
 
 class BottomPainter extends CustomPainter {
-  BottomPainter(this.color);
+  BottomPainter(this.factor, this.color, this.progressColor)
+      : super(repaint: factor);
 
   final Color color;
+
+  final Color progressColor;
+
+  /// 监听器
+  final ValueNotifier<double> factor;
+
+  double progress = 0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -22,14 +32,60 @@ class BottomPainter extends CustomPainter {
     matrix.scale(scale);
     Path drawPath = Path();
     drawPath = path.transform(matrix.storage);
-    canvas.drawShadow(drawPath, Colors.black, 10, false);
     canvas.drawPath(drawPath, pathPaint);
 
+    var gradient = Gradient.linear(
+      Offset.zero,
+      Offset(size.width, 0),
+      [
+        const Color(0xFFB7EAFF),
+        const Color(0xFF7ED9FF),
+        const Color(0xFF0F7BAA),
+        // Colors.red, Colors.blue, Colors.yellow,
+      ],
+      [
+        0,
+        0.6,
+        1,
+      ],
+    );
+
     // 绘制扇形进度条
+    var arcPaint = Paint()
+      //..color = progressColor
+      ..shader = gradient
+      ..strokeWidth = 2.5
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    // 测量Path
+    PathMetrics pathMetrics = drawPath.computeMetrics();
+    // 获取第一小节信息(猜测可能有多个Path叠加？)
+    PathMetric pathMetric = pathMetrics.first;
+    // 整个Path的长度
+    double length = pathMetric.length;
+    // 当前进度
+    double value = length * 0.4158 * factor.value;
+    Path extractPath = pathMetric.extractPath(0, value, startWithMoveTo: true);
+    canvas.drawPath(extractPath, arcPaint);
   }
 
   @override
   bool shouldRepaint(covariant BottomPainter oldDelegate) {
-    return color != oldDelegate.color;
+    return color != oldDelegate.color || progress != oldDelegate.progress;
   }
+
+  // @override
+  // bool? hitTest(Offset position) => true;
+
+  // @override
+  // SemanticsBuilderCallback? get semanticsBuilder => null;
+
+  // @override
+  // bool shouldRebuildSemantics(CustomPainter oldDelegate) => false;
+
+  /// 更新 状态
+  // void update(double newprogress) {
+  //   progress = newprogress;
+  //   notifyListeners();
+  // }
 }

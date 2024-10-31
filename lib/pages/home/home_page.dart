@@ -101,27 +101,33 @@ class HomePage extends GetView<HomeController> {
             top: 10,
             bottom: 0,
             child: SlideInUp(
-              from: 120,
               animate: controller.playing.value,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  BlurWidget(
-                    blurRadius: 10,
-                    hasTopBorder: true,
-                    backgroundColor: Theme.of(context).cardColor,
-                    radius: const BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  Positioned(
-                    left: 20,
-                    top: 24,
-                    right: 20,
-                    child: _buildPlayMusicInfo(context),
-                  ),
-                ],
-              ),
+              onFinish: (direction) {
+                if (direction == AnimateDoDirection.backward) {
+                  controller.showMusicInfo.value = false;
+                }
+              },
+              child: controller.showMusicInfo.value
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        BlurWidget(
+                          blurRadius: 10,
+                          hasTopBorder: true,
+                          backgroundColor: Theme.of(context).cardColor,
+                          radius: const BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 24,
+                          right: 20,
+                          child: _buildPlayMusicInfo(context),
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
             ),
           ),
           Align(
@@ -130,7 +136,9 @@ class HomePage extends GetView<HomeController> {
               child: CustomPaint(
                 size: const Size.fromHeight(100),
                 painter: BottomPainter(
+                  controller.progress,
                   Theme.of(context).scaffoldBackgroundColor,
+                  Theme.of(context).progressIndicatorTheme.color!,
                 ),
               ),
             ),
