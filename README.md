@@ -2,7 +2,7 @@
 
 | 白色主题 | 黑色主题 | 
 | -------- | ----- | 
-| <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/builds/1.png" width='600'>  | <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/builds/2.png" width='600'>   | 
+| <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/builds/1.png" width='500'>  | <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/builds/2.png" width='500'>   | 
 
 #### 可以学习到的东西
 
