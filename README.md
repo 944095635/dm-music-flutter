@@ -1,13 +1,14 @@
-# dm_music
+# DM Music
 
-Flutter 开发的音乐App程序
-
-## Getting Started
+## Flutter 开发的音乐App程序
 
 |白色主题|黑色主题|
 | -------- | ----- |
-|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/1.png" width='450'>|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/2.png" width='450'>|
+|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/1.png" width='250'>|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/2.png" width='250'>|
 
+
+
+### 下面 颜色定义参考 - 来自互联网
 
 Primary 和 Secondary 颜色：这些颜色通常用于应用程序的主要元素，如按钮、工具栏和突出显示的部分。
 
@@ -26,8 +27,6 @@ Shadow 颜色：这些颜色用于模拟元素的阴影。
 Outline 颜色：这些颜色通常用于边框或轮廓。
 
 Scrim 颜色：这些颜色用于创建遮罩效果，通常在对话框或抽屉背后使用。
-
-
 
 primary: 主要颜色，用于应用的主要界面元素。
 
