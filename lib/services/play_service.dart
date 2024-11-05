@@ -142,8 +142,10 @@ class PlayService extends GetxService {
 
   /// 长度监听
   StreamSubscription listenMusicDuration(Function(Duration position) onData) {
-    return _player.positionStream.listen((Duration newDuration) {
-      onData(newDuration);
+    return _player.durationStream.listen((Duration? newDuration) {
+      if (newDuration != null) {
+        onData(newDuration);
+      }
     });
   }
 
