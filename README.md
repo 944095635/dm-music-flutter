@@ -1,18 +1,32 @@
 # dm_music
 
-A new Flutter project.
+Flutter 开发的音乐App程序
 
 ## Getting Started
 
+|白色主题|黑色主题|
+| -------- | ----- |
+|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/1.png" width='450'>|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/2.png" width='450'>|
 
-Primary 和 Secondary 颜色：这些颜色通常用于应用程序的主要元素，如按钮、工具栏和突出显示的部分。在Material Design 中，通常有一个主要颜色（primary）和一个辅助颜色（secondary）。
+
+Primary 和 Secondary 颜色：这些颜色通常用于应用程序的主要元素，如按钮、工具栏和突出显示的部分。
+
+在Material Design 中，通常有一个主要颜色（primary）和一个辅助颜色（secondary）。
+
 Tertiary 颜色：这些颜色通常用于应用程序的次要元素，如次要按钮或标签。
+
 Error 颜色：这是用于表示错误状态的颜色。通常用于验证错误或应用程序中的问题指示。
+
 Background 和 Surface 颜色：这些颜色用于应用程序的背景和表面元素，如卡片、面板和其他背景元素。
+
 Inverse 颜色：这些颜色通常用于反向文本，即浅色文本放在深色背景上，或深色文本放在浅色背景上。
+
 Shadow 颜色：这些颜色用于模拟元素的阴影。
+
 Outline 颜色：这些颜色通常用于边框或轮廓。
+
 Scrim 颜色：这些颜色用于创建遮罩效果，通常在对话框或抽屉背后使用。
+
 
 
 primary: 主要颜色，用于应用的主要界面元素。
