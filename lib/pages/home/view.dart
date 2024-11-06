@@ -84,40 +84,47 @@ class HomePage extends GetView<HomeController> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: controller.onTapPlayMusic,
-              child: Obx(
-                () => SlideInUp(
-                  from: bottomHeight,
-                  animate: controller.displayMusicInfo.value,
-                  child: SizedBox(
-                    height: bottomHeight,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        // 模糊背景层
-                        ShadowWidget(
+            child: Obx(
+              () => SlideInUp(
+                from: bottomHeight,
+                animate: controller.displayMusicInfo.value,
+                child: SizedBox(
+                  height: bottomHeight,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // 模糊背景层
+                      ShadowWidget(
+                        borderRadius: borderRadius,
+                        child: BlurWidget(
                           borderRadius: borderRadius,
-                          child: BlurWidget(
+                          child: HighlightWidget(
+                            hasTopBorder: true,
                             borderRadius: borderRadius,
-                            child: HighlightWidget(
-                              hasTopBorder: true,
-                              borderRadius: borderRadius,
-                              backgroundColor:
-                                  theme.bottomSheetTheme.modalBackgroundColor,
-                            ),
+                            backgroundColor:
+                                theme.bottomSheetTheme.modalBackgroundColor,
                           ),
                         ),
-                        // 音乐信息
-                        Positioned(
-                          left: 20,
-                          top: 24,
-                          right: 20,
-                          child: _buildPlayMusic(theme),
+                      ),
+                      // 音乐信息
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: controller.onTapPlayMusic,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              top: 24,
+                              right: 20,
+                            ),
+                            child: _buildPlayMusic(theme),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -134,10 +141,12 @@ class HomePage extends GetView<HomeController> {
           ),
 
           // 底部进度条
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            bottom: 75,
+            left: 0,
+            right: 0,
             child: CurveProgressIndicator(
-              size: const Size.fromHeight(100),
+              size: const Size.fromHeight(25),
               progress: controller.progress,
             ),
           ),

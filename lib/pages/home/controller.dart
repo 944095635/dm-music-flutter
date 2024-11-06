@@ -3,7 +3,6 @@ import 'package:dm_music/mixin/play_mixin.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/play/index.dart';
 import 'package:dm_music/services/play_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -45,12 +45,20 @@ class CurveProgressIndicatorPainter extends CustomPainter {
     debugPrint("重绘:底部进度条-画刷");
 
     // 贝塞尔曲率
-    double bezier = size.height / 4;
+    //double bezier = size.height / 4;
 
     // 绘制弧线
+    // Path line = Path()
+    //   ..moveTo(0, bezier)
+    //   ..quadraticBezierTo(size.width / 2, -bezier, size.width, bezier);
     Path line = Path()
-      ..moveTo(0, bezier)
-      ..quadraticBezierTo(size.width / 2, -bezier, size.width, bezier);
+      ..moveTo(0, size.height)
+      ..quadraticBezierTo(
+        size.width / 2,
+        -size.height,
+        size.width,
+        size.height,
+      );
 
     // 定义画刷
     var gradient = Gradient.linear(
