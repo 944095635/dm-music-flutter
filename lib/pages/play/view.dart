@@ -4,6 +4,8 @@ import 'package:dm_music/extension/svg_picture_extensions.dart';
 import 'package:dm_music/pages/play/widgets/play_control.dart';
 import 'package:dm_music/pages/play_list/index.dart';
 import 'package:dm_music/values/svgs.dart';
+import 'package:dm_music/widgets/slider/slider.dart' as dmslider;
+import 'package:dm_music/widgets/slider/slider_theme.dart' as dm_slider_theme;
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
@@ -95,9 +97,11 @@ class PlayPage extends GetView<PlayController> {
                 SizedBox(
                   height: 30,
                   child: Obx(
-                    () => Slider(
+                    () => dmslider.Slider(
                       value: controller.progress.value,
                       thumbColor: Colors.white,
+                      trackShape:
+                          const dm_slider_theme.RoundedRectSliderTrackShape(),
                       onChangeStart: (value) {
                         controller.dragProgress = true;
                       },

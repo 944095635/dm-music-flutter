@@ -3,6 +3,7 @@ import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import "widgets/slider/slider_theme.dart" as dm_slider_theme;
 
 void main() {
   Get.put(PlayService());
@@ -98,11 +99,13 @@ class MyApp extends StatelessWidget {
       ),
       sliderTheme: const SliderThemeData(
         trackHeight: 2,
-        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 3),
-        trackShape: RectangularSliderTrackShape(),
+        thumbColor: Colors.white,
+        thumbShape:
+            dm_slider_theme.RoundSliderThumbShape(enabledThumbRadius: 2),
         activeTrackColor: Colors.black87,
         inactiveTrackColor: Colors.black12,
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
+        overlayColor: Colors.amber,
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
       ),
     );
   }
@@ -182,11 +185,13 @@ class MyApp extends StatelessWidget {
       ),
       sliderTheme: const SliderThemeData(
         trackHeight: 2,
-        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 3),
-        trackShape: RectangularSliderTrackShape(),
+        thumbColor: Colors.white,
+        thumbShape:
+            dm_slider_theme.RoundSliderThumbShape(enabledThumbRadius: 2),
         activeTrackColor: Colors.white54,
         inactiveTrackColor: Colors.white12,
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
+        overlayColor: Colors.amber,
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
       ),
     );
   }
