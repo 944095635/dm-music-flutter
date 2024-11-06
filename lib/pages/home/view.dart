@@ -148,6 +148,7 @@ class HomePage extends GetView<HomeController> {
             child: CurveProgressIndicator(
               size: const Size.fromHeight(25),
               progress: controller.progress,
+              onChanged: controller.onTapProgress,
             ),
           ),
 

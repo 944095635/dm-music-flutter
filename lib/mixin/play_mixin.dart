@@ -23,6 +23,9 @@ mixin PlayMixin on GetSingleTickerProviderStateMixin {
   /// 当前进度
   var progress = 0.0.obs;
 
+  /// 当前正在拖动进度条
+  var dragProgress = false;
+
   /// 当前歌曲播放进度
   final Rx<Duration> position = Rx(Duration.zero);
 
@@ -97,7 +100,10 @@ mixin PlayMixin on GetSingleTickerProviderStateMixin {
   _onMusicPosition(Duration newPosition, double newProgress) {
     // 更新进度
     position.value = newPosition;
-    progress.value = newProgress;
+    // 拖拽进度条的时候不会更新到进度条上面
+    if (!dragProgress) {
+      progress.value = newProgress;
+    }
   }
 
   /// 歌曲长度变化
@@ -123,5 +129,11 @@ mixin PlayMixin on GetSingleTickerProviderStateMixin {
     progress.value = 0;
     PlayService playService = Get.find<PlayService>();
     playService.playNext();
+  }
+
+  /// 点击进度条
+  onTapProgress(double progress) {
+    PlayService playService = Get.find<PlayService>();
+    playService.playPosition(progress);
   }
 }

@@ -96,6 +96,14 @@ class MyApp extends StatelessWidget {
         // activeColor: Colors.white,
         // activeTrackColor: Colors.white30,
       ),
+      sliderTheme: const SliderThemeData(
+        trackHeight: 2,
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 3),
+        trackShape: RectangularSliderTrackShape(),
+        activeTrackColor: Colors.black87,
+        inactiveTrackColor: Colors.black12,
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
+      ),
     );
   }
 
@@ -171,6 +179,14 @@ class MyApp extends StatelessWidget {
         // inactiveTrackColor: Colors.white38,
         // activeColor: Colors.white,
         // activeTrackColor: Colors.white30,
+      ),
+      sliderTheme: const SliderThemeData(
+        trackHeight: 2,
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 3),
+        trackShape: RectangularSliderTrackShape(),
+        activeTrackColor: Colors.white54,
+        inactiveTrackColor: Colors.white12,
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
       ),
     );
   }

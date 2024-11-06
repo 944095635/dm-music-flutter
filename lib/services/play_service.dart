@@ -164,4 +164,13 @@ class PlayService extends GetxService {
       _player.play();
     }
   }
+
+  /// 播放跳转进度
+  void playPosition(double percentage) {
+    if (_player.playing && _player.duration != null) {
+      Duration position =
+          Duration(seconds: (_player.duration!.inSeconds * percentage).toInt());
+      _player.seek(position);
+    }
+  }
 }

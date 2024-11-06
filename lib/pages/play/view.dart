@@ -91,13 +91,26 @@ class PlayPage extends GetView<PlayController> {
                     );
                   },
                 ),
-                40.verticalSpace,
-                Obx(
-                  () => LinearProgressIndicator(
-                    value: controller.progress.value,
+                20.verticalSpace,
+                SizedBox(
+                  height: 30,
+                  child: Obx(
+                    () => Slider(
+                      value: controller.progress.value,
+                      thumbColor: Colors.white,
+                      onChangeStart: (value) {
+                        controller.dragProgress = true;
+                      },
+                      onChanged: (value) {
+                        controller.progress.value = value;
+                      },
+                      onChangeEnd: (value) {
+                        controller.dragProgress = false;
+                        controller.onTapProgress(value);
+                      },
+                    ),
                   ),
                 ),
-                20.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

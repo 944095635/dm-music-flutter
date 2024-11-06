@@ -8,6 +8,7 @@ class CurveProgressIndicator extends StatelessWidget {
   const CurveProgressIndicator({
     super.key,
     this.size = Size.zero,
+    this.onChanged,
     required this.progress,
   });
 
@@ -17,13 +18,25 @@ class CurveProgressIndicator extends StatelessWidget {
   /// 尺寸
   final Size size;
 
+  /// 进度变化
+  final Function(double progress)? onChanged;
+
   @override
   Widget build(BuildContext context) {
-    debugPrint("重绘:底部进度条");
-    return RepaintBoundary(
-      child: CustomPaint(
-        size: size,
-        painter: CurveProgressIndicatorPainter(progress),
+    debugPrint("重绘:底部进度条.");
+    Size renderSize = MediaQuery.of(context).size;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onPanDown: (details) {
+        double value = details.localPosition.dx / renderSize.width;
+        debugPrint("百分比进度:$value");
+        onChanged?.call(value);
+      },
+      child: RepaintBoundary(
+        child: CustomPaint(
+          size: size,
+          painter: CurveProgressIndicatorPainter(progress),
+        ),
       ),
     );
   }
@@ -95,6 +108,11 @@ class CurveProgressIndicatorPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+
+  @override
+  bool? hitTest(Offset position) {
     return false;
   }
 }
