@@ -64,7 +64,7 @@ class HomeController extends GetxController
     // );
     // Get.delete<PlayController>();
 
-    Get.to(() => const PlayPage(), transition: Transition.downToUp);
+    Get.to(() => const PlayPage(), transition: Transition.fadeIn);
   }
 
   /// 点击音乐列表 - 将音乐添加到播放列表

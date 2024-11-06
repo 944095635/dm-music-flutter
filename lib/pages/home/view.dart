@@ -291,21 +291,21 @@ class HomePage extends GetView<HomeController> {
   /// 主体内容
   Widget _buildBody(ThemeData theme, List<Music> data) {
     debugPrint("重绘Home主页面Body");
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          // const SliverToBoxAdapter(
-          //   child: Padding(
-          //     padding: EdgeInsets.only(top: 80),
-          //     child: Text("每日推荐"),
-          //   ),
-          // ),
-          SliverToBoxAdapter(
-            child: 90.verticalSpace,
-          ),
-          SliverGrid.builder(
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        // const SliverToBoxAdapter(
+        //   child: Padding(
+        //     padding: EdgeInsets.only(top: 80),
+        //     child: Text("每日推荐"),
+        //   ),
+        // ),
+        SliverToBoxAdapter(
+          child: 100.verticalSpace,
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          sliver: SliverGrid.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 5,
@@ -386,11 +386,11 @@ class HomePage extends GetView<HomeController> {
               );
             },
           ),
-          SliverToBoxAdapter(
-            child: 200.verticalSpace,
-          ),
-        ],
-      ),
+        ),
+        SliverToBoxAdapter(
+          child: 200.verticalSpace,
+        ),
+      ],
     );
   }
 

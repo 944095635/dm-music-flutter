@@ -4,9 +4,10 @@ import 'package:dm_music/extension/svg_picture_extensions.dart';
 import 'package:dm_music/pages/play/widgets/play_control.dart';
 import 'package:dm_music/pages/play_list/index.dart';
 import 'package:dm_music/values/svgs.dart';
+import 'package:dm_music/widgets/bottom_sheet.dart';
 import 'package:dm_music/widgets/slider/slider.dart' as dmslider;
 import 'package:dm_music/widgets/slider/slider_theme.dart' as dm_slider_theme;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide showModalBottomSheet;
 import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
 import 'index.dart';
@@ -21,9 +22,11 @@ class PlayPage extends GetView<PlayController> {
     ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        // systemOverlayStyle: theme.appBarTheme.systemOverlayStyle!.copyWith(
-        //   systemNavigationBarColor: theme.colorScheme.inverseSurface,
-        // ),
+        foregroundColor: theme.colorScheme.onSurface,
+        systemOverlayStyle: theme.appBarTheme.systemOverlayStyle!.copyWith(
+          //systemNavigationBarColor: theme.colorScheme.inverseSurface,
+          statusBarIconBrightness: Brightness.light,
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -34,8 +37,11 @@ class PlayPage extends GetView<PlayController> {
               }
             },
             icon: SvgPictureExtensions.asset(
-                AssetsSvgs.musicRepeatSvg, Colors.white),
+              AssetsSvgs.moonBoldSvg,
+              theme.colorScheme.onSurface,
+            ),
           ),
+          10.horizontalSpace,
         ],
       ),
       extendBodyBehindAppBar: true,

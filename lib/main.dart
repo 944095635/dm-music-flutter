@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: Colors.white,
         ),
       ),
@@ -104,8 +104,7 @@ class MyApp extends StatelessWidget {
             dm_slider_theme.RoundSliderThumbShape(enabledThumbRadius: 2),
         activeTrackColor: Colors.black87,
         inactiveTrackColor: Colors.black12,
-        overlayColor: Colors.amber,
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
       ),
     );
   }
@@ -190,8 +189,7 @@ class MyApp extends StatelessWidget {
             dm_slider_theme.RoundSliderThumbShape(enabledThumbRadius: 2),
         activeTrackColor: Colors.white54,
         inactiveTrackColor: Colors.white12,
-        overlayColor: Colors.amber,
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
       ),
     );
   }

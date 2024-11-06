@@ -1,13 +1,6 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: deprecated_member_use
-
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +8,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/services.dart';
 import 'slider_theme.dart' as dm_slider_theme;
-
-enum _SliderType { material, adaptive }
 
 class Slider extends StatefulWidget {
   const Slider({
@@ -41,40 +32,7 @@ class Slider extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     this.allowedInteraction,
-  })  : _sliderType = _SliderType.material,
-        assert(min <= max),
-        assert(value >= min && value <= max,
-            'Value $value is not between minimum $min and maximum $max'),
-        assert(
-            secondaryTrackValue == null ||
-                (secondaryTrackValue >= min && secondaryTrackValue <= max),
-            'SecondaryValue $secondaryTrackValue is not between $min and $max'),
-        assert(divisions == null || divisions > 0);
-
-  const Slider.adaptive({
-    super.key,
-    required this.value,
-    this.secondaryTrackValue,
-    required this.onChanged,
-    this.onChangeStart,
-    this.onChangeEnd,
-    this.min = 0.0,
-    this.max = 1.0,
-    this.divisions,
-    this.label,
-    this.mouseCursor,
-    this.activeColor,
-    this.inactiveColor,
-    this.secondaryActiveColor,
-    this.thumbColor,
-    this.overlayColor,
-    required this.trackShape,
-    this.semanticFormatterCallback,
-    this.focusNode,
-    this.autofocus = false,
-    this.allowedInteraction,
-  })  : _sliderType = _SliderType.adaptive,
-        assert(min <= max),
+  })  : assert(min <= max),
         assert(value >= min && value <= max,
             'Value $value is not between minimum $min and maximum $max'),
         assert(
@@ -111,7 +69,7 @@ class Slider extends StatefulWidget {
 
   final Color? thumbColor;
 
-  final MaterialStateProperty<Color?>? overlayColor;
+  final WidgetStateProperty<Color?>? overlayColor;
 
   final MouseCursor? mouseCursor;
 
@@ -122,8 +80,6 @@ class Slider extends StatefulWidget {
   final bool autofocus;
 
   final SliderInteraction? allowedInteraction;
-
-  final _SliderType _sliderType;
 
   @override
   State<Slider> createState() => _SliderState();
@@ -160,22 +116,12 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
   static const Duration valueIndicatorAnimationDuration =
       Duration(milliseconds: 100);
 
-  // Animation controller that is run when the overlay (a.k.a radial reaction)
-  // is shown in response to user interaction.
   late AnimationController overlayController;
-  // Animation controller that is run when the value indicator is being shown
-  // or hidden.
   late AnimationController valueIndicatorController;
-  // Animation controller that is run when enabling/disabling the slider.
   late AnimationController enableController;
-  // Animation controller that is run when transitioning between one value
-  // and the next on a discrete slider.
   late AnimationController positionController;
   Timer? interactionTimer;
-
   final GlobalKey _renderObjectKey = GlobalKey();
-
-  // Keyboard mapping for a focused slider.
   static const Map<ShortcutActivator, Intent> _traditionalNavShortcutMap =
       <ShortcutActivator, Intent>{
     SingleActivator(LogicalKeyboardKey.arrowUp): _AdjustSliderIntent.up(),
@@ -343,26 +289,7 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
     assert(debugCheckHasMediaQuery(context));
-
-    switch (widget._sliderType) {
-      case _SliderType.material:
-        return _buildMaterialSlider(context);
-
-      case _SliderType.adaptive:
-        {
-          final ThemeData theme = Theme.of(context);
-          switch (theme.platform) {
-            case TargetPlatform.android:
-            case TargetPlatform.fuchsia:
-            case TargetPlatform.linux:
-            case TargetPlatform.windows:
-              return _buildMaterialSlider(context);
-            case TargetPlatform.iOS:
-            case TargetPlatform.macOS:
-              return _buildCupertinoSlider(context);
-          }
-        }
-    }
+    return _buildMaterialSlider(context);
   }
 
   Widget _buildMaterialSlider(BuildContext context) {
@@ -390,11 +317,11 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
     const SliderInteraction defaultAllowedInteraction =
         SliderInteraction.tapAndSlide;
 
-    final Set<MaterialState> states = <MaterialState>{
-      if (!_enabled) MaterialState.disabled,
-      if (_hovering) MaterialState.hovered,
-      if (_focused) MaterialState.focused,
-      if (_dragging) MaterialState.dragged,
+    final Set<WidgetState> states = <WidgetState>{
+      if (!_enabled) WidgetState.disabled,
+      if (_hovering) WidgetState.hovered,
+      if (_focused) WidgetState.focused,
+      if (_dragging) WidgetState.dragged,
     };
 
     // The value indicator's color is not the same as the thumb and active track
@@ -417,10 +344,9 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
     Color? effectiveOverlayColor() {
       return widget.overlayColor?.resolve(states) ??
           widget.activeColor?.withOpacity(0.12) ??
-          MaterialStateProperty.resolveAs<Color?>(
+          WidgetStateProperty.resolveAs<Color?>(
               sliderTheme.overlayColor, states) ??
-          MaterialStateProperty.resolveAs<Color?>(
-              defaults.overlayColor, states);
+          WidgetStateProperty.resolveAs<Color?>(defaults.overlayColor, states);
     }
 
     TextStyle valueIndicatorTextStyle = sliderTheme.valueIndicatorTextStyle ??
@@ -477,10 +403,10 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
       valueIndicatorTextStyle: valueIndicatorTextStyle,
     );
     final MouseCursor effectiveMouseCursor =
-        MaterialStateProperty.resolveAs<MouseCursor?>(
+        WidgetStateProperty.resolveAs<MouseCursor?>(
                 widget.mouseCursor, states) ??
             sliderTheme.mouseCursor?.resolve(states) ??
-            MaterialStateMouseCursor.clickable.resolve(states);
+            WidgetStateMouseCursor.clickable.resolve(states);
     final SliderInteraction effectiveAllowedInteraction =
         widget.allowedInteraction ??
             sliderTheme.allowedInteraction ??
@@ -566,26 +492,6 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
             allowedInteraction: effectiveAllowedInteraction,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildCupertinoSlider(BuildContext context) {
-    // The render box of a slider has a fixed height but takes up the available
-    // width. Wrapping the [CupertinoSlider] in this manner will help maintain
-    // the same size.
-    return SizedBox(
-      width: double.infinity,
-      child: CupertinoSlider(
-        value: widget.value,
-        onChanged: widget.onChanged,
-        onChangeStart: widget.onChangeStart,
-        onChangeEnd: widget.onChangeEnd,
-        min: widget.min,
-        max: widget.max,
-        divisions: widget.divisions,
-        activeColor: widget.activeColor,
-        thumbColor: widget.thumbColor ?? CupertinoColors.white,
       ),
     );
   }
@@ -1069,14 +975,10 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
           text: label,
         )
         ..textDirection = textDirection
-        ..textScaleFactor = textScaleFactor
         ..layout();
     } else {
       _labelPainter.text = null;
     }
-    // Changing the textDirection can result in the layout changing, because the
-    // bidi algorithm might line up the glyphs differently which can result in
-    // different ligatures, different shapes, etc. So we always markNeedsLayout.
     markNeedsLayout();
   }
 
@@ -1714,14 +1616,14 @@ class _SliderDefaultsM3 extends SliderThemeData {
 
   @override
   Color? get overlayColor =>
-      MaterialStateColor.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.dragged)) {
+      WidgetStateColor.resolveWith((Set<WidgetState> states) {
+        if (states.contains(WidgetState.dragged)) {
           return _colors.primary.withOpacity(0.1);
         }
-        if (states.contains(MaterialState.hovered)) {
+        if (states.contains(WidgetState.hovered)) {
           return _colors.primary.withOpacity(0.08);
         }
-        if (states.contains(MaterialState.focused)) {
+        if (states.contains(WidgetState.focused)) {
           return _colors.primary.withOpacity(0.1);
         }
 
