@@ -77,4 +77,18 @@ class HomeController extends GetxController
     /// 显示菜单
     displayMusicInfo.value = true;
   }
+
+  @override
+  onTapPlay() {
+    bool play = super.onTapPlay();
+    if (music.value != null) {
+      if (play) {
+        /// 显示菜单
+        displayMusicInfo.value = true;
+      } else {
+        displayMusicInfo.value = false;
+      }
+    }
+    return play;
+  }
 }

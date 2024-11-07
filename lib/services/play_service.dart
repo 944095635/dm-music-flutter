@@ -39,11 +39,13 @@ class PlayService extends GetxService {
   }
 
   /// 播放或者暂停
-  void playOrPause() {
+  bool playOrPause() {
     if (_player.playing) {
       _player.pause();
+      return false;
     } else {
       _player.play();
+      return true;
     }
   }
 

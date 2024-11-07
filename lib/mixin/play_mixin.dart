@@ -112,9 +112,9 @@ mixin PlayMixin on GetSingleTickerProviderStateMixin {
   }
 
   /// 点击播放暂停按钮
-  onTapPlay() {
+  bool onTapPlay() {
     PlayService playService = Get.find<PlayService>();
-    playService.playOrPause();
+    return playService.playOrPause();
   }
 
   /// 点击上一首

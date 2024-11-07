@@ -38,7 +38,7 @@ class HomePage extends GetView<HomeController> {
     return Scaffold(
       key: controller.scaffoldKey,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(40),
         child: SizedBox.expand(
           child: BlurWidget(
             child: HighlightWidget(
@@ -326,7 +326,7 @@ class HomePage extends GetView<HomeController> {
         //   ),
         // ),
         SliverToBoxAdapter(
-          child: 100.verticalSpace,
+          child: 105.verticalSpace,
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
