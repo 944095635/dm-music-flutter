@@ -135,7 +135,7 @@ class HomePage extends GetView<HomeController> {
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomCurveWidget(
-              size: const Size.fromHeight(90),
+              size: const Size.fromHeight(100),
               backgroundColor: theme.scaffoldBackgroundColor,
             ),
           ),
@@ -153,12 +153,12 @@ class HomePage extends GetView<HomeController> {
           // ),
 
           Positioned(
-            bottom: 69,
+            bottom: 75,
             left: 0,
             right: 0,
             child: Obx(
               () => SizedBox(
-                height: 20,
+                height: 25,
                 child: DMSlider(
                   sliderType: SliderType.curve,
                   value: controller.progress.value,

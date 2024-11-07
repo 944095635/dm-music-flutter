@@ -1351,15 +1351,14 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
       Path extractLeftPath =
           pathMetric.extractPath(0, value, startWithMoveTo: true);
 
-      //绘制第一段颜色
+      //绘制第1段颜色
       context.canvas.drawPath(extractLeftPath, activePaint);
 
       //右侧路径
-      Path extractRightPath =
-          pathMetric.extractPath(value, length, startWithMoveTo: true);
+      //Path extractRightPath =  pathMetric.extractPath(value, length, startWithMoveTo: true);
 
-      //绘制第一段颜色
-      context.canvas.drawPath(extractRightPath, inactivePaint);
+      //绘制第2段颜色
+      //context.canvas.drawPath(extractRightPath, inactivePaint);
 
       // 获取滑块绘制的位置
       ui.Tangent? tangent = pathMetric.getTangentForOffset(value);
