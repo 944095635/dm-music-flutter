@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart' hide Gradient;
 
 /// 底部圆弧组件
@@ -41,15 +43,24 @@ class BottomCurvePainter extends CustomPainter {
     double bezier = size.height / 4;
 
     /// 画笔
-    var backgroundPaint = Paint()..color = backgroundColor;
+    // var backgroundPaint = Paint()
+    //   ..color = backgroundColor
+    //   ..imageFilter = ImageFilter.blur(
+    //     sigmaX: 1,
+    //     sigmaY: 1,
+    //   );
+
     Path background = Path()
       ..moveTo(0, bezier)
       ..quadraticBezierTo(size.width / 2, -bezier, size.width, bezier)
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
-      ..lineTo(0, bezier);
-    canvas.drawShadow(background, Colors.black, 10, false);
-    canvas.drawPath(background, backgroundPaint);
+      ..lineTo(0, bezier)
+      ..close();
+
+    //canvas.drawShadow(background, Colors.black, 10, true);
+    canvas.clipPath(background);
+    canvas.drawColor(backgroundColor, BlendMode.srcIn);
   }
 
   @override

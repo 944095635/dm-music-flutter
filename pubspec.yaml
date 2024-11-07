@@ -46,6 +46,25 @@ dependencies:
     git: 
        url: https://github.com/DMSkin/flutter_styled.git
 
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "logo.png"
+  min_sdk_android: 21
+  remove_alpha_ios : true
+  web:
+    generate: false
+    image_path: "path/to/image.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "path/to/image.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: false
+    image_path: "path/to/image.png"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -56,6 +75,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1    #图标
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
