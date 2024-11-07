@@ -2,11 +2,14 @@
 
 ## Flutter 开发的音乐App程序
 
-|白色主题|黑色主题|
-| -------- | ----- |
-|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/1.png" width='250'>|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/2.png" width='250'>|
+|黑色主题|
+| -------- | 
+|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/dark.jpeg" >|
 
 
+|白色主题|
+| -------- | 
+|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/light.jpeg" >|
 
 ### 下面 颜色定义参考 - 来自互联网
 
