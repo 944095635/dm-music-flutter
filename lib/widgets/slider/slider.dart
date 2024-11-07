@@ -1,19 +1,22 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Gradient;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/services.dart';
-import 'slider_theme.dart' as dm_slider_theme;
 
-class Slider extends StatefulWidget {
-  const Slider({
+/// 滑动条类型
+enum SliderType { line, curve }
+
+/// 定制滑动条组件
+class DMSlider extends StatefulWidget {
+  const DMSlider({
     super.key,
     required this.value,
-    required this.trackShape,
     this.secondaryTrackValue,
     required this.onChanged,
     this.onChangeStart,
@@ -32,6 +35,9 @@ class Slider extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     this.allowedInteraction,
+    this.thumbRadius = 2,
+    this.thumbActiveRadius = 4,
+    this.sliderType = SliderType.line,
   })  : assert(min <= max),
         assert(value >= min && value <= max,
             'Value $value is not between minimum $min and maximum $max'),
@@ -41,48 +47,73 @@ class Slider extends StatefulWidget {
             'SecondaryValue $secondaryTrackValue is not between $min and $max'),
         assert(divisions == null || divisions > 0);
 
+  /// 当前值
   final double value;
 
+  /// 缓冲值
   final double? secondaryTrackValue;
 
+  /// 滑动改变
   final ValueChanged<double>? onChanged;
 
+  /// 开始滑动
   final ValueChanged<double>? onChangeStart;
 
+  /// 滑动结束
   final ValueChanged<double>? onChangeEnd;
 
-  final dm_slider_theme.SliderTrackShape trackShape;
-
+  /// 最小值 0 ~ 1
   final double min;
 
+  /// 最大值 0 ~ 1
   final double max;
 
   final int? divisions;
 
+  /// 文本信息
   final String? label;
 
+  /// 激活的轨道颜色
   final Color? activeColor;
 
+  /// 未激活的轨道颜色
   final Color? inactiveColor;
 
+  /// 缓冲颜色
   final Color? secondaryActiveColor;
 
+  /// 滑块的轨道类型
+  final SliderType sliderType;
+
+  /// 滑块颜色
   final Color? thumbColor;
 
+  /// 滑块大小
+  final double thumbRadius;
+
+  /// 激活的滑块大小
+  final double thumbActiveRadius;
+
+  /// 浮动颜色
   final WidgetStateProperty<Color?>? overlayColor;
 
+  /// 鼠标指针
   final MouseCursor? mouseCursor;
 
+  /// 文字格式化回调
   final SemanticFormatterCallback? semanticFormatterCallback;
 
+  /// 焦点组件
   final FocusNode? focusNode;
 
+  /// 自动获取焦点
   final bool autofocus;
 
+  /// 操作模式
   final SliderInteraction? allowedInteraction;
 
   @override
-  State<Slider> createState() => _SliderState();
+  State<DMSlider> createState() => _SliderState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -111,7 +142,7 @@ class Slider extends StatefulWidget {
   }
 }
 
-class _SliderState extends State<Slider> with TickerProviderStateMixin {
+class _SliderState extends State<DMSlider> with TickerProviderStateMixin {
   static const Duration enableAnimationDuration = Duration(milliseconds: 75);
   static const Duration valueIndicatorAnimationDuration =
       Duration(milliseconds: 100);
@@ -142,11 +173,14 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
   late Map<Type, Action<Intent>> _actionMap;
 
   bool get _enabled => widget.onChanged != null;
+
   // Value Indicator Animation that appears on the Overlay.
   PaintValueIndicator? paintValueIndicator;
 
+  /// 正在拖动
   bool _dragging = false;
 
+  /// 当前修改的值
   double? _currentChangedValue;
 
   FocusNode? _focusNode;
@@ -292,19 +326,13 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
     return _buildMaterialSlider(context);
   }
 
+  /// 构建滑动条
   Widget _buildMaterialSlider(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     SliderThemeData sliderTheme = SliderTheme.of(context);
     final SliderThemeData defaults = theme.useMaterial3
         ? _SliderDefaultsM3(context)
         : _SliderDefaultsM2(context);
-
-    // If the widget has active or inactive colors specified, then we plug them
-    // in to the slider theme as best we can. If the developer wants more
-    // control than that, then they need to use a SliderTheme. The default
-    // colors come from the ThemeData.colorScheme. These colors, along with
-    // the default shapes and text styles are aligned to the Material
-    // Guidelines.
 
     const SliderTrackShape defaultTrackShape = RoundedRectSliderTrackShape();
     const SliderTickMarkShape defaultTickMarkShape = RoundSliderTickMarkShape();
@@ -477,7 +505,6 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
             divisions: widget.divisions,
             label: widget.label,
             sliderTheme: sliderTheme,
-            trackShape: widget.trackShape,
             textScaleFactor: effectiveTextScale,
             screenSize: screenSize(),
             onChanged: (widget.onChanged != null) && (widget.max > widget.min)
@@ -490,6 +517,9 @@ class _SliderState extends State<Slider> with TickerProviderStateMixin {
             hasFocus: _focused,
             hovering: _hovering,
             allowedInteraction: effectiveAllowedInteraction,
+            sliderType: widget.sliderType,
+            thumbRadius: widget.thumbRadius,
+            thumbActiveRadius: widget.thumbActiveRadius,
           ),
         ),
       ),
@@ -535,14 +565,15 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
     required this.hasFocus,
     required this.hovering,
     required this.allowedInteraction,
-    required this.trackShape,
+    required this.sliderType,
+    required this.thumbRadius,
+    required this.thumbActiveRadius,
   });
 
   final double value;
   final double? secondaryTrackValue;
   final int? divisions;
   final String? label;
-  final dm_slider_theme.SliderTrackShape trackShape;
   final SliderThemeData sliderTheme;
   final double textScaleFactor;
   final Size screenSize;
@@ -555,6 +586,15 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
   final bool hovering;
   final SliderInteraction allowedInteraction;
 
+  /// 滑动轨道类型
+  final SliderType sliderType;
+
+  /// 滑块大小
+  final double thumbRadius;
+
+  /// 激活的滑块大小
+  final double thumbActiveRadius;
+
   @override
   _RenderSlider createRenderObject(BuildContext context) {
     return _RenderSlider(
@@ -562,7 +602,6 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
       secondaryTrackValue: secondaryTrackValue,
       divisions: divisions,
       label: label,
-      trackShape: trackShape,
       sliderTheme: sliderTheme,
       textScaleFactor: textScaleFactor,
       screenSize: screenSize,
@@ -577,6 +616,9 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
       hovering: hovering,
       gestureSettings: MediaQuery.gestureSettingsOf(context),
       allowedInteraction: allowedInteraction,
+      sliderType: sliderType,
+      thumbRadius: thumbRadius,
+      thumbActiveRadius: thumbActiveRadius,
     );
   }
 
@@ -613,7 +655,6 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     required double? secondaryTrackValue,
     required int? divisions,
     required String? label,
-    required this.trackShape,
     required SliderThemeData sliderTheme,
     required double textScaleFactor,
     required Size screenSize,
@@ -628,6 +669,9 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     required bool hovering,
     required DeviceGestureSettings gestureSettings,
     required SliderInteraction allowedInteraction,
+    required SliderType sliderType,
+    required double thumbRadius,
+    required double thumbActiveRadius,
   })  : assert(value >= 0.0 && value <= 1.0),
         assert(secondaryTrackValue == null ||
             (secondaryTrackValue >= 0.0 && secondaryTrackValue <= 1.0)),
@@ -645,7 +689,10 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
         _textDirection = textDirection,
         _hasFocus = hasFocus,
         _hovering = hovering,
-        _allowedInteraction = allowedInteraction {
+        _allowedInteraction = allowedInteraction,
+        _sliderType = sliderType,
+        _thumbRadius = thumbRadius,
+        _thumbActiveRadius = thumbActiveRadius {
     _updateLabelPainter();
     final GestureArenaTeam team = GestureArenaTeam();
     _drag = HorizontalDragGestureRecognizer()
@@ -710,6 +757,15 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
   bool _active = false;
   double _currentDragValue = 0.0;
   Rect? overlayRect;
+
+  /// 滑块轨道类型
+  final SliderType? _sliderType;
+
+  /// 滑块大小
+  final double? _thumbRadius;
+
+  /// 激活的滑块大小
+  final double? _thumbActiveRadius;
 
   // This rect is used in gesture calculations, where the gesture coordinates
   // are relative to the sliders origin. Therefore, the offset is passed as
@@ -807,8 +863,6 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     _label = value;
     _updateLabelPainter();
   }
-
-  final dm_slider_theme.SliderTrackShape? trackShape;
 
   SliderThemeData get sliderTheme => _sliderTheme;
   SliderThemeData _sliderTheme;
@@ -1220,32 +1274,128 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
       sliderTheme: _sliderTheme,
       isDiscrete: isDiscrete,
     );
-    final Offset thumbCenter = Offset(
-        trackRect.left + visualPosition * trackRect.width, trackRect.center.dy);
+
+    /// 定义颜色画刷
+    final ColorTween activeTrackColorTween = ColorTween(
+        begin: sliderTheme.disabledActiveTrackColor,
+        end: sliderTheme.activeTrackColor);
+    final ColorTween inactiveTrackColorTween = ColorTween(
+        begin: sliderTheme.disabledInactiveTrackColor,
+        end: sliderTheme.inactiveTrackColor);
+
+    // 缓冲进度
+    final Offset? secondaryOffset = (secondaryVisualPosition != null)
+        ? Offset(trackRect.left + secondaryVisualPosition * trackRect.width,
+            trackRect.center.dy)
+        : null;
+
+    /// 计算滑块的位置
+    final Offset thumbCenter;
+
+    // 激活的时候 容器高度
+    final Tween<double> elevationTween = Tween<double>(
+      begin: _thumbRadius,
+      end: _thumbActiveRadius,
+    );
+    double additionalActiveTrackHeight =
+        elevationTween.evaluate(_overlayAnimation);
+
+    /// 绘制轨道区域
+    // A 模式弧线模式
+    // B 模式直线模式
+    if (_sliderType == SliderType.curve) {
+      // 定义画刷
+      var gradient = ui.Gradient.linear(
+        Offset.zero,
+        Offset(size.width, 0),
+        [
+          const Color(0xFFB7EAFF),
+          const Color(0xFF7ED9FF),
+          const Color(0xFF0F7BAA),
+          // Colors.red, Colors.blue, Colors.yellow,
+        ],
+        [0, 0.6, 1],
+      );
+
+      final Paint activePaint = Paint()
+        ..strokeWidth = additionalActiveTrackHeight
+        ..shader = gradient
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round;
+
+      final Paint inactivePaint = Paint()
+        ..strokeWidth = additionalActiveTrackHeight
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round;
+
+      Path line = Path()
+        ..moveTo(0, size.height)
+        ..quadraticBezierTo(
+          size.width / 2,
+          -size.height,
+          size.width,
+          size.height,
+        );
+
+      //计算百分比进度条
+      ui.PathMetrics pathMetrics = line.computeMetrics();
+      // 获取第一小节信息(猜测可能有多个Path叠加？)
+      ui.PathMetric pathMetric = pathMetrics.first;
+      // 整个Path的长度
+      double length = pathMetric.length;
+      // 当前进度
+      double value = length * controllerValue;
+
+      // 左侧路径
+      Path extractLeftPath =
+          pathMetric.extractPath(0, value, startWithMoveTo: true);
+
+      //绘制第一段颜色
+      context.canvas.drawPath(extractLeftPath, activePaint);
+
+      //右侧路径
+      Path extractRightPath =
+          pathMetric.extractPath(value, length, startWithMoveTo: true);
+
+      //绘制第一段颜色
+      context.canvas.drawPath(extractRightPath, inactivePaint);
+
+      // 获取滑块绘制的位置
+      ui.Tangent? tangent = pathMetric.getTangentForOffset(value);
+
+      /// 滑块在路径上
+      thumbCenter = tangent!.position;
+    } else {
+      final Paint activePaint = Paint()
+        ..color = activeTrackColorTween.evaluate(_enableAnimation)!;
+      final Paint inactivePaint = Paint()
+        ..color = inactiveTrackColorTween.evaluate(_enableAnimation)!;
+
+      /// 计算滑块位置
+      thumbCenter = Offset(
+        trackRect.left + visualPosition * trackRect.width,
+        trackRect.center.dy,
+      );
+      // 绘制轨道
+      drawTrack(
+        context,
+        trackRect,
+        progress: thumbCenter.dx / trackRect.width,
+        thumbCenter: thumbCenter,
+        secondaryOffset: secondaryOffset,
+        additionalActiveTrackHeight: additionalActiveTrackHeight,
+        leftTrackPaint: activePaint,
+        rightTrackPaint: inactivePaint,
+      );
+    }
+
+    // 正在交互 - 绘制 浮层
     if (isInteractive) {
       final Size overlaySize =
           sliderTheme.overlayShape!.getPreferredSize(isInteractive, false);
       overlayRect =
           Rect.fromCircle(center: thumbCenter, radius: overlaySize.width / 2.0);
     }
-    final Offset? secondaryOffset = (secondaryVisualPosition != null)
-        ? Offset(trackRect.left + secondaryVisualPosition * trackRect.width,
-            trackRect.center.dy)
-        : null;
-
-    trackShape!.paint(
-      context,
-      offset,
-      parentBox: this,
-      sliderTheme: _sliderTheme,
-      activationAnimation: _overlayAnimation,
-      enableAnimation: _enableAnimation,
-      textDirection: _textDirection,
-      thumbCenter: thumbCenter,
-      secondaryOffset: secondaryOffset,
-      isDiscrete: isDiscrete,
-      isEnabled: isInteractive,
-    );
 
     if (!_overlayAnimation.isDismissed) {
       _sliderTheme.overlayShape!.paint(
@@ -1322,20 +1472,187 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
       }
     }
 
-    _sliderTheme.thumbShape!.paint(
+    // 绘制滑块
+    drawThumb(
       context,
       thumbCenter,
-      activationAnimation: _overlayAnimation,
-      enableAnimation: _enableAnimation,
-      isDiscrete: isDiscrete,
-      labelPainter: _labelPainter,
-      parentBox: this,
-      sliderTheme: _sliderTheme,
-      textDirection: _textDirection,
-      value: _value,
-      textScaleFactor: textScaleFactor,
-      sizeWithOverflow: screenSize.isEmpty ? size : screenSize,
     );
+    // _sliderTheme.thumbShape!.paint(
+    //   context,
+    //   thumbCenter,
+    //   activationAnimation: _overlayAnimation,
+    //   enableAnimation: _enableAnimation,
+    //   isDiscrete: isDiscrete,
+    //   labelPainter: _labelPainter,
+    //   parentBox: this,
+    //   sliderTheme: _sliderTheme,
+    //   textDirection: _textDirection,
+    //   value: _value,
+    //   textScaleFactor: textScaleFactor,
+    //   sizeWithOverflow: screenSize.isEmpty ? size : screenSize,
+    // );
+  }
+
+  /// 绘制轨道
+  void drawTrack(
+    PaintingContext context,
+    Rect trackRect, {
+    required double progress,
+    required Offset thumbCenter,
+    required Offset? secondaryOffset,
+    required double additionalActiveTrackHeight,
+    required Paint leftTrackPaint,
+    required Paint rightTrackPaint,
+  }) {
+    // 默认的圆角值
+    final Radius trackRadius = Radius.circular(trackRect.height / 2);
+
+    /// 激活的时候 圆角值
+    final Radius activeTrackRadius =
+        Radius.circular((trackRect.height + additionalActiveTrackHeight) / 2);
+
+    // 左侧轨道
+    context.canvas.drawRRect(
+      RRect.fromLTRBAndCorners(
+        trackRect.left,
+        (textDirection == TextDirection.ltr)
+            ? trackRect.top - (additionalActiveTrackHeight / 2)
+            : trackRect.top,
+        thumbCenter.dx,
+        (textDirection == TextDirection.ltr)
+            ? trackRect.bottom + (additionalActiveTrackHeight / 2)
+            : trackRect.bottom,
+        topLeft: (textDirection == TextDirection.ltr)
+            ? activeTrackRadius
+            : trackRadius,
+        bottomLeft: (textDirection == TextDirection.ltr)
+            ? activeTrackRadius
+            : trackRadius,
+      ),
+      leftTrackPaint,
+    );
+
+    // 右侧轨道
+    context.canvas.drawRRect(
+      RRect.fromLTRBAndCorners(
+        thumbCenter.dx,
+        trackRect.top - (additionalActiveTrackHeight / 2),
+        trackRect.right,
+        trackRect.bottom + (additionalActiveTrackHeight / 2),
+        topRight: activeTrackRadius,
+        bottomRight: activeTrackRadius,
+      ),
+      rightTrackPaint,
+    );
+    // 绘制缓冲进度
+    final bool showSecondaryTrack = (secondaryOffset != null) &&
+        ((textDirection == TextDirection.ltr)
+            ? (secondaryOffset.dx > thumbCenter.dx)
+            : (secondaryOffset.dx < thumbCenter.dx));
+
+    if (showSecondaryTrack) {
+      final ColorTween secondaryTrackColorTween = ColorTween(
+          begin: sliderTheme.disabledSecondaryActiveTrackColor,
+          end: sliderTheme.secondaryActiveTrackColor);
+      final Paint secondaryTrackPaint = Paint()
+        ..color = secondaryTrackColorTween.evaluate(_enableAnimation)!;
+      if (textDirection == TextDirection.ltr) {
+        context.canvas.drawRRect(
+          RRect.fromLTRBAndCorners(
+            thumbCenter.dx,
+            trackRect.top,
+            secondaryOffset.dx,
+            trackRect.bottom,
+            topRight: trackRadius,
+            bottomRight: trackRadius,
+          ),
+          secondaryTrackPaint,
+        );
+      } else {
+        context.canvas.drawRRect(
+          RRect.fromLTRBAndCorners(
+            secondaryOffset.dx,
+            trackRect.top,
+            thumbCenter.dx,
+            trackRect.bottom,
+            topLeft: trackRadius,
+            bottomLeft: trackRadius,
+          ),
+          secondaryTrackPaint,
+        );
+      }
+    }
+  }
+
+  /// 绘制滑块
+  void drawThumb(
+    PaintingContext context,
+    Offset center, {
+    double elevation = 1.0,
+    double pressedElevation = 6.0,
+  }) {
+    final Canvas canvas = context.canvas;
+
+    final ColorTween colorTween = ColorTween(
+      begin: sliderTheme.disabledThumbColor,
+      end: sliderTheme.thumbColor,
+    );
+
+    final Color color = colorTween.evaluate(_enableAnimation)!;
+
+    // 滑块激活动画
+    final Tween<double> radiusTween = Tween<double>(
+      begin: _thumbRadius,
+      end: _thumbActiveRadius,
+    );
+
+    final double radius = radiusTween.evaluate(_overlayAnimation);
+
+    final Tween<double> elevationTween = Tween<double>(
+      begin: elevation,
+      end: pressedElevation,
+    );
+
+    final double evaluatedElevation =
+        elevationTween.evaluate(_overlayAnimation);
+    final Path path = Path()
+      ..addArc(
+        Rect.fromCenter(center: center, width: 2 * radius, height: 2 * radius),
+        0,
+        math.pi * 2,
+      );
+
+    bool paintShadows = true;
+    assert(() {
+      if (debugDisableShadows) {
+        _debugDrawShadow(canvas, path, evaluatedElevation);
+        paintShadows = false;
+      }
+      return true;
+    }());
+
+    if (paintShadows) {
+      canvas.drawShadow(path, Colors.black, evaluatedElevation, true);
+    }
+
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..color = color,
+    );
+  }
+
+  /// 绘制阴影
+  void _debugDrawShadow(Canvas canvas, Path path, double elevation) {
+    if (elevation > 0.0) {
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = Colors.black
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = elevation * 2.0,
+      );
+    }
   }
 
   @override
@@ -1640,5 +1957,3 @@ class _SliderDefaultsM3 extends SliderThemeData {
   SliderComponentShape? get valueIndicatorShape =>
       const DropSliderValueIndicatorShape();
 }
-
-// END GENERATED TOKEN PROPERTIES - Slider

@@ -6,7 +6,6 @@ import 'package:dm_music/pages/play_list/index.dart';
 import 'package:dm_music/values/svgs.dart';
 import 'package:dm_music/widgets/bottom_sheet.dart';
 import 'package:dm_music/widgets/slider/slider.dart' as dmslider;
-import 'package:dm_music/widgets/slider/slider_theme.dart' as dm_slider_theme;
 import 'package:flutter/material.dart' hide showModalBottomSheet;
 import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
@@ -77,14 +76,17 @@ class PlayPage extends GetView<PlayController> {
             ),
           ),
           Positioned(
-            left: 30,
-            right: 30,
+            left: 20,
+            right: 20,
             bottom: 80,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Obx(
-                  () => _buildMusicTitle(theme),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Obx(
+                    () => _buildMusicTitle(theme),
+                  ),
                 ),
                 20.verticalSpace,
                 PlayControl(
@@ -101,13 +103,10 @@ class PlayPage extends GetView<PlayController> {
                 ),
                 20.verticalSpace,
                 SizedBox(
-                  height: 30,
+                  height: 40,
                   child: Obx(
-                    () => dmslider.Slider(
+                    () => dmslider.DMSlider(
                       value: controller.progress.value,
-                      thumbColor: Colors.white,
-                      trackShape:
-                          const dm_slider_theme.RoundedRectSliderTrackShape(),
                       onChangeStart: (value) {
                         controller.dragProgress = true;
                       },
@@ -121,12 +120,15 @@ class PlayPage extends GetView<PlayController> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Obx(() => _buildMusicTimePosition(theme)),
-                    Obx(() => _buildMusicTimeDuration(theme)),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(() => _buildMusicTimePosition(theme)),
+                      Obx(() => _buildMusicTimeDuration(theme)),
+                    ],
+                  ),
                 ),
               ],
             ),

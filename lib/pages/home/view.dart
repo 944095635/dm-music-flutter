@@ -4,12 +4,12 @@ import 'package:dm_music/extension/svg_picture_extensions.dart';
 import 'package:dm_music/index.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
-import 'package:dm_music/pages/home/widgets/curve_progress_indicator.dart';
 import 'package:dm_music/pages/home/widgets/play_mini_control.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/heart_widget.dart';
 import 'package:dm_music/widgets/highlight_widget.dart';
 import 'package:dm_music/widgets/shadow_widget.dart';
+import 'package:dm_music/widgets/slider/slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/radius_extension.dart';
@@ -141,14 +141,39 @@ class HomePage extends GetView<HomeController> {
           ),
 
           // 底部进度条
+          // Positioned(
+          //   bottom: 75,
+          //   left: 0,
+          //   right: 0,
+          //   child: CurveProgressIndicator(
+          //     size: const Size.fromHeight(25),
+          //     progress: controller.progress,
+          //     onChanged: controller.onTapProgress,
+          //   ),
+          // ),
+
           Positioned(
             bottom: 75,
             left: 0,
             right: 0,
-            child: CurveProgressIndicator(
-              size: const Size.fromHeight(25),
-              progress: controller.progress,
-              onChanged: controller.onTapProgress,
+            child: Obx(
+              () => SizedBox(
+                height: 25,
+                child: DMSlider(
+                  sliderType: SliderType.curve,
+                  value: controller.progress.value,
+                  onChangeStart: (value) {
+                    controller.dragProgress = true;
+                  },
+                  onChanged: (value) {
+                    controller.progress.value = value;
+                  },
+                  onChangeEnd: (value) {
+                    controller.dragProgress = false;
+                    controller.onTapProgress(value);
+                  },
+                ),
+              ),
             ),
           ),
 
