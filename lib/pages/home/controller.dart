@@ -1,3 +1,6 @@
+import 'package:dm_music/api/cloud_music_api/cloud_music_api.dart';
+import 'package:dm_music/api/cloud_music_api/models/cloud_music.dart';
+import 'package:dm_music/api/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/api/test_api.dart';
 import 'package:dm_music/mixin/play_mixin.dart';
 import 'package:dm_music/models/music.dart';
@@ -26,6 +29,12 @@ class HomeController extends GetxController
     scaffoldKey.currentState?.closeEndDrawer();
   }
 
+  /// 新歌排行榜
+  List<Music> newSongs = List.empty(growable: true);
+
+  /// 歌单
+  List<CloudPlayList> playList = List.empty(growable: true);
+
   @override
   void onReady() {
     super.onReady();
@@ -34,10 +43,26 @@ class HomeController extends GetxController
 
   _initData() async {
     value = TestApi.getMusicList();
-    change(GetStatus.success(value));
-    if (music.value != null) {
-      displayMusicInfo.value = true;
+
+    // 获取最新音乐
+    List<CloudMusic> newSongsData = await CloudMusicApi.personalizedNewsong();
+    for (var newSong in newSongsData) {
+      newSongs.add(
+        Music()
+          ..author = newSong.author?.join(",") ?? ""
+          ..name = newSong.name
+          ..cover = newSong.cover!
+          ..source = newSong.source!,
+      );
     }
+
+    // 获取最新音乐
+    playList = await CloudMusicApi.playlist();
+
+    change(GetStatus.success(value));
+    // if (music.value != null) {
+    //   displayMusicInfo.value = true;
+    // }
   }
 
   @override
@@ -90,5 +115,41 @@ class HomeController extends GetxController
       }
     }
     return play;
+  }
+
+  void onTapPlayNewSong(Music newMusic) async {
+    PlayService playService = Get.find<PlayService>();
+    await playService.stop();
+    await playService.updatePlayList(newSongs, newSongs.indexOf(newMusic));
+    await playService.play();
+
+    /// 显示菜单
+    displayMusicInfo.value = true;
+  }
+
+  void onTapPlayListItem(CloudPlayList newMusic) async {
+    // 获取最新音乐
+    List<CloudMusic> newSongsData =
+        await CloudMusicApi.playListDetail(data: {"id": newMusic.id});
+    List<Music> songs = List.empty(growable: true);
+    for (var newSong in newSongsData) {
+      songs.add(
+        Music()
+          ..author = newSong.author?.join(",") ?? ""
+          ..name = newSong.name
+          ..cover = newSong.cover!
+          ..source = newSong.source,
+      );
+    }
+
+    PlayService playService = Get.find<PlayService>();
+    await playService.stop();
+    await playService.updatePlayList(songs, 0);
+    await playService.play();
+
+    music.value = songs.first;
+
+    /// 显示菜单
+    displayMusicInfo.value = true;
   }
 }

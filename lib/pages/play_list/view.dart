@@ -50,42 +50,53 @@ class PlayListPage extends GetView<PlayListController> {
       itemCount: data.length,
       itemBuilder: (context, index) {
         Music music = data[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 10,
-          ),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(
-                  imageUrl: music.cover,
-                  width: 46,
-                  height: 46,
-                  fit: BoxFit.fill,
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            controller.Play(index);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
+            ),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    imageUrl: music.cover,
+                    width: 46,
+                    height: 46,
+                    fit: BoxFit.fill,
+                    memCacheHeight: 100,
+                    memCacheWidth: 100,
+                  ),
                 ),
-              ),
-              15.horizontalSpace,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    music.name,
-                    style: theme.textTheme.bodyMedium!.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(.8),
-                    ),
+                15.horizontalSpace,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        music.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium!.copyWith(
+                          color: theme.colorScheme.onSurface.withOpacity(.8),
+                        ),
+                      ),
+                      Text(
+                        music.author ?? "",
+                        style: theme.textTheme.bodySmall!.copyWith(
+                          color: theme.colorScheme.onSurface.withOpacity(.6),
+                        ),
+                      ),
+                      4.verticalSpace,
+                    ],
                   ),
-                  Text(
-                    music.author,
-                    style: theme.textTheme.bodySmall!.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(.6),
-                    ),
-                  ),
-                  4.verticalSpace,
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },

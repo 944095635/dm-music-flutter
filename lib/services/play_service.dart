@@ -72,7 +72,8 @@ class PlayService extends GetxService {
       // Customise the shuffle algorithm
       shuffleOrder: DefaultShuffleOrder(),
       // Specify the playlist items
-      children: list.map((e) => AudioSource.uri(Uri.parse(e.source))).toList(),
+      children:
+          list.map((e) => AudioSource.uri(Uri.parse(e.source ?? ""))).toList(),
     );
 
     try {
@@ -98,9 +99,12 @@ class PlayService extends GetxService {
   Future<Duration?> playMusic(Music music) async {
     /// 不支持Windows版本
     //if (!Platform.isWindows) {
-    Duration? duration = await _player.setUrl(music.source);
-    _player.play();
-    return duration;
+    if (music.source != null) {
+      Duration? duration = await _player.setUrl(music.source!);
+      _player.play();
+      return duration;
+    }
+    return null;
     //}
   }
 
@@ -151,6 +155,8 @@ class PlayService extends GetxService {
     });
   }
 
+  /// 歌单监听
+
   /// 上一首
   void playPrevious() {
     _player.seekToPrevious();
@@ -174,5 +180,10 @@ class PlayService extends GetxService {
           Duration(seconds: (_player.duration!.inSeconds * percentage).toInt());
       _player.seek(position);
     }
+  }
+
+  void playPlayListIndex(int index) {
+    _player.seek(null, index: index);
+    _player.play();
   }
 }

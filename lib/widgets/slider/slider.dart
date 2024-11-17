@@ -1323,11 +1323,11 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
 
-      final Paint inactivePaint = Paint()
-        ..color = inactiveTrackColorTween.evaluate(_enableAnimation)!
-        ..strokeWidth = additionalActiveTrackHeight
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round;
+      // final Paint inactivePaint = Paint()
+      //   ..color = inactiveTrackColorTween.evaluate(_enableAnimation)!
+      //   ..strokeWidth = additionalActiveTrackHeight
+      //   ..style = PaintingStyle.stroke
+      //   ..strokeCap = StrokeCap.round;
 
       Path line = Path()
         ..moveTo(0, size.height)

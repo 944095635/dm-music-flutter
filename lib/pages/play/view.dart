@@ -94,11 +94,12 @@ class PlayPage extends GetView<PlayController> {
                   onTapPlay: controller.onTapPlay,
                   onTapPrevious: controller.onTapPrevious,
                   onTapNext: controller.onTapNext,
-                  onTapPlayList: () {
-                    showModalBottomSheet(
+                  onTapPlayList: () async {
+                   await  showModalBottomSheet(
                       context: Get.context!,
                       builder: (context) => const PlayListPage(),
                     );
+                    Get.delete<PlayListController>();
                   },
                 ),
                 20.verticalSpace,

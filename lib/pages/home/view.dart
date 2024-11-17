@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dm_music/api/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/extension/svg_picture_extensions.dart';
 import 'package:dm_music/index.dart';
 import 'package:dm_music/models/music.dart';
@@ -78,6 +79,7 @@ class HomePage extends GetView<HomeController> {
         ),
       ),
       body: Stack(
+        fit: StackFit.expand,
         children: [
           controller.obx(
             (data) => _buildBody(theme, data),
@@ -219,6 +221,8 @@ class HomePage extends GetView<HomeController> {
                     width: 46,
                     height: 46,
                     fit: BoxFit.fill,
+                    memCacheHeight: 150,
+                    memCacheWidth: 150,
                   ),
                 ),
                 20.horizontalSpace,
@@ -326,7 +330,19 @@ class HomePage extends GetView<HomeController> {
         //   ),
         // ),
         SliverToBoxAdapter(
-          child: 105.verticalSpace,
+          child: 85.verticalSpace,
+        ),
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 15,
+            ),
+            child: Text(
+              "热门歌曲",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -361,6 +377,8 @@ class HomePage extends GetView<HomeController> {
                         CachedNetworkImage(
                           imageUrl: music.cover,
                           fit: BoxFit.cover,
+                          memCacheHeight: 350,
+                          memCacheWidth: 350,
                         ),
                         Positioned(
                           left: 0,
@@ -389,7 +407,7 @@ class HomePage extends GetView<HomeController> {
                                       ),
                                     ),
                                     Text(
-                                      music.author,
+                                      music.author ?? "",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style:
@@ -412,6 +430,33 @@ class HomePage extends GetView<HomeController> {
             },
           ),
         ),
+
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 15,
+            ),
+            child: Text(
+              "新歌排行榜",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+        _buildNewSongs(),
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 15,
+            ),
+            child: Text(
+              "推荐歌单",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+        _buildPlayList(),
         SliverToBoxAdapter(
           child: 200.verticalSpace,
         ),
@@ -434,6 +479,8 @@ class HomePage extends GetView<HomeController> {
             width: 46,
             height: 46,
             fit: BoxFit.fill,
+            memCacheHeight: 150,
+            memCacheWidth: 150,
           ),
         ),
         15.horizontalSpace,
@@ -447,7 +494,7 @@ class HomePage extends GetView<HomeController> {
               ),
             ),
             Text(
-              controller.music.value!.author,
+              controller.music.value!.author ?? "",
               style: theme.textTheme.bodySmall!.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(.8),
               ),
@@ -468,6 +515,189 @@ class HomePage extends GetView<HomeController> {
           icon: HeartWidget(like: controller.music.value!.like.value),
         )
       ],
+    );
+  }
+
+  /// 新歌热榜
+  Widget _buildNewSongs() {
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 230,
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.newSongs.length,
+          itemBuilder: (context, index) {
+            Music music = controller.newSongs[index];
+            return _buildMusicNewSongItem(context, music);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return 10.horizontalSpace;
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMusicNewSongItem(BuildContext context, Music music) {
+    return AspectRatio(
+      aspectRatio: 3 / 3.8,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(11),
+          border: Border.all(
+            color: context.theme.colorScheme.surface,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              controller.onTapPlayNewSong(music);
+            },
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: music.cover,
+                  fit: BoxFit.cover,
+                  memCacheHeight: 350,
+                  memCacheWidth: 350,
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: BlurWidget(
+                    borderRadius: BorderRadius.zero,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color:
+                            context.theme.bottomSheetTheme.modalBackgroundColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              music.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                                  context.theme.textTheme.bodyMedium!.copyWith(
+                                color: context.theme.colorScheme.onSurface
+                                    .withOpacity(.8),
+                              ),
+                            ),
+                            Text(
+                              music.author ?? "",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                                  context.theme.textTheme.bodySmall!.copyWith(
+                                color: context.theme.colorScheme.onSurface
+                                    .withOpacity(.6),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 推荐歌单
+  Widget _buildPlayList() {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      sliver: SliverGrid.builder(
+        itemCount: controller.playList.length,
+        itemBuilder: (context, index) {
+          CloudPlayList music = controller.playList[index];
+          return _buildPlayListItem(context, music);
+        },
+        // ignore: prefer_const_constructors
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 3 / 5,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlayListItem(BuildContext context, CloudPlayList music) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          controller.onTapPlayListItem(music);
+        },
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CachedNetworkImage(
+              imageUrl: music.cover,
+              fit: BoxFit.cover,
+              memCacheHeight: 250,
+              memCacheWidth: 250,
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: BlurWidget(
+                borderRadius: BorderRadius.zero,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: context.theme.bottomSheetTheme.modalBackgroundColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          music.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.theme.textTheme.bodyMedium!.copyWith(
+                            fontSize: 12,
+                            color: context.theme.colorScheme.onSurface
+                                .withOpacity(.8),
+                          ),
+                        ),
+                        Text(
+                          "by " + (music.author ?? ""),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            fontSize: 12,
+                            color: context.theme.colorScheme.onSurface
+                                .withOpacity(.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
