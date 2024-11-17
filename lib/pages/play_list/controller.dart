@@ -20,7 +20,7 @@ class PlayListController extends GetxController with StateMixin<List<Music>?> {
     }
   }
 
-  void Play(int index) {
+  void playIndex(int index) {
     PlayService playService = Get.find<PlayService>();
     playService.playPlayListIndex(index);
   }
@@ -29,11 +29,4 @@ class PlayListController extends GetxController with StateMixin<List<Music>?> {
   // void onClose() {
   //   super.onClose();
   // }
-
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    super.onClose();
-    
-  }
 }

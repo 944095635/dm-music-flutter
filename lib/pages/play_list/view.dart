@@ -53,7 +53,7 @@ class PlayListPage extends GetView<PlayListController> {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            controller.Play(index);
+            controller.playIndex(index);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(

@@ -680,7 +680,7 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                         Text(
-                          "by " + (music.author ?? ""),
+                          "by ${music.author ?? ""}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: context.theme.textTheme.bodySmall!.copyWith(
