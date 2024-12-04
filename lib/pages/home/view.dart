@@ -34,8 +34,12 @@ class HomePage extends GetView<HomeController> {
       top: 20.radius,
     );
 
+    /// 底部安全区域
+    double bottom = MediaQuery.of(context).padding.bottom;
+
     // 底部容器整体高度
-    double bottomHeight = 180;
+    double bottomHeight = 180 + bottom;
+
     return Scaffold(
       key: controller.scaffoldKey,
       appBar: PreferredSize(
@@ -88,7 +92,7 @@ class HomePage extends GetView<HomeController> {
             alignment: Alignment.bottomCenter,
             child: Obx(
               () => SlideInUp(
-                from: bottomHeight,
+                from: bottomHeight + bottom,
                 animate: controller.displayMusicInfo.value,
                 child: SizedBox(
                   height: bottomHeight,
@@ -137,7 +141,7 @@ class HomePage extends GetView<HomeController> {
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomCurveWidget(
-              size: const Size.fromHeight(100),
+              size: Size.fromHeight(100 + bottom),
               backgroundColor: theme.scaffoldBackgroundColor,
             ),
           ),
@@ -155,7 +159,7 @@ class HomePage extends GetView<HomeController> {
           // ),
 
           Positioned(
-            bottom: 75,
+            bottom: 75 + bottom,
             left: 0,
             right: 0,
             child: Obx(
@@ -180,8 +184,10 @@ class HomePage extends GetView<HomeController> {
           ),
 
           // 控制组件
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: bottom,
             child: SizedBox(
               height: 80,
               // 控制条
@@ -335,7 +341,7 @@ class HomePage extends GetView<HomeController> {
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 8,
+              horizontal: 15,
               vertical: 15,
             ),
             child: Text(
@@ -434,7 +440,7 @@ class HomePage extends GetView<HomeController> {
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 8,
+              horizontal: 15,
               vertical: 15,
             ),
             child: Text(
@@ -447,7 +453,7 @@ class HomePage extends GetView<HomeController> {
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 8,
+              horizontal: 15,
               vertical: 15,
             ),
             child: Text(

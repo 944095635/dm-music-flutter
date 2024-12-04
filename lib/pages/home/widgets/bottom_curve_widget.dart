@@ -38,7 +38,7 @@ class BottomCurvePainter extends CustomPainter {
     debugPrint("重绘:底部背景-画刷");
 
     // 贝塞尔曲率
-    double bezier = size.height / 4;
+    double bezier = 25;
 
     /// 画笔
     // var backgroundPaint = Paint()
