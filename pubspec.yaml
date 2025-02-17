@@ -41,8 +41,9 @@ dependencies:
   encrypt: ^5.0.3
   crypto: ^3.0.6
   pointycastle: ^3.9.1
+  window_manager: ^0.4.3 # 桌面无边框窗口
   cached_network_image: ^3.4.1
-  just_audio: ^0.9.42
+  just_audio: ^0.9.46
   flutter_svg: ^2.0.11
   flutter_styled:
     #path: ../flutter_styled // 本地引用方式
@@ -66,8 +67,8 @@ flutter_launcher_icons:
     image_path: "path/to/image.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
-    generate: false
-    image_path: "path/to/image.png"
+    generate: true
+    image_path: "logo.png"
 
 dev_dependencies:
   flutter_test:

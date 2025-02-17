@@ -1,10 +1,31 @@
+import 'dart:io';
+
 import 'package:dm_music/pages/home/view.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    await windowManager.ensureInitialized();
+    WindowOptions windowOptions = const WindowOptions(
+      center: true,
+      skipTaskbar: false,
+      size: Size(375, 812),
+      minimumSize: Size(375, 812),
+      //titleBarStyle: TitleBarStyle.hidden,
+      backgroundColor: Colors.transparent,
+      windowButtonVisibility: false, //隐藏系统按钮 MacOS
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      // 无边框 await windowManager.setAsFrameless();
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
   Get.put(PlayService());
   runApp(const MyApp());
 }
