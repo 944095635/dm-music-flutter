@@ -35,6 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   get: ^4.7.2
+  animate_do: ^4.2.0  # 动画组件
+  flutter_svg: ^2.2.1 # svg图片支持
   just_audio: ^0.10.5 # 音频播放
   cached_network_image: ^3.4.1 # 图片缓存
 
@@ -62,8 +64,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/svgs/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -77,17 +80,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    # - family: Schyler
+    #   fonts:
+    #     - asset: fonts/Schyler-Regular.ttf
+    #     - asset: fonts/Schyler-Italic.ttf
+    #       style: italic
+    - family: MiSans
+      fonts:
+        - asset: fonts/MiSans-Normal.ttf
+          weight: 400
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

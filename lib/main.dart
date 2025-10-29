@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
   ThemeData _getLightTheme() {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: "MiSans",
       appBarTheme: const AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -54,8 +55,8 @@ class MyApp extends StatelessWidget {
         inverseSurface: Colors.black,
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(fontSize: 18),
-        bodyMedium: TextStyle(fontSize: 16),
+        bodyLarge: TextStyle(fontSize: 17),
+        bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
       ),
       //进度条风格
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
   ThemeData _getDarkTheme() {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: "MiSans",
       appBarTheme: const AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -130,8 +132,8 @@ class MyApp extends StatelessWidget {
         inverseSurface: Colors.white,
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(fontSize: 18),
-        bodyMedium: TextStyle(fontSize: 16),
+        bodyLarge: TextStyle(fontSize: 17),
+        bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
       ),
       //进度条风格
