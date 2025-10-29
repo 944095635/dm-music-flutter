@@ -46,6 +46,7 @@ class HomePage extends GetView<HomeLogic> {
             alignment: Alignment.bottomCenter,
             child: Obx(
               () => SlideInUp(
+                from: bottomBarHeight,
                 animate: controller.showBar.value,
                 child: SizedBox(
                   height: bottomHeight,
