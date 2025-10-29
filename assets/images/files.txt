@@ -1,1 +1,0 @@
-static const buttonPlayPng = 'assets/images/button_play.png';
