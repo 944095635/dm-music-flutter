@@ -2,6 +2,7 @@ import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_card.dart';
 import 'package:dm_music/pages/home/control/music_control.dart';
+import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +25,8 @@ class HomePage extends GetView<HomeLogic> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 0,
+        title: const Text('DM Music'),
+        flexibleSpace: BlurWidget(child: SizedBox.expand()),
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -50,8 +52,8 @@ class HomePage extends GetView<HomeLogic> {
       slivers: [
         SliverSafeArea(
           minimum: EdgeInsets.only(
-            left: 20,
-            right: 20,
+            left: 10,
+            right: 10,
             bottom: bottomHeight + 20,
           ),
           sliver: SliverGrid.builder(
