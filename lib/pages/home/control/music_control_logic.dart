@@ -90,6 +90,10 @@ class MusicControlLogic extends GetxController
       } else {
         slideController?.reverse();
         playButtonController.reverse();
+        // 暂停的时候 进度等于1，那么重置进度条为0
+        if (progress.value == 1) {
+          progress.value = 0;
+        }
       }
     });
 
