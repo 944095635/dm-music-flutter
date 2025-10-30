@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/services/play_service.dart';
+import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -76,7 +75,7 @@ class MusicControlLogic extends GetxController
 
     playService.listenMusicEvent((newMusic) {
       // 桌面平台显示控制组件
-      if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+      if (PlatformUtils.isDesktop) {
         slideController?.forward();
         playButtonController.forward();
       }
@@ -127,7 +126,7 @@ class MusicControlLogic extends GetxController
 
   /// 点击进度条
   onTapProgress(double progress) {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (PlatformUtils.isPhone) {
       if (!playService.playPosition(progress)) {
         this.progress.value = 0;
       }

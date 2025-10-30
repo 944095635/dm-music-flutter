@@ -29,7 +29,7 @@ class FramePage extends GetView<FrameLogic> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ThemeButton(),
+        ThemeButton(true),
 
         /// 最小化
         IconButton(

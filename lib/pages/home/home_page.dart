@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_card.dart';
 import 'package:dm_music/pages/home/control/music_control.dart';
+import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 /// 主页
@@ -34,7 +32,8 @@ class HomePage extends GetView<HomeLogic> {
     /// 进度条高度
     final double sliderHeight = 75 + bottomSafe;
 
-    bool isPC = Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+    /// 是否PC端
+    bool isPC = PlatformUtils.isDesktop;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +42,7 @@ class HomePage extends GetView<HomeLogic> {
         actions: isPC
             ? null
             : [
-                ThemeButton(),
+                ThemeButton(isPC),
                 10.horizontalSpace,
               ],
         flexibleSpace: BlurWidget(
@@ -64,9 +63,7 @@ class HomePage extends GetView<HomeLogic> {
             alignment: Alignment.bottomCenter,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: Platform.isAndroid || Platform.isIOS
-                    ? double.infinity
-                    : 500,
+                maxWidth: isPC ? 500 : double.infinity,
               ),
               child: MusicControl(
                 barHeight: barHeight,

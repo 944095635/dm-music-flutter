@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:dm_music/pages/home/control/music_control_logic.dart';
 import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
 import 'package:dm_music/pages/home/widgets/music_buttons.dart';
 import 'package:dm_music/pages/home/widgets/music_info_card.dart';
+import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,9 +42,7 @@ class MusicControl extends GetView<MusicControlLogic> {
             bottom: 0,
             height: barHeight,
             child: SlideInUp(
-              from: Platform.isWindows || Platform.isMacOS || Platform.isLinux
-                  ? curveHeight + 20
-                  : curveHeight,
+              from: PlatformUtils.isDesktop ? curveHeight + 20 : curveHeight,
               animate: controller.slideController?.isCompleted ?? false,
               controller: (slideController) {
                 controller.slideController = slideController;

@@ -3,12 +3,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ThemeButton extends StatelessWidget {
-  const ThemeButton({super.key});
+  const ThemeButton(this.isPC, {super.key});
+
+  final bool isPC;
 
   @override
   Widget build(BuildContext context) {
     /// 主题
     ThemeData theme = Theme.of(context);
+
+    double? iconSize = isPC ? 16 : null;
 
     return IconButton(
       onPressed: () {
@@ -20,8 +24,8 @@ class ThemeButton extends StatelessWidget {
       },
       icon: SvgPicture.asset(
         'assets/svgs/moon_bold.svg',
-        width: 16,
-        height: 16,
+        width: iconSize,
+        height: iconSize,
         colorFilter: ColorFilter.mode(
           theme.colorScheme.onSurface,
           BlendMode.srcIn,

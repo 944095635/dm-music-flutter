@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:dm_music/pages/frame/frame_page.dart';
 import 'package:dm_music/pages/home/home_page.dart';
 import 'package:dm_music/services/play_service.dart';
+import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,8 +24,7 @@ class _SplashPageState extends State<SplashPage> {
     // 放置服务
     Get.put(PlayService());
     await Future.delayed(Durations.extralong4);
-    bool isPC = Platform.isWindows || Platform.isMacOS || Platform.isLinux;
-    if (isPC) {
+    if (PlatformUtils.isDesktop) {
       Get.offAll(() => FramePage());
     } else {
       Get.offAll(() => HomePage());
