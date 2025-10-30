@@ -7,6 +7,9 @@ class HomeLogic extends GetxController with StateMixin<List<Music>> {
   /// 播放服务
   final PlayService playService = Get.find();
 
+  /// 最近播放列表
+  final List<Music> recentlyPlayed = List.empty(growable: true);
+
   @override
   void onInit() {
     super.onInit();
@@ -16,6 +19,7 @@ class HomeLogic extends GetxController with StateMixin<List<Music>> {
 
   void _initData() {
     value = TestApi.getMusicList();
+    recentlyPlayed.addAll(TestApi.getMusicList1());
     change(value, status: RxStatus.success());
   }
 

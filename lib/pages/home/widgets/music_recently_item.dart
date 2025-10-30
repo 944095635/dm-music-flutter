@@ -12,38 +12,50 @@ class MusicRecentlyItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: CachedNetworkImage(
-              fit: BoxFit.cover,
-              imageUrl: music.cover,
-              memCacheHeight: 350,
-              memCacheWidth: 350,
+    return SizedBox(
+      width: 155,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  memCacheHeight: 350,
+                  memCacheWidth: 350,
+                  imageUrl: music.cover,
+                ),
+              ),
             ),
           ),
-        ),
-        10.verticalSpace,
-        Text(
-          music.name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.bodyMedium!.copyWith(
-            color: theme.colorScheme.onSurface.withAlpha(160),
+          5.verticalSpace,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
+              music.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium!.copyWith(
+                color: theme.colorScheme.onSurface.withAlpha(200),
+              ),
+            ),
           ),
-        ),
-        Text(
-          music.author ?? "",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.bodySmall!.copyWith(
-            color: theme.colorScheme.onSurface.withAlpha(120),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
+              music.author ?? "",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall!.copyWith(
+                color: theme.colorScheme.onSurface.withAlpha(160),
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

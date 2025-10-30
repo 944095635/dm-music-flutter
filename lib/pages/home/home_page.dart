@@ -107,10 +107,10 @@ class HomePage extends GetView<HomeLogic> {
                 child: SizedBox(
                   height: 200,
                   child: ListView.separated(
-                    itemCount: list.length,
+                    itemCount: controller.recentlyPlayed.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      Music music = list[index];
+                      Music music = controller.recentlyPlayed[index];
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
