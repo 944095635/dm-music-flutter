@@ -77,6 +77,7 @@ class MyApp extends StatelessWidget {
         inverseSurface: Colors.black,
       ),
       textTheme: const TextTheme(
+        titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         bodyLarge: TextStyle(fontSize: 17),
         bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
@@ -154,6 +155,7 @@ class MyApp extends StatelessWidget {
         inverseSurface: Colors.white,
       ),
       textTheme: const TextTheme(
+        titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         bodyLarge: TextStyle(fontSize: 17),
         bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),

@@ -2,6 +2,7 @@ import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_card.dart';
 import 'package:dm_music/pages/home/control/music_control.dart';
+import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
@@ -37,7 +38,7 @@ class HomePage extends GetView<HomeLogic> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DMusic'),
+        title: const Text('DMUSIC'),
         centerTitle: false,
         actions: isPC
             ? null
@@ -83,34 +84,81 @@ class HomePage extends GetView<HomeLogic> {
       slivers: [
         SliverSafeArea(
           minimum: EdgeInsets.only(
-            bottom: bottomHeight,
+            left: 15,
+            right: 15,
+            bottom: bottomHeight + 20,
           ),
-          sliver: SliverPadding(
-            padding: const EdgeInsets.only(
-              top: 15,
-              left: 15,
-              right: 15,
-              bottom: 15,
-            ),
-            sliver: SliverGrid.builder(
-              itemCount: list.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: isPC ? 4 : 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.8,
+          sliver: SliverMainAxisGroup(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    "RECENTLY PLAYED",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
               ),
-              itemBuilder: (context, index) {
-                Music music = list[index];
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    controller.onTapMusic(music);
-                  },
-                  child: MusicCard(music),
-                );
-              },
-            ),
+
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 200,
+                  child: ListView.separated(
+                    itemCount: list.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      Music music = list[index];
+                      return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          controller.onTapMusic(music);
+                        },
+                        child: MusicRecentlyItem(music),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return 10.horizontalSpace;
+                    },
+                  ),
+                ),
+              ),
+
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    "NEW RELEASES",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+
+              SliverGrid.builder(
+                itemCount: list.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isPC ? 4 : 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                ),
+                itemBuilder: (context, index) {
+                  Music music = list[index];
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      controller.onTapMusic(music);
+                    },
+                    child: MusicCard(music),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ],

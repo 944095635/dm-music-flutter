@@ -79,8 +79,8 @@ class MusicControlLogic extends GetxController
         slideController?.forward();
         playButtonController.forward();
       }
-      progress.value = 0;
       music.value = newMusic;
+      progress.value = 0;
     });
 
     //监听播放状态变化
