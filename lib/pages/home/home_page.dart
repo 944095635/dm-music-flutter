@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_card.dart';
 import 'package:dm_music/pages/home/control/music_control.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
+import 'package:dm_music/widgets/theme_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
@@ -30,31 +34,18 @@ class HomePage extends GetView<HomeLogic> {
     /// 进度条高度
     final double sliderHeight = 75 + bottomSafe;
 
+    bool isPC = Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('DMusic'),
         centerTitle: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (Get.isDarkMode) {
-                Get.changeThemeMode(ThemeMode.light);
-              } else {
-                Get.changeThemeMode(ThemeMode.dark);
-              }
-            },
-            icon: SvgPicture.asset(
-              'assets/svgs/moon_bold.svg',
-              colorFilter: ColorFilter.mode(
-                theme.colorScheme.onSurface,
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-        ],
+        actions: isPC
+            ? null
+            : [
+                ThemeButton(),
+                10.horizontalSpace,
+              ],
         flexibleSpace: BlurWidget(
           child: SizedBox.expand(),
         ),
@@ -65,22 +56,32 @@ class HomePage extends GetView<HomeLogic> {
         fit: StackFit.expand,
         children: [
           controller.obx(
-            (state) => _buildBody(state!, barHeight),
+            (state) => _buildBody(state!, isPC, barHeight),
           ),
 
           /// 底部音乐控制组件
-          MusicControl(
-            barHeight: barHeight,
-            curveHeight: curveHeight,
-            sliderHeight: sliderHeight,
-            backgroundColor: theme.scaffoldBackgroundColor,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: Platform.isAndroid || Platform.isIOS
+                    ? double.infinity
+                    : 500,
+              ),
+              child: MusicControl(
+                barHeight: barHeight,
+                curveHeight: curveHeight,
+                sliderHeight: sliderHeight,
+                backgroundColor: theme.scaffoldBackgroundColor,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(List<Music> list, double bottomHeight) {
+  Widget _buildBody(List<Music> list, bool isPC, double bottomHeight) {
     return CustomScrollView(
       slivers: [
         SliverSafeArea(
@@ -97,10 +98,10 @@ class HomePage extends GetView<HomeLogic> {
             sliver: SliverGrid.builder(
               itemCount: list.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: isPC ? 4 : 2,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
-                childAspectRatio: 3 / 3.8,
+                childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.8,
               ),
               itemBuilder: (context, index) {
                 Music music = list[index];

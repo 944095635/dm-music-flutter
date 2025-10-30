@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/services/play_service.dart';
@@ -74,17 +75,22 @@ class MusicControlLogic extends GetxController
       ..duration = Durations.long2;
 
     playService.listenMusicEvent((newMusic) {
+      // 桌面平台显示控制组件
+      if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+        slideController?.forward();
+        playButtonController.forward();
+      }
       music.value = newMusic;
     });
 
     //监听播放状态变化
     subPlayerState = playService.listenPlayerState((state) {
       if (state.playing) {
-        playButtonController.forward();
         slideController?.forward();
+        playButtonController.forward();
       } else {
-        playButtonController.reverse();
         slideController?.reverse();
+        playButtonController.reverse();
       }
     });
 
@@ -121,8 +127,10 @@ class MusicControlLogic extends GetxController
 
   /// 点击进度条
   onTapProgress(double progress) {
-    if (!playService.playPosition(progress)) {
-      this.progress.value = 0;
+    if (Platform.isAndroid || Platform.isIOS) {
+      if (!playService.playPosition(progress)) {
+        this.progress.value = 0;
+      }
     }
   }
 }

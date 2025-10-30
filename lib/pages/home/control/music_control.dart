@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:dm_music/pages/home/control/music_control_logic.dart';
 import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
@@ -29,68 +31,73 @@ class MusicControl extends GetView<MusicControlLogic> {
   @override
   Widget build(BuildContext context) {
     Get.put(MusicControlLogic());
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        /// 音乐信息
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: barHeight,
-          child: SlideInUp(
-            from: curveHeight,
-            animate: controller.slideController?.isCompleted ?? false,
-            controller: (slideController) {
-              controller.slideController = slideController;
-            },
+    return SizedBox(
+      height: barHeight,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          /// 音乐信息
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: barHeight,
+            child: SlideInUp(
+              from: Platform.isWindows || Platform.isMacOS || Platform.isLinux
+                  ? curveHeight + 20
+                  : curveHeight,
+              animate: controller.slideController?.isCompleted ?? false,
+              controller: (slideController) {
+                controller.slideController = slideController;
+              },
+              child: Obx(
+                () => MusicInfoCard(controller.music.value),
+              ),
+            ),
+          ),
+
+          /// 底部黑色蒙版
+          BottomCurveWidget(
+            size: Size.fromHeight(curveHeight),
+            backgroundColor: backgroundColor,
+          ),
+
+          /// 音乐按钮
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: curveHeight,
+            child: MusicButtons(
+              controller: controller.playButtonController,
+              onTapPlay: controller.onTapPlay,
+            ),
+          ),
+
+          Positioned(
+            left: 0,
+            right: 0,
+            height: 25,
+            bottom: sliderHeight,
             child: Obx(
-              () => MusicInfoCard(controller.music.value),
+              () => DMSlider(
+                sliderType: SliderType.curve,
+                value: controller.progress.value,
+                onChangeStart: (value) {
+                  controller.isDragProgress = true;
+                },
+                onChanged: (value) {
+                  controller.progress.value = value;
+                },
+                onChangeEnd: (value) {
+                  controller.isDragProgress = false;
+                  controller.onTapProgress(value);
+                },
+              ),
             ),
           ),
-        ),
-
-        /// 底部黑色蒙版
-        BottomCurveWidget(
-          size: Size.fromHeight(curveHeight),
-          backgroundColor: backgroundColor,
-        ),
-
-        /// 音乐按钮
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: curveHeight,
-          child: MusicButtons(
-            controller: controller.playButtonController,
-            onTapPlay: controller.onTapPlay,
-          ),
-        ),
-
-        Positioned(
-          left: 0,
-          right: 0,
-          height: 25,
-          bottom: sliderHeight,
-          child: Obx(
-            () => DMSlider(
-              sliderType: SliderType.curve,
-              value: controller.progress.value,
-              onChangeStart: (value) {
-                controller.isDragProgress = true;
-              },
-              onChanged: (value) {
-                controller.progress.value = value;
-              },
-              onChangeEnd: (value) {
-                controller.isDragProgress = false;
-                controller.onTapProgress(value);
-              },
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
