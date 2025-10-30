@@ -5,7 +5,6 @@ class BottomCurveWidget extends StatelessWidget {
   const BottomCurveWidget({
     super.key,
     required this.size,
-    required this.child,
     required this.backgroundColor,
   });
 
@@ -15,19 +14,13 @@ class BottomCurveWidget extends StatelessWidget {
   /// 背景色
   final Color backgroundColor;
 
-  final Widget child;
-
   @override
   Widget build(BuildContext context) {
     debugPrint("重绘:底部背景");
     return RepaintBoundary(
       child: CustomPaint(
+        size: size,
         painter: BottomCurvePainter(backgroundColor),
-        child: SizedBox(
-          width: size.width,
-          height: size.height,
-          child: child,
-        ),
       ),
     );
   }

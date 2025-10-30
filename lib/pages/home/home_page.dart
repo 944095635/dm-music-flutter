@@ -1,10 +1,7 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
-import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
 import 'package:dm_music/pages/home/widgets/music_card.dart';
-import 'package:dm_music/pages/home/widgets/music_control.dart';
-import 'package:dm_music/pages/home/widgets/music_info_card.dart';
+import 'package:dm_music/pages/home/control/music_control.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,9 +19,6 @@ class HomePage extends GetView<HomeLogic> {
     /// 底部安全区域
     double bottomSafe = MediaQuery.of(context).padding.bottom;
 
-    /// 底部蒙版高度
-    final double bottomBarHeight = 100 + bottomSafe;
-
     // 底部容器整体高度
     double bottomHeight = 180 + bottomSafe;
 
@@ -41,32 +35,10 @@ class HomePage extends GetView<HomeLogic> {
             (state) => _buildBody(state!, bottomHeight),
           ),
 
-          /// 音乐信息
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Obx(
-              () => SlideInUp(
-                from: bottomBarHeight,
-                animate: controller.showBar.value,
-                child: SizedBox(
-                  height: bottomHeight,
-                  child: MusicInfoCard(controller.music.value),
-                ),
-              ),
-            ),
-          ),
-
-          /// 底部黑色蒙版
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: BottomCurveWidget(
-              size: Size.fromHeight(bottomBarHeight),
-              backgroundColor: theme.scaffoldBackgroundColor.withAlpha(50),
-              child: MusicControl(
-                controller: controller.playButtonController,
-                onTapPlay: controller.onTapPlayButton,
-              ),
-            ),
+          /// 底部音乐控制组件
+          MusicControl(
+            height: bottomHeight,
+            backgroundColor: theme.scaffoldBackgroundColor.withAlpha(50),
           ),
         ],
       ),
@@ -95,7 +67,7 @@ class HomePage extends GetView<HomeLogic> {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  controller.music.value = music;
+                  controller.onTapMusic(music);
                 },
                 child: MusicCard(music),
               );

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MusicControl extends StatelessWidget {
-  const MusicControl({
+/// 音乐控制按钮
+class MusicButtons extends StatelessWidget {
+  const MusicButtons({
     super.key,
     this.onTapPlay,
     this.onTapNext,

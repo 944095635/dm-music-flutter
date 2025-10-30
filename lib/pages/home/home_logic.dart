@@ -1,20 +1,15 @@
 import 'package:dm_music/apis/test_api.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:flutter/material.dart';
+import 'package:dm_music/services/play_service.dart';
 import 'package:get/get.dart';
 
-class HomeLogic extends GetxController
-    with StateMixin<List<Music>>, GetSingleTickerProviderStateMixin {
-  /// 播放按钮动画控制器
-  late AnimationController playButtonController;
+class HomeLogic extends GetxController with StateMixin<List<Music>> {
+  /// 播放服务
+  final PlayService playService = Get.find();
 
   @override
   void onInit() {
     super.onInit();
-
-    playButtonController = AnimationController(vsync: this)
-      ..duration = Durations.long2;
-
     value = List.empty(growable: true);
     _initData();
   }
@@ -24,22 +19,8 @@ class HomeLogic extends GetxController
     change(value, status: RxStatus.success());
   }
 
-  void onTapPlayButton() {
-    if (showBar.value) {
-      playButtonController.reverse();
-    } else {
-      playButtonController.forward();
-    }
-    showBar.value = !showBar.value;
+  /// 点击音乐卡片
+  void onTapMusic(Music music) {
+    playService.playMusic(music);
   }
-
-  RxBool showBar = false.obs;
-
-  final Rx<Music> music = Rx(
-    Music()
-      ..name = "Neon Tears"
-      ..author = "Antent"
-      ..source = "http://music.dmskin.com/music/Neon Tears by Antent.mp4"
-      ..cover = "http://music.dmskin.com/music/Neon Tears.jpg",
-  );
 }

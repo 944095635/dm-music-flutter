@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class MusicInfoCard extends StatelessWidget {
   const MusicInfoCard(this.music, {super.key});
 
-  final Music music;
+  final Music? music;
 
   @override
   Widget build(BuildContext context) {

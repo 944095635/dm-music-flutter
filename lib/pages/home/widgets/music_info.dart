@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 class MusicInfo extends StatelessWidget {
   const MusicInfo(this.music, {super.key});
 
-  final Music music;
+  final Music? music;
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,19 @@ class MusicInfo extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: CachedNetworkImage(
-            imageUrl: music.cover,
-            width: 46,
-            height: 46,
-            fit: BoxFit.fill,
-            memCacheHeight: 150,
-            memCacheWidth: 150,
-          ),
+          child: music != null
+              ? CachedNetworkImage(
+                  imageUrl: music!.cover,
+                  width: 48,
+                  height: 48,
+                  fit: BoxFit.fill,
+                  memCacheHeight: 150,
+                  memCacheWidth: 150,
+                )
+              : SizedBox(
+                  width: 48,
+                  height: 48,
+                ),
         ),
         Expanded(
           child: Column(
@@ -32,13 +37,13 @@ class MusicInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                music.name,
+                music?.name ?? "",
                 style: theme.textTheme.bodyMedium!.copyWith(
                   color: theme.colorScheme.onSurface,
                 ),
               ),
               Text(
-                music.author ?? "",
+                music?.author ?? "",
                 style: theme.textTheme.bodySmall!.copyWith(
                   color: theme.colorScheme.onSurface.withAlpha(160),
                 ),
