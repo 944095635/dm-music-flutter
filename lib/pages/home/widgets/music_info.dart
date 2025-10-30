@@ -64,7 +64,10 @@ class MusicInfo extends StatelessWidget {
           },
           icon: SvgPicture.asset(
             'assets/svgs/heart_bold.svg',
-            color: Colors.red,
+            colorFilter: ColorFilter.mode(
+              Colors.red,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ],

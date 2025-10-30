@@ -35,9 +35,12 @@ class MusicButtons extends StatelessWidget {
           onPressed: onTapPrevious,
           icon: SvgPicture.asset(
             'assets/svgs/skip_previous_bold.svg',
-            color: theme.colorScheme.onSurface,
             width: iconSize,
             height: iconSize,
+            colorFilter: ColorFilter.mode(
+              theme.colorScheme.onSurface,
+              BlendMode.srcIn,
+            ),
           ),
         ),
         //播放暂停
@@ -45,19 +48,16 @@ class MusicButtons extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: onTapPlay,
           child: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/button_play.png'),
-              ),
+              color: theme.colorScheme.onSurface,
             ),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: AnimatedIcon(
                 size: iconSize,
+                color: theme.colorScheme.primary,
                 icon: AnimatedIcons.play_pause,
-                color: Colors.black,
                 progress: controller ?? AlwaysStoppedAnimation(0),
               ),
             ),
@@ -68,9 +68,12 @@ class MusicButtons extends StatelessWidget {
           onPressed: onTapNext,
           icon: SvgPicture.asset(
             'assets/svgs/skip_next_bold.svg',
-            color: theme.colorScheme.onSurface,
             width: iconSize,
             height: iconSize,
+            colorFilter: ColorFilter.mode(
+              theme.colorScheme.onSurface,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ],

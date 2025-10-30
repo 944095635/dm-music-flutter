@@ -34,7 +34,9 @@ class MusicCard extends StatelessWidget {
                   sigmaY: 15,
                 ),
                 child: Container(
-                  color: theme.bottomSheetTheme.modalBackgroundColor,
+                  color: theme.bottomSheetTheme.modalBackgroundColor!.withAlpha(
+                    100,
+                  ),
                   padding: EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

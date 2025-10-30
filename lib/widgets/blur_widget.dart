@@ -23,7 +23,6 @@ class BlurWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return ClipRRect(
-      clipBehavior: Clip.antiAlias,
       borderRadius: radius,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),

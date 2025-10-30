@@ -1,7 +1,6 @@
 import 'dart:async';
-
-import 'package:dm_music/models/music.dart';
 import 'package:get/get.dart';
+import 'package:dm_music/models/music.dart';
 import 'package:just_audio/just_audio.dart';
 
 /// 播放服务
@@ -72,10 +71,58 @@ class PlayService extends GetxService {
     return musicStream.listen(onData);
   }
 
+  /// 播放歌曲变化监听
+  StreamSubscription listenMusicChange(Function(Music music) onData) {
+    return _player.currentIndexStream.listen((int? index) {
+      if (index != null) {
+        //&& _playList != null
+        onData(_currentMusic!);
+      }
+    });
+  }
+
   /// 监听播放状态变化
   StreamSubscription listenPlayerState(Function(PlayerState state) onData) {
     return _player.playerStateStream.listen((PlayerState state) {
       onData(state);
     });
+  }
+
+  /// 进度监听
+  StreamSubscription listenMusicPosition(
+    Function(Duration position, double progress) onData,
+  ) {
+    return _player.positionStream.listen((Duration newPosition) {
+      // 计算百分比
+      if (_player.playing && _player.duration != null) {
+        double progress =
+            newPosition.inMicroseconds / _player.duration!.inMicroseconds;
+        if (progress > 1) {
+          progress = 1;
+        }
+        onData(newPosition, progress);
+      }
+    });
+  }
+
+  /// 长度监听
+  StreamSubscription listenMusicDuration(Function(Duration position) onData) {
+    return _player.durationStream.listen((Duration? newDuration) {
+      if (newDuration != null) {
+        onData(newDuration);
+      }
+    });
+  }
+
+  /// 播放跳转进度
+  bool playPosition(double percentage) {
+    if (_player.playing && _player.duration != null) {
+      Duration position = Duration(
+        seconds: (_player.duration!.inSeconds * percentage).toInt(),
+      );
+      _player.seek(position);
+      return true;
+    }
+    return false;
   }
 }

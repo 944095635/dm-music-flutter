@@ -22,7 +22,8 @@ class MusicInfoCard extends StatelessWidget {
           BoxShadow(
             blurRadius: 5,
             //color: const Color.fromARGB(255, 255, 0, 0),
-            color: const Color.fromRGBO(60, 60, 60, 0.8),
+            //color: const Color.fromRGBO(60, 60, 60, 0.8),
+            color: theme.colorScheme.onSurface.withAlpha(30),
             blurStyle: BlurStyle.outer,
           ),
         ],
@@ -42,13 +43,13 @@ class MusicInfoCard extends StatelessWidget {
             ),
             alignment: Alignment.topCenter,
             decoration: BoxDecoration(
+              borderRadius: topBorderRadius,
               border: Border(
                 top: const BorderSide(
                   color: Color.fromRGBO(255, 255, 255, 0.5),
                 ),
               ),
               color: theme.bottomSheetTheme.modalBackgroundColor,
-              borderRadius: topBorderRadius,
             ),
             child: MusicInfo(music),
           ),
