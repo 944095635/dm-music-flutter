@@ -46,7 +46,7 @@ class MusicInfoCard extends StatelessWidget {
               borderRadius: topBorderRadius,
               border: Border(
                 top: const BorderSide(
-                  color: Color.fromRGBO(255, 255, 255, 0.5),
+                  color: Color.fromRGBO(255, 255, 255, 0.65),
                 ),
               ),
               color: theme.bottomSheetTheme.modalBackgroundColor,
