@@ -79,20 +79,22 @@ class MusicControl extends GetView<MusicControlLogic> {
             height: 25,
             bottom: sliderHeight,
             child: Obx(
-              () => DMSlider(
-                sliderType: SliderType.curve,
-                value: controller.progress.value,
-                onChangeStart: (value) {
-                  controller.isDragProgress = true;
-                },
-                onChanged: (value) {
-                  controller.progress.value = value;
-                },
-                onChangeEnd: (value) {
-                  controller.isDragProgress = false;
-                  controller.onTapProgress(value);
-                },
-              ),
+              () => controller.progress.value != 0
+                  ? DMSlider(
+                      sliderType: SliderType.curve,
+                      value: controller.progress.value,
+                      onChangeStart: (value) {
+                        controller.isDragProgress = true;
+                      },
+                      onChanged: (value) {
+                        controller.progress.value = value;
+                      },
+                      onChangeEnd: (value) {
+                        controller.isDragProgress = false;
+                        controller.onTapProgress(value);
+                      },
+                    )
+                  : SizedBox(),
             ),
           ),
         ],
