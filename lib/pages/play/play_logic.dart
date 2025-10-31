@@ -20,7 +20,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   bool isDragProgress = false;
 
   /// 当前歌曲播放进度
-  //final Rx<Duration> position1 = Rx(Duration.zero);
+  final Rx<Duration> position = Rx(Duration.zero);
 
   /// 当前歌曲长度
   final Rx<Duration> duration = Rx(Duration.zero);
@@ -118,7 +118,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
       double newProgress,
     ) {
       // 更新进度
-      //position.value = newPosition;
+      position.value = newPosition;
       // 拖拽进度条的时候不会更新到进度条上面
       if (!isDragProgress) {
         progress.value = newProgress;

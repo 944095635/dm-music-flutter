@@ -38,7 +38,7 @@ class DMSlider extends StatefulWidget {
     this.allowedInteraction,
     this.thumbRadius = 2,
     this.thumbActiveRadius = 4,
-    required this.bezier,
+    this.bezier = 0,
     this.sliderType = SliderType.line,
   }) : assert(min <= max),
        assert(

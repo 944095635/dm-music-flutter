@@ -164,7 +164,7 @@ class MusicControl extends GetView<PlayLogic> {
     );
   }
 
-  /// 歌曲信息 头像 + 名称 歌手 + 红心 Obx 监听刷新
+  /// 歌曲信息 头像 + 名称 歌手 + 红心 监听刷新
   Widget _buildInfo(ThemeData theme) {
     Music? music = controller.music.value;
     if (music == null) {

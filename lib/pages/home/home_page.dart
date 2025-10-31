@@ -3,7 +3,6 @@ import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_control.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
-import 'package:dm_music/pages/play/view.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
@@ -20,7 +19,7 @@ class HomePage extends GetView<HomeLogic> {
     Get.put(HomeLogic());
 
     /// 主题
-    ThemeData theme = Theme.of(context);
+    // ThemeData theme = Theme.of(context);
 
     /// 底部安全区域
     double bottomSafe = MediaQuery.of(context).padding.bottom;

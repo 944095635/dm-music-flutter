@@ -1,6 +1,6 @@
 import 'package:dm_music/apis/test_api.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/pages/play/view.dart';
+import 'package:dm_music/pages/play/play_page.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:get/get.dart';
 
