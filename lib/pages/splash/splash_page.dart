@@ -1,5 +1,6 @@
 import 'package:dm_music/pages/frame/frame_page.dart';
 import 'package:dm_music/pages/home/home_page.dart';
+import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class _SplashPageState extends State<SplashPage> {
   void init() async {
     // 放置服务
     Get.put(PlayService());
+    // 放置播放控制器
+    Get.lazyPut(() => PlayLogic());
     await Future.delayed(Durations.extralong4);
     if (PlatformUtils.isDesktop) {
       Get.offAll(() => FramePage());

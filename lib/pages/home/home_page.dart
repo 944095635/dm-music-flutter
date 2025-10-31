@@ -1,8 +1,9 @@
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
-import 'package:dm_music/pages/home/widgets/music_card.dart';
-import 'package:dm_music/pages/home/control/music_control.dart';
+import 'package:dm_music/pages/home/widgets/music_new_item.dart';
+import 'package:dm_music/pages/home/widgets/music_control.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
+import 'package:dm_music/pages/play/view.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
@@ -70,7 +71,7 @@ class HomePage extends GetView<HomeLogic> {
                 barHeight: barHeight,
                 curveHeight: curveHeight,
                 sliderHeight: sliderHeight,
-                backgroundColor: theme.scaffoldBackgroundColor,
+                onTapMusic: controller.onTapPlay,
               ),
             ),
           ),
@@ -154,7 +155,7 @@ class HomePage extends GetView<HomeLogic> {
                     onTap: () {
                       controller.onTapMusic(index);
                     },
-                    child: MusicCard(music),
+                    child: MusicNewItem(music),
                   );
                 },
               ),

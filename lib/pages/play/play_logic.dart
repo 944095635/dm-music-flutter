@@ -5,8 +5,8 @@ import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MusicControlLogic extends GetxController
-    with GetSingleTickerProviderStateMixin {
+/// 播放逻辑
+class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 播放服务
   final PlayService playService = Get.find();
 

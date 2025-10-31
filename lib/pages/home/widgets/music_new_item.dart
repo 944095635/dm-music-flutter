@@ -5,8 +5,8 @@ import 'package:dm_music/models/music.dart';
 import 'package:flutter/material.dart';
 
 /// 音乐卡片
-class MusicCard extends StatelessWidget {
-  const MusicCard(this.music, {super.key});
+class MusicNewItem extends StatelessWidget {
+  const MusicNewItem(this.music, {super.key});
 
   final Music music;
 
