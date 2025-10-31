@@ -4,7 +4,7 @@
 
 | 首页预览 | 播放页预览 |
 |----------|------------|
-| <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='160' > | <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image2.png" width='160' > |
+| <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' > | <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image2.png" width='360' > |
 
 
 |黑色主题|
