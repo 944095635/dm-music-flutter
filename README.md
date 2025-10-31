@@ -2,7 +2,7 @@
 
 ## Flutter 开发的音乐App程序
 
-|黑色主题|白色主题|
+|  首页   | 播放页  |
 | -------- | -------- | 
 |
 <img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' >
