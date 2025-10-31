@@ -76,11 +76,12 @@ class MusicControl extends GetView<MusicControlLogic> {
           Positioned(
             left: 0,
             right: 0,
-            height: 25,
+            height: 36,
             bottom: sliderHeight,
             child: Obx(
               () => controller.progress.value != 0
                   ? DMSlider(
+                      bezier: 16,
                       sliderType: SliderType.curve,
                       value: controller.progress.value,
                       onChangeStart: (value) {

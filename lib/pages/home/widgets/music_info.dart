@@ -39,12 +39,14 @@ class MusicInfo extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   music.author ?? "",
                   style: theme.textTheme.bodySmall!.copyWith(
+                    fontWeight: FontWeight.w500,
                     color: theme.colorScheme.onSurface.withAlpha(160),
                   ),
                 ),

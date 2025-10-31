@@ -38,6 +38,7 @@ class DMSlider extends StatefulWidget {
     this.allowedInteraction,
     this.thumbRadius = 2,
     this.thumbActiveRadius = 4,
+    required this.bezier,
     this.sliderType = SliderType.line,
   }) : assert(min <= max),
        assert(
@@ -88,6 +89,9 @@ class DMSlider extends StatefulWidget {
 
   /// 滑块的轨道类型
   final SliderType sliderType;
+
+  /// 贝塞尔曲率
+  final double bezier;
 
   /// 滑块颜色
   final Color? thumbColor;
@@ -557,6 +561,7 @@ class _SliderState extends State<DMSlider> with TickerProviderStateMixin {
             hasFocus: _focused,
             hovering: _hovering,
             allowedInteraction: effectiveAllowedInteraction,
+            bezier: widget.bezier,
             sliderType: widget.sliderType,
             thumbRadius: widget.thumbRadius,
             thumbActiveRadius: widget.thumbActiveRadius,
@@ -603,6 +608,7 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
     required this.hasFocus,
     required this.hovering,
     required this.allowedInteraction,
+    required this.bezier,
     required this.sliderType,
     required this.thumbRadius,
     required this.thumbActiveRadius,
@@ -623,6 +629,9 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
   final bool hasFocus;
   final bool hovering;
   final SliderInteraction allowedInteraction;
+
+  /// 贝塞尔曲线高度
+  final double bezier;
 
   /// 滑动轨道类型
   final SliderType sliderType;
@@ -654,6 +663,7 @@ class _SliderRenderObjectWidget extends LeafRenderObjectWidget {
       hovering: hovering,
       gestureSettings: MediaQuery.gestureSettingsOf(context),
       allowedInteraction: allowedInteraction,
+      bezier: bezier,
       sliderType: sliderType,
       thumbRadius: thumbRadius,
       thumbActiveRadius: thumbActiveRadius,
@@ -708,6 +718,7 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
     required DeviceGestureSettings gestureSettings,
     required SliderInteraction allowedInteraction,
     required SliderType sliderType,
+    required double bezier,
     required double thumbRadius,
     required double thumbActiveRadius,
   }) : assert(value >= 0.0 && value <= 1.0),
@@ -731,6 +742,7 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
        _hovering = hovering,
        _allowedInteraction = allowedInteraction,
        _sliderType = sliderType,
+       _bezier = bezier,
        _thumbRadius = thumbRadius,
        _thumbActiveRadius = thumbActiveRadius {
     _updateLabelPainter();
@@ -800,6 +812,9 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
   bool _active = false;
   double _currentDragValue = 0.0;
   Rect? overlayRect;
+
+  /// 贝塞尔曲线回弹高度
+  final double _bezier;
 
   /// 滑块轨道类型
   final SliderType? _sliderType;
@@ -1389,7 +1404,7 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
         ..moveTo(0, size.height)
         ..quadraticBezierTo(
           size.width / 2,
-          -size.height,
+          -_bezier,
           size.width,
           size.height,
         );
