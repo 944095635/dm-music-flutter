@@ -79,7 +79,7 @@ class MusicControl extends GetView<MusicControlLogic> {
             height: 36,
             bottom: sliderHeight,
             child: Obx(
-              () => controller.progress.value != 0
+              () => controller.music.value != null
                   ? DMSlider(
                       bezier: 16,
                       sliderType: SliderType.curve,
@@ -95,7 +95,7 @@ class MusicControl extends GetView<MusicControlLogic> {
                         controller.onTapProgress(value);
                       },
                     )
-                  : SizedBox(),
+                  : SizedBox.shrink(),
             ),
           ),
         ],
