@@ -2,15 +2,13 @@
 
 ## Flutter 开发的音乐App程序
 
-|黑色主题|
-| -------- | 
-|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' >|
-
-
-|白色主题|
-| -------- | 
-|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' >|
-
+|黑色主题|白色主题|
+| -------- | -------- | 
+|
+<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' >
+|
+<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image2.png" width='360' >
+|
 
 
 |黑色主题|
