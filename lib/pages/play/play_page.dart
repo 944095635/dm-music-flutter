@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dm_music/extension/duration_extensions.dart';
-import 'package:dm_music/pages/home/widgets/music_buttons.dart';
+import 'package:dm_music/pages/play/play_buttons.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:dm_music/widgets/theme_button.dart';
@@ -72,59 +72,59 @@ class PlayPage extends GetView<PlayLogic> {
           ),
 
           Positioned(
+            top: 120,
+            bottom: 80,
             left: 20,
             right: 20,
-            top: 80,
-            bottom: 80,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// 头像区域
                 Expanded(
                   child: Center(
                     child: Obx(
                       () => ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          memCacheWidth: 360,
                           imageUrl: controller.music.value!.cover,
-                          width: 125,
-                          height: 125,
-                          fit: BoxFit.fill,
-                          memCacheHeight: 150,
-                          memCacheWidth: 150,
                         ),
                       ),
                     ),
                   ),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Obx(
-                    () => _buildMusicTitle(theme),
-                  ),
-                ),
-                MusicButtons(
-                  controller: controller.playButtonController,
-                  onTapPlay: controller.onTapPlay,
-                  onTapNext: controller.onTapNext,
-                  onTapPrevious: controller.onTapPrevious,
-                ),
-                // PlayControl(
-                //   controller: controller.playController,
-                //   onTapPlay: controller.onTapPlay,
-                //   onTapPrevious: controller.onTapPrevious,
-                //   onTapNext: controller.onTapNext,
-                //   onTapPlayList: () async {
-                //     // await showModalBottomSheet(
-                //     //   context: Get.context!,
-                //     //   builder: (context) => const PlayListPage(),
-                //     // );
-                //     // Get.delete<PlayListController>();
-                //   },
-                // ),
-                20.verticalSpace,
-                Obx(
-                  () => _buildPlayInfo(textColor),
+                /// 底部信息区域
+                Column(
+                  spacing: 40,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Obx(
+                        () => _buildMusicTitle(theme),
+                      ),
+                    ),
+
+                    PlayButtons(
+                      controller: controller.playButtonController,
+                      onTapPlay: controller.onTapPlay,
+                      onTapNext: controller.onTapNext,
+                      onTapPrevious: controller.onTapPrevious,
+                      //   onTapPlayList: () async {
+                      //     // await showModalBottomSheet(
+                      //     //   context: Get.context!,
+                      //     //   builder: (context) => const PlayListPage(),
+                      //     // );
+                      //     // Get.delete<PlayListController>();
+                      //   },
+                    ),
+                    Obx(
+                      () => _buildPlayInfo(textColor),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -166,7 +166,7 @@ class PlayPage extends GetView<PlayLogic> {
   Widget _buildMusicTitle(ThemeData theme) {
     //debugPrint("_buildMusicTitle");
     return Column(
-      spacing: 4,
+      spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -192,6 +192,7 @@ class PlayPage extends GetView<PlayLogic> {
   Widget _buildPlayInfo(Color textColor) {
     //debugPrint("_buildPlayInfo");
     return Column(
+      spacing: 5,
       children: [
         _buildSlider(),
         Padding(
