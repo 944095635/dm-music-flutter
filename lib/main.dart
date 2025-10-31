@@ -27,6 +27,12 @@ void main() async {
   }
 
   runApp(const MyApp());
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => MyApp(), // Wrap your app
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -40,6 +46,7 @@ class MyApp extends StatelessWidget {
       darkTheme: _getDarkTheme(),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
+      // builder: DevicePreview.appBuilder,
       home: SplashPage(),
     );
   }

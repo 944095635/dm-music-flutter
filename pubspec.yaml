@@ -44,6 +44,7 @@ dependencies:
     #path: ../flutter_styled // 本地引用方式
     git: 
        url: https://github.com/DMSkin/flutter_styled.git
+  # device_preview: ^1.3.1 # 效果预览
 
 dev_dependencies:
   flutter_test:
