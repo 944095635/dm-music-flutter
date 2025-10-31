@@ -51,7 +51,7 @@ class MusicInfoCard extends StatelessWidget {
               ),
               color: theme.bottomSheetTheme.modalBackgroundColor,
             ),
-            child: MusicInfo(music),
+            child: music != null ? MusicInfo(music!) : null,
           ),
         ),
       ),

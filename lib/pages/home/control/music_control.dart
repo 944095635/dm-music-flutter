@@ -68,6 +68,8 @@ class MusicControl extends GetView<MusicControlLogic> {
             child: MusicButtons(
               controller: controller.playButtonController,
               onTapPlay: controller.onTapPlay,
+              onTapNext: controller.onTapNext,
+              onTapPrevious: controller.onTapPrevious,
             ),
           ),
 

@@ -121,6 +121,55 @@ class TestApi {
         ..cover = "http://music.dmskin.com/music/xiangrikui.jpg",
     );
 
+    // 增加测试音频
+    musics.add(
+      Music()
+        ..name = "When You (Lukas Termena's Balearic Remix)"
+        ..author = "The Madison"
+        ..source = "http://music.dmskin.com/music/wy.flac"
+        ..cover = "http://music.dmskin.com/music/wy.jpg",
+    );
+
+    musics.add(
+      Music()
+        ..name = "Everyday（Remix）"
+        ..author = "KRIK"
+        ..source = "http://music.dmskin.com/music/eyd.mp3"
+        ..cover = "http://music.dmskin.com/music/eyd.jpg",
+    );
+
+    musics.add(
+      Music()
+        ..name = "Stuck On Replay (Radio Edit)"
+        ..author = "Scooter"
+        ..source = "http://music.dmskin.com/music/sor.mp3"
+        ..cover = "http://music.dmskin.com/music/ss.jpg",
+    );
+
+    musics.add(
+      Music()
+        ..name = "光年之外"
+        ..author = "邓紫棋"
+        ..source = "http://music.dmskin.com/music/gnzw.mp3"
+        ..cover = "http://music.dmskin.com/music/gnzw.jpg",
+    );
+
+    musics.add(
+      Music()
+        ..name = "是一场烟火"
+        ..author = "胡彦斌"
+        ..source = "http://music.dmskin.com/music/sycyh.flac"
+        ..cover = "http://music.dmskin.com/music/sycyh.jpg",
+    );
+
+    musics.add(
+      Music()
+        ..name = "你若是风"
+        ..author = "胡彦斌"
+        ..source = "http://music.dmskin.com/music/nrsf.flac"
+        ..cover = "http://music.dmskin.com/music/sycyh.jpg",
+    );
+
     musics.add(
       Music()
         ..name = "牛郎织女"

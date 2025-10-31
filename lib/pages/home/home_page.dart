@@ -114,7 +114,7 @@ class HomePage extends GetView<HomeLogic> {
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          controller.onTapMusic(music);
+                          controller.onTapRecentlyMusic(index);
                         },
                         child: MusicRecentlyItem(music),
                       );
@@ -152,7 +152,7 @@ class HomePage extends GetView<HomeLogic> {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      controller.onTapMusic(music);
+                      controller.onTapMusic(index);
                     },
                     child: MusicCard(music),
                   );

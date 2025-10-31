@@ -50,7 +50,6 @@ class MusicControlLogic extends GetxController
     music.close();
     //取消订阅
     subPlayerState?.cancel();
-    subMusicChange?.cancel();
     subMusicPosition?.cancel();
     subMusicDuration?.cancel();
 
@@ -73,36 +72,44 @@ class MusicControlLogic extends GetxController
     playButtonController = AnimationController(vsync: this)
       ..duration = Durations.long2;
 
-    playService.listenMusicEvent((newMusic) {
+    //监听歌曲变化
+    subMusicChange = playService.listenMusicChange((newMusic) {
       // 桌面平台显示控制组件
       if (PlatformUtils.isDesktop) {
         slideController?.forward();
         playButtonController.forward();
       }
       music.value = newMusic;
-      progress.value = 0;
+      debugPrint("歌曲切换回调:${newMusic.name}");
     });
 
     //监听播放状态变化
     subPlayerState = playService.listenPlayerState((state) {
+      // switch (state.processingState) {
+      //   case ProcessingState.idle:
+      //     debugPrint("歌曲状态回调:idle");
+      //     break;
+      //   case ProcessingState.loading:
+      //     debugPrint("歌曲状态回调:loading");
+      //     break;
+      //   case ProcessingState.buffering:
+      //     debugPrint("歌曲状态回调:buffering");
+      //     break;
+      //   case ProcessingState.ready:
+      //     debugPrint("歌曲状态回调:ready");
+      //     break;
+      //   case ProcessingState.completed:
+      //     debugPrint("歌曲状态回调:completed");
+      //     break;
+      // }
+
       if (state.playing) {
         slideController?.forward();
         playButtonController.forward();
       } else {
         slideController?.reverse();
         playButtonController.reverse();
-        // 暂停的时候 进度等于1，那么重置进度条为0
-        if (progress.value == 1) {
-          progress.value = 0;
-        }
       }
-    });
-
-    //监听歌曲变化
-    subMusicChange = playService.listenMusicChange((newMusic) {
-      /// 更新歌曲
-      //music.value = newMusic;
-      debugPrint("播放歌曲变化:${newMusic.name}");
     });
 
     //监听进度变化
@@ -115,6 +122,7 @@ class MusicControlLogic extends GetxController
       // 拖拽进度条的时候不会更新到进度条上面
       if (!isDragProgress) {
         progress.value = newProgress;
+        //debugPrint("歌曲进度回调:$newProgress");
       }
     });
 
@@ -136,5 +144,15 @@ class MusicControlLogic extends GetxController
         this.progress.value = 0;
       }
     }
+  }
+
+  /// 点击上一首按钮
+  void onTapPrevious() {
+    playService.playPrevious();
+  }
+
+  /// 点击下一首按钮
+  void onTapNext() {
+    playService.playNext();
   }
 }

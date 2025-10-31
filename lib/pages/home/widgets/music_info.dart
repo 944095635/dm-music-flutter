@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 class MusicInfo extends StatelessWidget {
   const MusicInfo(this.music, {super.key});
 
-  final Music? music;
+  final Music music;
 
   @override
   Widget build(BuildContext context) {
@@ -17,33 +17,31 @@ class MusicInfo extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: music != null
-              ? CachedNetworkImage(
-                  imageUrl: music!.cover,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.fill,
-                  memCacheHeight: 150,
-                  memCacheWidth: 150,
-                )
-              : SizedBox(
-                  width: 48,
-                  height: 48,
-                ),
+          child: CachedNetworkImage(
+            imageUrl: music.cover,
+            width: 48,
+            height: 48,
+            fit: BoxFit.fill,
+            memCacheHeight: 150,
+            memCacheWidth: 150,
+          ),
         ),
         Expanded(
           child: Column(
+            spacing: 4,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                music?.name ?? "",
+                music.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyMedium!.copyWith(
                   color: theme.colorScheme.onSurface,
                 ),
               ),
               Text(
-                music?.author ?? "",
+                music.author ?? "",
                 style: theme.textTheme.bodySmall!.copyWith(
                   color: theme.colorScheme.onSurface.withAlpha(160),
                 ),
@@ -61,6 +59,7 @@ class MusicInfo extends StatelessWidget {
             //     !controller.music.value!.like.value;
             // static const heartBoldSvg = 'assets/svgs/heart_bold.svg';
             // static const heartLineSvg = 'assets/svgs/heart_line.svg';
+            music.like.value = music.like.value;
           },
           icon: SvgPicture.asset(
             'assets/svgs/heart_bold.svg',

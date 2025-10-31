@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dm_music/utils/platform_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:just_audio/just_audio.dart';
@@ -13,21 +14,14 @@ class PlayService extends GetxService {
   Music? _currentMusic;
   Music? get currentMusic => _currentMusic;
 
-  /// 播放歌曲变化的流
-  final StreamController<Music?> musicStreamController =
-      StreamController<Music?>.broadcast();
+  /// 播放列表
+  List<Music>? _playList;
 
-  Stream<Music?> get musicStream => musicStreamController.stream;
-
-  /// 更新当前播放音乐
-  void updateMusic(Music? newMusic) {
-    _currentMusic = newMusic;
-    musicStreamController.add(_currentMusic);
-  }
+  /// 播放序号
+  int _currentIndex = -1;
 
   @override
   void onClose() {
-    musicStreamController.close();
     _player.stop();
     _player.dispose();
     super.onClose();
@@ -46,6 +40,11 @@ class PlayService extends GetxService {
     // });
   }
 
+  /// 播放
+  void play() {
+    _player.play();
+  }
+
   /// 播放或者暂停
   bool playOrPause() {
     if (_currentMusic == null) {
@@ -61,25 +60,23 @@ class PlayService extends GetxService {
   }
 
   /// 播放音乐
-  void playMusic(Music music) {
-    updateMusic(music);
+  void playMusic(Music newMusic) {
     if (PlatformUtils.isPhone) {
-      _player.setUrl(music.source!);
+      _player.setUrl(newMusic.source!);
       _player.play();
     }
   }
 
-  /// 监听播放歌曲变化
-  StreamSubscription listenMusicEvent(void Function(Music?)? onData) {
-    return musicStream.listen(onData);
-  }
-
   /// 播放歌曲变化监听
   StreamSubscription listenMusicChange(Function(Music music) onData) {
-    return _player.currentIndexStream.listen((int? index) {
-      if (index != null) {
-        //&& _playList != null
-        onData(_currentMusic!);
+    return _player.sequenceStateStream.listen((SequenceState? sequenceState) {
+      if (sequenceState != null &&
+          sequenceState.currentIndex != _currentIndex) {
+        _currentIndex = sequenceState.currentIndex ?? -1;
+        _currentMusic = _playList?[_currentIndex];
+        if (_currentMusic != null) {
+          onData(_currentMusic!);
+        }
       }
     });
   }
@@ -100,8 +97,13 @@ class PlayService extends GetxService {
       if (_player.playing && _player.duration != null) {
         double progress =
             newPosition.inMicroseconds / _player.duration!.inMicroseconds;
+        // debugPrint("歌曲进度回调1:$progress");
         if (progress > 1) {
           progress = 1;
+        } else if (progress < 0) {
+          progress = 0;
+        } else if (progress.isNaN) {
+          progress = 0;
         }
         onData(newPosition, progress);
       }
@@ -127,5 +129,39 @@ class PlayService extends GetxService {
       return true;
     }
     return false;
+  }
+
+  /// 设置播放列表
+  void setPlaylist(List<Music> list, {int index = 0}) async {
+    _currentIndex = -1;
+    _playList = list;
+    try {
+      //_player.stop();
+      await _player.setAudioSources(
+        list
+            .map((e) => AudioSource.uri(Uri.parse(e.source ?? ""), tag: e.name))
+            .toList(),
+        initialIndex: index,
+      );
+      _player.play();
+    } catch (e) {
+      debugPrint("设置播放列表失败,error:$e");
+    }
+  }
+
+  /// 播放上一首
+  void playPrevious() {
+    _player.seekToPrevious();
+    if (!_player.playing) {
+      _player.play();
+    }
+  }
+
+  /// 播放下一首
+  void playNext() {
+    _player.seekToNext();
+    if (!_player.playing) {
+      _player.play();
+    }
   }
 }
