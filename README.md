@@ -4,12 +4,12 @@
 
 |黑色主题|
 | -------- | 
-|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" >|
+|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' >|
 
 
 |白色主题|
 | -------- | 
-|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" >|
+|<img src="https://raw.githubusercontent.com/944095635/dm-music-flutter/master/preview/image1.png" width='360' >|
 
 
 
