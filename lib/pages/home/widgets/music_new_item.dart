@@ -1,14 +1,22 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dm_music/models/music.dart';
 import 'package:flutter/material.dart';
 
 /// 音乐卡片
 class MusicNewItem extends StatelessWidget {
-  const MusicNewItem(this.music, {super.key});
+  const MusicNewItem({
+    super.key,
+    required this.music,
+    required this.author,
+    required this.cover,
+  });
 
-  final Music music;
+  final String music;
+
+  final String author;
+
+  final String cover;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class MusicNewItem extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           CachedNetworkImage(
-            imageUrl: music.cover,
+            imageUrl: cover,
             fit: BoxFit.cover,
             memCacheHeight: 350,
             memCacheWidth: 350,
@@ -43,7 +51,7 @@ class MusicNewItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        music.name,
+                        music,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodyMedium!.copyWith(
@@ -51,7 +59,7 @@ class MusicNewItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        music.author ?? "",
+                        author,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodySmall!.copyWith(

@@ -1,3 +1,4 @@
+import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_new_item.dart';
@@ -97,7 +98,7 @@ class HomePage extends GetView<HomeLogic> {
                     Dimensions.pagePadding,
                   ),
                   child: Text(
-                    "RECENTLY PLAYED",
+                    "NEW RELEASES",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
@@ -138,7 +139,7 @@ class HomePage extends GetView<HomeLogic> {
                     Dimensions.pagePadding,
                   ),
                   child: Text(
-                    "NEW RELEASES",
+                    "RECENTLY PLAYED",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
@@ -166,7 +167,55 @@ class HomePage extends GetView<HomeLogic> {
                       onTap: () {
                         controller.onTapMusic(index);
                       },
-                      child: MusicNewItem(music),
+                      child: MusicNewItem(
+                        music: music.name,
+                        cover: music.cover,
+                        author: music.author ?? "",
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    Dimensions.pagePadding,
+                  ),
+                  child: Text(
+                    "PLAY LISTED",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.pagePadding,
+                ),
+                sliver: SliverGrid.builder(
+                  itemCount: controller.playList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: isPC ? 4 : 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                  ),
+                  itemBuilder: (context, index) {
+                    CloudPlayList music = controller.playList[index];
+                    return GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        controller.onTapPlayListItem(music);
+                      },
+                      child: MusicNewItem(
+                        music: music.name,
+                        cover: music.cover,
+                        author: music.author ?? "",
+                      ),
                     );
                   },
                 ),
