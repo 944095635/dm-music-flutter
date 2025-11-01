@@ -19,11 +19,11 @@ class PlayPage extends GetView<PlayLogic> {
     ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: theme.colorScheme.onSurface,
-        systemOverlayStyle: theme.appBarTheme.systemOverlayStyle!.copyWith(
-          //systemNavigationBarColor: theme.colorScheme.inverseSurface,
-          statusBarIconBrightness: Brightness.light,
-        ),
+        // foregroundColor: theme.colorScheme.onSurface,
+        // systemOverlayStyle: theme.appBarTheme.systemOverlayStyle!.copyWith(
+        //   //systemNavigationBarColor: theme.colorScheme.inverseSurface,
+        //   statusBarIconBrightness: Brightness.light,
+        // ),
         actions: [
           ThemeButton(false),
           10.horizontalSpace,
@@ -45,60 +45,74 @@ class PlayPage extends GetView<PlayLogic> {
         fit: StackFit.expand,
         children: [
           /// 刷新监听 - 背景图
-          Obx(
-            () => _buildBackImage(),
-          ),
+          // Obx(
+          //   () => _buildBackImage(),
+          // ),
 
-          if (Get.isDarkMode) ...{
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.black54,
+          // if (Get.isDarkMode) ...{
+          //   DecoratedBox(
+          //     decoration: BoxDecoration(
+          //       color: Colors.black54,
+          //     ),
+          //   ),
+          // },
+          Positioned(
+            top: 200,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Obx(
+                () => CachedNetworkImage(
+                  imageUrl: controller.music.value!.cover,
+                  width: 240,
+                  height: 240,
+                  memCacheHeight: 20,
+                  memCacheWidth: 20,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-          },
+          ),
 
           ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(
-                sigmaX: 140,
-                sigmaY: 140,
+                sigmaX: 150,
+                sigmaY: 150,
               ),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: theme.bottomSheetTheme.modalBackgroundColor,
+              child: SizedBox.expand(),
+            ),
+          ),
+
+          Positioned(
+            top: 220,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Obx(
+                () => ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: CachedNetworkImage(
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    memCacheWidth: 360,
+                    imageUrl: controller.music.value!.cover,
+                  ),
                 ),
               ),
             ),
           ),
 
           Positioned(
-            top: 120,
-            bottom: 80,
             left: 20,
             right: 20,
+            bottom: 80,
             child: Column(
               children: [
-                /// 头像区域
-                Expanded(
-                  child: Center(
-                    child: Obx(
-                      () => ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                          memCacheWidth: 360,
-                          imageUrl: controller.music.value!.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
                 /// 底部信息区域
                 Column(
-                  spacing: 40,
+                  spacing: 30,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
@@ -109,10 +123,10 @@ class PlayPage extends GetView<PlayLogic> {
                     ),
 
                     PlayButtons(
-                      controller: controller.playButtonController,
                       onTapPlay: controller.onTapPlay,
                       onTapNext: controller.onTapNext,
                       onTapPrevious: controller.onTapPrevious,
+                      controller: controller.playButtonController,
                       //   onTapPlayList: () async {
                       //     // await showModalBottomSheet(
                       //     //   context: Get.context!,
@@ -121,6 +135,7 @@ class PlayPage extends GetView<PlayLogic> {
                       //     // Get.delete<PlayListController>();
                       //   },
                     ),
+
                     Obx(
                       () => _buildPlayInfo(textColor),
                     ),
@@ -166,7 +181,7 @@ class PlayPage extends GetView<PlayLogic> {
   Widget _buildMusicTitle(ThemeData theme) {
     //debugPrint("_buildMusicTitle");
     return Column(
-      spacing: 10,
+      spacing: 5,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -196,7 +211,7 @@ class PlayPage extends GetView<PlayLogic> {
       children: [
         _buildSlider(),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dm_music/pages/splash/splash_page.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
       darkTheme: _getDarkTheme(),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
+      defaultTransition: Platform.isAndroid ? Transition.rightToLeft : null,
       // builder: DevicePreview.appBuilder,
       home: SplashPage(),
     );
