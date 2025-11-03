@@ -52,6 +52,8 @@ class Request {
         scheme: "https",
       );
       HttpClient client = HttpClient();
+      client.connectionTimeout = const Duration(seconds: 15);
+      client.idleTimeout = const Duration(seconds: 15);
       HttpClientRequest request = await client.postUrl(uri);
       request.headers.set(
         "User-Agent",

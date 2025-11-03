@@ -58,7 +58,7 @@ class HomePage extends GetView<HomeLogic> {
         fit: StackFit.expand,
         children: [
           controller.obx(
-            (state) => _buildBody(state!, isPC, barHeight),
+            (state) => _buildBody(isPC, barHeight),
           ),
 
           /// 底部音乐控制组件
@@ -81,7 +81,7 @@ class HomePage extends GetView<HomeLogic> {
     );
   }
 
-  Widget _buildBody(List<Music> list, bool isPC, double bottomHeight) {
+  Widget _buildBody(bool isPC, double bottomHeight) {
     return CustomScrollView(
       slivers: [
         SliverSafeArea(
@@ -92,46 +92,48 @@ class HomePage extends GetView<HomeLogic> {
           ),
           sliver: SliverMainAxisGroup(
             slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    Dimensions.pagePadding,
-                  ),
-                  child: Text(
-                    "NEW RELEASES",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+              if (controller.newReleases.isNotEmpty) ...{
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      Dimensions.pagePadding,
+                    ),
+                    child: Text(
+                      "NEW RELEASES",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 200,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.pagePadding,
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 200,
+                    child: ListView.separated(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.pagePadding,
+                      ),
+                      itemCount: controller.newReleases.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        Music music = controller.newReleases[index];
+                        return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            controller.onTapRecentlyMusic(index);
+                          },
+                          child: MusicRecentlyItem(music),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return 10.horizontalSpace;
+                      },
                     ),
-                    itemCount: controller.recentlyPlayed.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      Music music = controller.recentlyPlayed[index];
-                      return GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          controller.onTapRecentlyMusic(index);
-                        },
-                        child: MusicRecentlyItem(music),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return 10.horizontalSpace;
-                    },
                   ),
                 ),
-              ),
+              },
 
               SliverToBoxAdapter(
                 child: Padding(
@@ -153,7 +155,7 @@ class HomePage extends GetView<HomeLogic> {
                   horizontal: Dimensions.pagePadding,
                 ),
                 sliver: SliverGrid.builder(
-                  itemCount: list.length,
+                  itemCount: controller.songs.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: isPC ? 4 : 2,
                     mainAxisSpacing: 10,
@@ -161,7 +163,7 @@ class HomePage extends GetView<HomeLogic> {
                     childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
                   ),
                   itemBuilder: (context, index) {
-                    Music music = list[index];
+                    Music music = controller.songs[index];
                     return GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
@@ -177,49 +179,51 @@ class HomePage extends GetView<HomeLogic> {
                 ),
               ),
 
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    Dimensions.pagePadding,
-                  ),
-                  child: Text(
-                    "PLAY LISTED",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+              if (controller.playList.isNotEmpty) ...{
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      Dimensions.pagePadding,
+                    ),
+                    child: Text(
+                      "PLAY LISTED",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Dimensions.pagePadding,
-                ),
-                sliver: SliverGrid.builder(
-                  itemCount: controller.playList.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isPC ? 4 : 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Dimensions.pagePadding,
                   ),
-                  itemBuilder: (context, index) {
-                    CloudPlayList music = controller.playList[index];
-                    return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        controller.onTapPlayListItem(music);
-                      },
-                      child: MusicNewItem(
-                        music: music.name,
-                        cover: music.cover,
-                        author: music.author ?? "",
-                      ),
-                    );
-                  },
+                  sliver: SliverGrid.builder(
+                    itemCount: controller.playList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isPC ? 4 : 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                    ),
+                    itemBuilder: (context, index) {
+                      CloudPlayList music = controller.playList[index];
+                      return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          controller.onTapPlayListItem(music);
+                        },
+                        child: MusicNewItem(
+                          music: music.name,
+                          cover: music.cover,
+                          author: music.author ?? "",
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
+              },
             ],
           ),
         ),

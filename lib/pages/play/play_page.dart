@@ -150,14 +150,14 @@ class PlayPage extends GetView<PlayLogic> {
   }
 
   /// 背景图
-  Widget _buildBackImage() {
-    return controller.music.value != null
-        ? CachedNetworkImage(
-            imageUrl: controller.music.value!.cover,
-            fit: BoxFit.cover,
-          )
-        : const SizedBox.shrink();
-  }
+  // Widget _buildBackImage() {
+  //   return controller.music.value != null
+  //       ? CachedNetworkImage(
+  //           imageUrl: controller.music.value!.cover,
+  //           fit: BoxFit.cover,
+  //         )
+  //       : const SizedBox.shrink();
+  // }
 
   /// 进度条
   Widget _buildSlider() {
