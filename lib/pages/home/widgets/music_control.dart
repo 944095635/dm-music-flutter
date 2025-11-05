@@ -2,10 +2,9 @@ import 'dart:ui';
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
+import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_buttons.dart';
-import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,71 +14,87 @@ import 'package:get/get.dart';
 class MusicControl extends GetView<PlayLogic> {
   const MusicControl({
     super.key,
-    required this.onTapMusic,
     required this.barHeight,
-    required this.curveHeight,
-    required this.sliderHeight,
+    required this.onTapMusic,
+    required this.barSafeHeight,
+    required this.bottomSafeHeight,
   });
 
+  /// 底部安全区域高度
+  final double bottomSafeHeight;
+
+  /// 底部容器总高度
   final double barHeight;
 
-  final double curveHeight;
-
-  final double sliderHeight;
+  /// 底部附带安全高度的总高度
+  final double barSafeHeight;
 
   final VoidCallback onTapMusic;
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
+
+    /// 弧形区域高度
+    final double curveHeight = 100 + bottomSafeHeight;
+
     return SizedBox(
-      height: barHeight,
+      height: barSafeHeight,
       child: Stack(
-        alignment: Alignment.bottomCenter,
+        fit: StackFit.expand,
         children: [
           /// 音乐信息
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: barHeight,
-            child: SlideInUp(
-              from: PlatformUtils.isDesktop ? curveHeight + 20 : curveHeight,
-              animate: controller.slideController?.isCompleted ?? false,
-              controller: (slideController) {
-                controller.slideController = slideController;
-              },
-              child: _buildCard(theme),
+          SlideInUp(
+            from: 105,
+            animate: controller.slideController?.isCompleted ?? false,
+            controller: (slideController) {
+              controller.slideController = slideController;
+            },
+            child: _buildCard(theme),
+          ),
+
+          //底部黑色蒙版
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BottomCurveWidget(
+              size: Size.fromHeight(curveHeight),
+              backgroundColor: theme.scaffoldBackgroundColor,
             ),
           ),
 
-          /// 底部黑色蒙版
-          BottomCurveWidget(
-            size: Size.fromHeight(curveHeight),
-            backgroundColor: theme.scaffoldBackgroundColor,
-          ),
-
-          /// 音乐按钮
+          /// 内容区域 距离底部安全 区域 24/48
           Positioned(
+            top: 0,
             left: 0,
             right: 0,
-            bottom: 0,
-            height: curveHeight,
-            child: MusicButtons(
-              controller: controller.playButtonController,
-              onTapPlay: controller.onTapPlay,
-              onTapNext: controller.onTapNext,
-              onTapPrevious: controller.onTapPrevious,
-            ),
-          ),
+            bottom: bottomSafeHeight,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                /// 音乐按钮 靠着底部 高度80
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: 80,
+                  child: MusicButtons(
+                    controller: controller.playButtonController,
+                    onTapPlay: controller.onTapPlay,
+                    onTapNext: controller.onTapNext,
+                    onTapPrevious: controller.onTapPrevious,
+                  ),
+                ),
 
-          Positioned(
-            left: 0,
-            right: 0,
-            height: 36,
-            bottom: sliderHeight,
-            child: Obx(
-              () => _buildSlider(),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  height: 35,
+                  bottom: 75,
+                  child: Obx(
+                    () => _buildSlider(),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

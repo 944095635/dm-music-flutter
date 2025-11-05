@@ -16,7 +16,7 @@ class PlayPage extends GetView<PlayLogic> {
   @override
   Widget build(BuildContext context) {
     debugPrint("重绘Play播放页面");
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         // foregroundColor: theme.colorScheme.onSurface,
@@ -38,7 +38,7 @@ class PlayPage extends GetView<PlayLogic> {
     debugPrint("重绘Play播放页面Body");
 
     /// 时间文字颜色
-    Color textColor = theme.colorScheme.onSurface.withAlpha(160);
+    final Color textColor = theme.colorScheme.onSurface.withAlpha(160);
 
     return SizedBox.expand(
       child: Stack(
@@ -57,15 +57,15 @@ class PlayPage extends GetView<PlayLogic> {
           //   ),
           // },
           Positioned(
-            top: 200,
+            top: 190,
             left: 0,
             right: 0,
             child: Center(
               child: Obx(
                 () => CachedNetworkImage(
                   imageUrl: controller.music.value!.cover,
-                  width: 240,
-                  height: 240,
+                  width: 260,
+                  height: 260,
                   memCacheHeight: 20,
                   memCacheWidth: 20,
                   fit: BoxFit.fill,
@@ -77,8 +77,8 @@ class PlayPage extends GetView<PlayLogic> {
           ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(
-                sigmaX: 150,
-                sigmaY: 150,
+                sigmaX: 135,
+                sigmaY: 135,
               ),
               child: SizedBox.expand(),
             ),

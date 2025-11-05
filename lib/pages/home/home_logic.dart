@@ -50,7 +50,7 @@ class HomeLogic extends GetxController with StateMixin {
 
   /// 点击音乐卡片
   void onTapMusic(int index) {
-    playService.setPlaylist(value!, index: index);
+    playService.setPlaylist(songs, index: index);
   }
 
   /// 点击最最新歌曲

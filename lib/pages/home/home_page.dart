@@ -20,23 +20,17 @@ class HomePage extends GetView<HomeLogic> {
   Widget build(BuildContext context) {
     Get.put(HomeLogic());
 
-    /// 主题
-    // ThemeData theme = Theme.of(context);
+    /// 底部安全区域 48
+    final double bottomSafeHeight = MediaQuery.of(context).padding.bottom;
 
-    /// 底部安全区域
-    double bottomSafe = MediaQuery.of(context).padding.bottom;
+    /// 底部容器总高度
+    final double barHeight = 180;
 
-    // 底部容器整体高度
-    double barHeight = 180 + bottomSafe;
-
-    /// 底部蒙版高度
-    final double curveHeight = 100 + bottomSafe;
-
-    /// 进度条高度
-    final double sliderHeight = 75 + bottomSafe;
+    // 底部容器整体高度 180 + 48
+    final double barSafeHeight = 180 + bottomSafeHeight;
 
     /// 是否PC端
-    bool isPC = PlatformUtils.isDesktop;
+    final bool isPC = PlatformUtils.isDesktop;
 
     return Scaffold(
       appBar: AppBar(
@@ -58,22 +52,17 @@ class HomePage extends GetView<HomeLogic> {
         fit: StackFit.expand,
         children: [
           controller.obx(
-            (state) => _buildBody(isPC, barHeight),
+            (state) => _buildBody(isPC, barSafeHeight),
           ),
 
           /// 底部音乐控制组件
           Align(
             alignment: Alignment.bottomCenter,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: isPC ? 500 : double.infinity,
-              ),
-              child: MusicControl(
-                barHeight: barHeight,
-                curveHeight: curveHeight,
-                sliderHeight: sliderHeight,
-                onTapMusic: controller.onTapPlay,
-              ),
+            child: MusicControl(
+              barHeight: barHeight,
+              barSafeHeight: barSafeHeight,
+              bottomSafeHeight: bottomSafeHeight,
+              onTapMusic: controller.onTapPlay,
             ),
           ),
         ],
