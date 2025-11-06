@@ -25,7 +25,7 @@ class PlayButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    double iconSize = 32;
+    double iconSize = 26;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -70,7 +70,7 @@ class PlayButtons extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: AnimatedIcon(
-                size: 36,
+                size: 32,
                 color: theme.colorScheme.onSurface,
                 icon: AnimatedIcons.play_pause,
                 progress: controller ?? AlwaysStoppedAnimation(0),
@@ -96,8 +96,8 @@ class PlayButtons extends StatelessWidget {
           onPressed: onTapPlayList,
           icon: SvgPicture.asset(
             'assets/svgs/music_playlist_bold.svg',
-            width: iconSize,
-            height: iconSize,
+            width: 20,
+            height: 20,
             colorFilter: ColorFilter.mode(
               theme.colorScheme.onSurface,
               BlendMode.srcIn,

@@ -56,19 +56,20 @@ class PlayPage extends GetView<PlayLogic> {
           //     ),
           //   ),
           // },
-          Positioned(
-            top: 190,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Obx(
-                () => CachedNetworkImage(
-                  imageUrl: controller.music.value!.cover,
-                  width: 260,
-                  height: 260,
-                  memCacheHeight: 20,
-                  memCacheWidth: 20,
-                  fit: BoxFit.fill,
+          Align(
+            alignment: Alignment.topCenter,
+            child: FractionallySizedBox(
+              heightFactor: .7,
+              child: Center(
+                child: Obx(
+                  () => CachedNetworkImage(
+                    imageUrl: controller.music.value!.cover,
+                    width: 200,
+                    height: 200,
+                    memCacheHeight: 20,
+                    memCacheWidth: 20,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),
@@ -77,42 +78,40 @@ class PlayPage extends GetView<PlayLogic> {
           ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(
-                sigmaX: 135,
-                sigmaY: 135,
+                sigmaX: 150,
+                sigmaY: 150,
               ),
               child: SizedBox.expand(),
             ),
           ),
 
           Positioned(
-            top: 220,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Obx(
-                () => ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    memCacheWidth: 360,
-                    imageUrl: controller.music.value!.cover,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          Positioned(
             left: 20,
             right: 20,
+            top: 80,
             bottom: 80,
             child: Column(
               children: [
+                Expanded(
+                  child: Center(
+                    child: Obx(
+                      () => ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: CachedNetworkImage(
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          memCacheWidth: 360,
+                          imageUrl: controller.music.value!.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
                 /// 底部信息区域
                 Column(
-                  spacing: 30,
+                  spacing: 24,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
