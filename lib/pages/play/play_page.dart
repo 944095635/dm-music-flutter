@@ -40,111 +40,116 @@ class PlayPage extends GetView<PlayLogic> {
     /// 时间文字颜色
     final Color textColor = theme.colorScheme.onSurface.withAlpha(160);
 
-    return SizedBox.expand(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          /// 刷新监听 - 背景图
-          // Obx(
-          //   () => _buildBackImage(),
-          // ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double imageSize = constraints.maxWidth * .65;
+        return SizedBox.expand(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              /// 刷新监听 - 背景图
+              // Obx(
+              //   () => _buildBackImage(),
+              // ),
 
-          // if (Get.isDarkMode) ...{
-          //   DecoratedBox(
-          //     decoration: BoxDecoration(
-          //       color: Colors.black54,
-          //     ),
-          //   ),
-          // },
-          Align(
-            alignment: Alignment.topCenter,
-            child: FractionallySizedBox(
-              heightFactor: .7,
-              child: Center(
-                child: Obx(
-                  () => CachedNetworkImage(
-                    imageUrl: controller.music.value!.cover,
-                    width: 200,
-                    height: 200,
-                    memCacheHeight: 20,
-                    memCacheWidth: 20,
-                    fit: BoxFit.fill,
+              // if (Get.isDarkMode) ...{
+              //   DecoratedBox(
+              //     decoration: BoxDecoration(
+              //       color: Colors.black54,
+              //     ),
+              //   ),
+              // },
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                height: constraints.maxHeight * .75,
+                child: Center(
+                  child: Obx(
+                    () => CachedNetworkImage(
+                      imageUrl: controller.music.value!.cover,
+                      width: imageSize,
+                      height: imageSize,
+                      memCacheHeight: 20,
+                      memCacheWidth: 20,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
 
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 150,
-                sigmaY: 150,
+              ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 150,
+                    sigmaY: 150,
+                  ),
+                  child: SizedBox.expand(),
+                ),
               ),
-              child: SizedBox.expand(),
-            ),
-          ),
 
-          Positioned(
-            left: 20,
-            right: 20,
-            top: 80,
-            bottom: 80,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Obx(
-                      () => ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: CachedNetworkImage(
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                          memCacheWidth: 360,
-                          imageUrl: controller.music.value!.cover,
+              Positioned(
+                left: 20,
+                right: 20,
+                top: 80,
+                bottom: 80,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Obx(
+                          () => ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                              memCacheWidth: 600,
+                              imageUrl: controller.music.value!.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-                /// 底部信息区域
-                Column(
-                  spacing: 24,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Obx(
-                        () => _buildMusicTitle(theme),
-                      ),
-                    ),
+                    /// 底部信息区域
+                    Column(
+                      spacing: 24,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Obx(
+                            () => _buildMusicTitle(theme),
+                          ),
+                        ),
 
-                    PlayButtons(
-                      onTapPlay: controller.onTapPlay,
-                      onTapNext: controller.onTapNext,
-                      onTapPrevious: controller.onTapPrevious,
-                      controller: controller.playButtonController,
-                      //   onTapPlayList: () async {
-                      //     // await showModalBottomSheet(
-                      //     //   context: Get.context!,
-                      //     //   builder: (context) => const PlayListPage(),
-                      //     // );
-                      //     // Get.delete<PlayListController>();
-                      //   },
-                    ),
+                        PlayButtons(
+                          onTapPlay: controller.onTapPlay,
+                          onTapNext: controller.onTapNext,
+                          onTapPrevious: controller.onTapPrevious,
+                          controller: controller.playButtonController,
+                          //   onTapPlayList: () async {
+                          //     // await showModalBottomSheet(
+                          //     //   context: Get.context!,
+                          //     //   builder: (context) => const PlayListPage(),
+                          //     // );
+                          //     // Get.delete<PlayListController>();
+                          //   },
+                        ),
 
-                    Obx(
-                      () => _buildPlayInfo(textColor),
+                        Obx(
+                          () => _buildPlayInfo(textColor),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
