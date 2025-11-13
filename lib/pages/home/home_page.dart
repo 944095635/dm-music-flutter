@@ -1,6 +1,8 @@
 import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
+import 'package:dm_music/models/play_list.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
+import 'package:dm_music/pages/home/widgets/home_end_drawer.dart';
 import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_control.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
@@ -8,8 +10,10 @@ import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 /// 主页
@@ -19,6 +23,9 @@ class HomePage extends GetView<HomeLogic> {
   @override
   Widget build(BuildContext context) {
     Get.put(HomeLogic());
+
+    /// 主题
+    ThemeData theme = Theme.of(context);
 
     /// 底部安全区域 48
     final double bottomSafeHeight = MediaQuery.of(context).padding.bottom;
@@ -40,6 +47,22 @@ class HomePage extends GetView<HomeLogic> {
             ? null
             : [
                 ThemeButton(isPC),
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                      icon: SvgPicture.asset(
+                        "assets/svgs/menus.svg",
+                        colorFilter: ColorFilter.mode(
+                          theme.colorScheme.onSurface,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 10.horizontalSpace,
               ],
         flexibleSpace: BlurWidget(
@@ -48,6 +71,7 @@ class HomePage extends GetView<HomeLogic> {
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,
+      endDrawer: HomeEndDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -120,6 +144,52 @@ class HomePage extends GetView<HomeLogic> {
                         return 10.horizontalSpace;
                       },
                     ),
+                  ),
+                ),
+              },
+
+              if (controller.userPlayList.isNotEmpty) ...{
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      Dimensions.pagePadding,
+                    ),
+                    child: Text(
+                      "PLAY LISTED",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Dimensions.pagePadding,
+                  ),
+                  sliver: SliverGrid.builder(
+                    itemCount: controller.userPlayList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isPC ? 4 : 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                    ),
+                    itemBuilder: (context, index) {
+                      PlayList music = controller.userPlayList[index];
+                      return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          controller.onTapPlayList(music);
+                        },
+                        child: MusicNewItem(
+                          music: music.name,
+                          cover: music.cover,
+                          author: music.author ?? "",
+                        ),
+                      );
+                    },
                   ),
                 ),
               },

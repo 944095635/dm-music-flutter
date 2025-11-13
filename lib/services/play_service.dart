@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,9 @@ import 'package:just_audio/just_audio.dart';
 
 /// 播放服务
 class PlayService extends GetxService {
+  /// App 服务
+  AppService appService = Get.find();
+
   /// 播放器实例
   late AudioPlayer _player;
 
@@ -139,7 +143,13 @@ class PlayService extends GetxService {
       //_player.stop();
       await _player.setAudioSources(
         list
-            .map((e) => AudioSource.uri(Uri.parse(e.source ?? ""), tag: e.name))
+            .map(
+              (e) => AudioSource.uri(
+                Uri.parse(e.source ?? ""),
+                tag: e.name,
+                headers: {"X-Nd-Authorization": "Bearer ${appService.token}"},
+              ),
+            )
             .toList(),
         initialIndex: index,
       );

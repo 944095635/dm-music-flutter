@@ -56,7 +56,7 @@ class MusicButtons extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: AnimatedIcon(
                 size: iconSize,
-                color: theme.colorScheme.primary,
+                color: theme.colorScheme.onInverseSurface,
                 icon: AnimatedIcons.play_pause,
                 progress: controller ?? AlwaysStoppedAnimation(0),
               ),

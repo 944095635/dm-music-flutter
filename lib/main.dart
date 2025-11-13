@@ -129,6 +129,15 @@ class MyApp extends StatelessWidget {
         overlayColor: Colors.black12,
         overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
       ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          foregroundColor: WidgetStatePropertyAll(Colors.black),
+          overlayColor: WidgetStatePropertyAll(Color(0xFFEEEEEE)),
+        ),
+      ),
     );
   }
 
@@ -152,7 +161,7 @@ class MyApp extends StatelessWidget {
       colorScheme: const ColorScheme.dark(
         brightness: Brightness.dark,
         // 主色调
-        primary: Colors.black,
+        primary: Colors.white,
         //主色调 - 反转
         inversePrimary: Colors.black,
         // 文字颜色
@@ -206,6 +215,16 @@ class MyApp extends StatelessWidget {
         inactiveTrackColor: Colors.white12,
         overlayColor: Colors.white12,
         overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          side: WidgetStatePropertyAll(BorderSide(color: Colors.white24)),
+          backgroundColor: WidgetStatePropertyAll(Colors.white10),
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+        ),
       ),
     );
   }

@@ -36,10 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.7.2
   intl: ^0.19.0       # 时间转换显示
+  http: ^1.6.0        # 网络访问
   animate_do: ^4.2.0  # 动画组件
   just_audio: ^0.10.5 # 音频播放
   flutter_svg: ^2.2.1 # svg图片支持
   window_manager: ^0.5.1 # 窗口管理
+  shared_preferences: ^2.5.3 # 数据存储
   cached_network_image: ^3.4.1 # 图片缓存
   flutter_styled:
     #path: ../flutter_styled // 本地引用方式
