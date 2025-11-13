@@ -11,7 +11,7 @@ class MusicRecentlyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return SizedBox(
       width: 155,
       child: Column(

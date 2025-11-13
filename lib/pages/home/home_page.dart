@@ -3,6 +3,7 @@ import 'package:dm_music/models/music.dart';
 import 'package:dm_music/models/play_list.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/home_end_drawer.dart';
+import 'package:dm_music/pages/home/widgets/home_music_category.dart';
 import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_control.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
@@ -140,6 +141,21 @@ class HomePage extends GetView<HomeLogic> {
                   ),
                 ),
               },
+
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    Dimensions.pagePadding,
+                  ),
+                  child: Column(
+                    spacing: 10,
+                    children: [
+                      HomeMusicCategory("本地音乐","1000首·98次播放","http://music.dmskin.com/music/Neon Tears.jpg"),
+                      HomeMusicCategory("Navidrome","5个播放源","assets/images/navidrome.png"),
+                    ],
+                  ),
+                ),
+              ),
 
               if (controller.userPlayList.isNotEmpty) ...{
                 SliverToBoxAdapter(

@@ -141,11 +141,7 @@ class PlayService extends GetxService {
       await _player.setAudioSources(
         list
             .map(
-              (e) => AudioSource.uri(
-                Uri.parse(e.source ?? ""),
-                tag: e.name,
-                headers: {"X-Nd-Authorization": "Bearer ${appService.token}"},
-              ),
+              (e) => AudioSource.uri(Uri.parse(e.source ?? ""), tag: e.name),
             )
             .toList(),
         initialIndex: index,
