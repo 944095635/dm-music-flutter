@@ -39,9 +39,9 @@ class HomeLogic extends GetxController with StateMixin {
   }
 
   void _initData() async {
-    //http://110.42.51.36:4533/api/album?_end=12&_order=DESC&_sort=recently_added&_start=0&seed=0.5463191318251455-0
+    //http://*/api/album?_end=12&_order=DESC&_sort=recently_added&_start=0&seed=0.5463191318251455-0
     if (appService.isLogin) {
-      var url = Uri.http('110.42.51.36:4533', '/api/album', {
+      var url = Uri.http('*', '/api/album', {
         "_end": "12",
         "_order": "DESC",
         "_sort": "recently_added",
@@ -66,7 +66,7 @@ class HomeLogic extends GetxController with StateMixin {
         for (var map in maps) {
           String albumArtistId = map["id"];
           String cover =
-              "http://110.42.51.36:4533/rest/getCoverArt?t=25c3ac222ba61a1a71f253aa44a18b22&v=1.8.0&c=NavidromeUI&u=" +
+              "http://*/rest/getCoverArt?t=25c3ac222ba61a1a71f253aa44a18b22&v=1.8.0&c=NavidromeUI&u=" +
               appService.userName +
               "&id=al-" +
               albumArtistId;
@@ -137,7 +137,7 @@ class HomeLogic extends GetxController with StateMixin {
   }
 
   void onTapPlayList(PlayList playList) async {
-    var url = Uri.http('110.42.51.36:4533', '/api/song', {
+    var url = Uri.http('*', '/api/song', {
       "album_id": playList.id,
     });
     var response = await http.get(
@@ -149,13 +149,13 @@ class HomeLogic extends GetxController with StateMixin {
       List<Music> songs = List.empty(growable: true);
       for (var map in maps) {
         String source =
-            "http://110.42.51.36:4533/rest/stream?u=" +
+            "http://*/rest/stream?u=" +
             appService.userName +
             "&t=25c3ac222ba61a1a71f253aa44a18b22&s=daa3a0&f=json&v=1.8.0&c=NavidromeUI&id=" +
             map["id"] +
             "&_=1762966848799";
         debugPrint(source);
-        //http://110.42.51.36:4533/rest/stream?u=dm&t=25c3ac222ba61a1a71f253aa44a18b22&s=daa3a0&f=json&v=1.8.0&c=NavidromeUI&id=fc262a3d9533947f6258fbb3cd864d91&_=1762966848799
+        //http://*/rest/stream?u=dm&t=25c3ac222ba61a1a71f253aa44a18b22&s=daa3a0&f=json&v=1.8.0&c=NavidromeUI&id=fc262a3d9533947f6258fbb3cd864d91&_=1762966848799
 
         songs.add(
           Music()

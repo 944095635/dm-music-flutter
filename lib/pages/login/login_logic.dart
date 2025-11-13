@@ -16,10 +16,10 @@ class LoginLogic extends GetxController {
       String userName = usernameController.text.trim();
       String password = passwordController.text.trim();
 
-      const String _baseUrl = '110.42.51.36:4533';
+      const String _baseUrl = '*';
       const String _apiPath = '/rest';
 
-      var url = Uri.http('110.42.51.36:4533', '/auth/login');
+      var url = Uri.http('*', '/auth/login');
       var data = {
         "username": userName,
         "password": password,
