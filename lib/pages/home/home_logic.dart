@@ -29,8 +29,6 @@ class HomeLogic extends GetxController with StateMixin {
   /// 歌单
   final List<CloudPlayList> playList = List.empty(growable: true);
 
-  /// 登录用户的歌单
-  final List<PlayList> userPlayList = List.empty(growable: true);
 
   @override
   void onInit() {
@@ -39,49 +37,6 @@ class HomeLogic extends GetxController with StateMixin {
   }
 
   void _initData() async {
-    //http://*/api/album?_end=12&_order=DESC&_sort=recently_added&_start=0&seed=0.5463191318251455-0
-    if (appService.isLogin) {
-      var url = Uri.http('*', '/api/album', {
-        "_end": "12",
-        "_order": "DESC",
-        "_sort": "recently_added",
-        "_start": "0",
-        "seed": "0.5463191318251455-0",
-      });
-      var response = await http.get(
-        url,
-        headers: {"X-Nd-Authorization": "Bearer ${appService.token}"},
-      );
-      if (response.statusCode == 200) {
-        List<dynamic> maps = json.decode(response.body);
-
-        userPlayList.add(
-          PlayList()
-            ..id = "d1ead075be6f9d1981a5dc5cbce1118f"
-            ..author = "邓紫棋"
-            ..cover = "http://music.dmskin.com/music/Neon Tears.jpg"
-            //u=dm&t=25c3ac222ba61a1a71f253aa44a18b22&s=daa3a0&f=json&v=1.8.0&c=NavidromeUI&id=al-c1bf6f488cde452951e78bc61c1efc97&_=2025-11-12T22%3A13%3A30.046077819%2B08%3A00&size=300&square=true
-            ..name = "摩天动物园",
-        );
-        for (var map in maps) {
-          String albumArtistId = map["id"];
-          String cover =
-              "http://*/rest/getCoverArt?t=25c3ac222ba61a1a71f253aa44a18b22&v=1.8.0&c=NavidromeUI&u=" +
-              appService.userName +
-              "&id=al-" +
-              albumArtistId;
-          userPlayList.add(
-            PlayList()
-              ..id = map["id"]
-              ..author = map["artist"]
-              ..cover = "http://music.dmskin.com/music/Neon Tears.jpg"
-              //u=dm&t=25c3ac222ba61a1a71f253aa44a18b22&s=daa3a0&f=json&v=1.8.0&c=NavidromeUI&id=al-c1bf6f488cde452951e78bc61c1efc97&_=2025-11-12T22%3A13%3A30.046077819%2B08%3A00&size=300&square=true
-              ..name = map["name"],
-          );
-        }
-      }
-    }
-
     songs.addAll(TestApi.getMusicList());
     //recentlyPlayed.addAll(TestApi.getMusicList1());
 

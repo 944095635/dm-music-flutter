@@ -150,58 +150,20 @@ class HomePage extends GetView<HomeLogic> {
                   child: Column(
                     spacing: 10,
                     children: [
-                      HomeMusicCategory("本地音乐","1000首·98次播放","http://music.dmskin.com/music/Neon Tears.jpg"),
-                      HomeMusicCategory("Navidrome","5个播放源","assets/images/navidrome.png"),
+                      HomeMusicCategory(
+                        "本地音乐",
+                        "1000首·98次播放",
+                        "http://music.dmskin.com/music/Neon Tears.jpg",
+                      ),
+                      HomeMusicCategory(
+                        "Navidrome",
+                        "5个播放源",
+                        "assets/images/navidrome.png",
+                      ),
                     ],
                   ),
                 ),
               ),
-
-              if (controller.userPlayList.isNotEmpty) ...{
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(
-                      Dimensions.pagePadding,
-                    ),
-                    child: Text(
-                      "PLAY LISTED",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Dimensions.pagePadding,
-                  ),
-                  sliver: SliverGrid.builder(
-                    itemCount: controller.userPlayList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 3 / 3.5,
-                    ),
-                    itemBuilder: (context, index) {
-                      PlayList music = controller.userPlayList[index];
-                      return GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          controller.onTapPlayList(music);
-                        },
-                        child: MusicNewItem(
-                          music: music.name,
-                          cover: music.cover,
-                          author: music.author ?? "",
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              },
 
               SliverToBoxAdapter(
                 child: Padding(

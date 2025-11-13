@@ -1,4 +1,5 @@
 import 'package:dm_music/pages/home/home_page.dart';
+import 'package:dm_music/pages/init/init_page.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/services/play_service.dart';
@@ -28,8 +29,12 @@ class _SplashPageState extends State<SplashPage> {
     // 放置播放控制器
     Get.lazyPut(() => PlayLogic());
     await appService.init();
-    await Future.delayed(Durations.extralong4);
-    Get.offAll(() => HomePage());
+    if (appService.isInit) {
+      await Future.delayed(Durations.extralong4);
+      Get.offAll(() => HomePage());
+    } else {
+      Get.offAll(() => InitPage());
+    }
   }
 
   @override
