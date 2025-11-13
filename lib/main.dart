@@ -1,40 +1,38 @@
 import 'dart:io';
-
 import 'package:dm_music/pages/splash/splash_page.dart';
-import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:window_manager/window_manager.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  if (PlatformUtils.isDesktop) {
-    await windowManager.ensureInitialized();
-    WindowOptions windowOptions = const WindowOptions(
-      center: true,
-      title: "DMUSIC",
-      skipTaskbar: false,
-      size: Size(1000, 720),
-      minimumSize: Size(1000, 720),
-      titleBarStyle: TitleBarStyle.hidden,
-      backgroundColor: Colors.transparent,
-      windowButtonVisibility: false, //隐藏系统按钮 MacOS
-    );
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      // 无边框 await windowManager.setAsFrameless();
-      await windowManager.show();
-      await windowManager.focus();
-    });
-  }
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // if (PlatformUtils.isDesktop) {
+  //   await windowManager.ensureInitialized();
+  //   WindowOptions windowOptions = const WindowOptions(
+  //     center: true,
+  //     title: "DMUSIC",
+  //     skipTaskbar: false,
+  //     size: Size(1000, 720),
+  //     minimumSize: Size(1000, 720),
+  //     titleBarStyle: TitleBarStyle.hidden,
+  //     backgroundColor: Colors.transparent,
+  //     windowButtonVisibility: false, //隐藏系统按钮 MacOS
+  //   );
+  //   windowManager.waitUntilReadyToShow(windowOptions, () async {
+  //     // 无边框 await windowManager.setAsFrameless();
+  //     await windowManager.show();
+  //     await windowManager.focus();
+  //   });
+  // }
 
-  runApp(const MyApp());
   // runApp(
   //   DevicePreview(
   //     enabled: !kReleaseMode,
   //     builder: (context) => MyApp(), // Wrap your app
   //   ),
   // );
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

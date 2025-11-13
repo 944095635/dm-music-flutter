@@ -1,10 +1,10 @@
-import 'dart:io';
+// import 'dart:io';
 
-class PlatformUtils {
-  /// 是否桌面平台
-  static bool get isDesktop =>
-      Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+// class PlatformUtils {
+//   /// 是否桌面平台
+//   static bool get isDesktop =>
+//       Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 
-  /// 是否桌面平台
-  static bool get isPhone => Platform.isAndroid || Platform.isIOS;
-}
+//   /// 是否桌面平台
+//   static bool get isPhone => Platform.isAndroid || Platform.isIOS;
+// }

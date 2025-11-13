@@ -4,18 +4,16 @@ import 'package:get/get.dart';
 
 /// 主题切换按钮
 class ThemeButton extends StatelessWidget {
-  const ThemeButton(this.isPC, {super.key});
-
-  final bool isPC;
+  const ThemeButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     /// 主题
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
-    double? iconSize = isPC ? 16 : 20;
+    final double iconSize = 20;
 
-    bool isDarkMode = Get.isDarkMode;
+    final bool isDarkMode = Get.isDarkMode;
 
     return IconButton(
       onPressed: () {

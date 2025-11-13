@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/services/play_service.dart';
-import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -74,11 +73,6 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     //监听歌曲变化
     subMusicChange = playService.listenMusicChange((newMusic) {
-      // 桌面平台显示控制组件
-      if (PlatformUtils.isDesktop) {
-        slideController?.forward();
-        playButtonController.forward();
-      }
       music.value = newMusic;
       debugPrint("歌曲切换回调:${newMusic.name}");
     });
@@ -139,10 +133,8 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
   /// 点击进度条
   onTapProgress(double progress) {
-    if (PlatformUtils.isPhone) {
-      if (!playService.playPosition(progress)) {
-        this.progress.value = 0;
-      }
+    if (!playService.playPosition(progress)) {
+      this.progress.value = 0;
     }
   }
 

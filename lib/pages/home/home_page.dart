@@ -7,10 +7,8 @@ import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_control.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
 import 'package:dm_music/themes/dimensions.dart';
-import 'package:dm_music/utils/platform_utils.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,35 +34,30 @@ class HomePage extends GetView<HomeLogic> {
     // 底部容器整体高度 180 + 48
     final double barSafeHeight = 180 + bottomSafeHeight;
 
-    /// 是否PC端
-    final bool isPC = PlatformUtils.isDesktop;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('DMUSIC'),
         centerTitle: false,
-        actions: isPC
-            ? null
-            : [
-                ThemeButton(isPC),
-                Builder(
-                  builder: (context) {
-                    return IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                      icon: SvgPicture.asset(
-                        "assets/svgs/menus.svg",
-                        colorFilter: ColorFilter.mode(
-                          theme.colorScheme.onSurface,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    );
-                  },
+        actions: [
+          ThemeButton(),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                icon: SvgPicture.asset(
+                  "assets/svgs/menus.svg",
+                  colorFilter: ColorFilter.mode(
+                    theme.colorScheme.onSurface,
+                    BlendMode.srcIn,
+                  ),
                 ),
-                10.horizontalSpace,
-              ],
+              );
+            },
+          ),
+          10.horizontalSpace,
+        ],
         flexibleSpace: BlurWidget(
           child: SizedBox.expand(),
         ),
@@ -76,7 +69,7 @@ class HomePage extends GetView<HomeLogic> {
         fit: StackFit.expand,
         children: [
           controller.obx(
-            (state) => _buildBody(isPC, barSafeHeight),
+            (state) => _buildBody(barSafeHeight),
           ),
 
           /// 底部音乐控制组件
@@ -94,7 +87,7 @@ class HomePage extends GetView<HomeLogic> {
     );
   }
 
-  Widget _buildBody(bool isPC, double bottomHeight) {
+  Widget _buildBody(double bottomHeight) {
     return CustomScrollView(
       slivers: [
         SliverSafeArea(
@@ -171,10 +164,10 @@ class HomePage extends GetView<HomeLogic> {
                   sliver: SliverGrid.builder(
                     itemCount: controller.userPlayList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isPC ? 4 : 2,
+                      crossAxisCount: 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
-                      childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                      childAspectRatio: 3 / 3.5,
                     ),
                     itemBuilder: (context, index) {
                       PlayList music = controller.userPlayList[index];
@@ -216,10 +209,10 @@ class HomePage extends GetView<HomeLogic> {
                 sliver: SliverGrid.builder(
                   itemCount: controller.songs.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isPC ? 4 : 2,
+                    crossAxisCount: 2,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
-                    childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                    childAspectRatio: 3 / 3.5,
                   ),
                   itemBuilder: (context, index) {
                     Music music = controller.songs[index];
@@ -261,10 +254,10 @@ class HomePage extends GetView<HomeLogic> {
                   sliver: SliverGrid.builder(
                     itemCount: controller.playList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: isPC ? 4 : 2,
+                      crossAxisCount: 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
-                      childAspectRatio: isPC ? 1 / 1.2 : 3 / 3.5,
+                      childAspectRatio: 3 / 3.5,
                     ),
                     itemBuilder: (context, index) {
                       CloudPlayList music = controller.playList[index];

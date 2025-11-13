@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// App 服务
 class AppService extends GetxService {
   bool isLogin = false;
   String? _token;
@@ -17,7 +18,7 @@ class AppService extends GetxService {
     _token = prefs.getString("token");
     _name = prefs.getString("name");
     _userName = prefs.getString("username");
-    if (token?.isNotEmpty == true) {
+    if (_token?.isNotEmpty == true) {
       isLogin = true;
     }
   }

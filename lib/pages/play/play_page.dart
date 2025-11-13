@@ -25,7 +25,7 @@ class PlayPage extends GetView<PlayLogic> {
         //   statusBarIconBrightness: Brightness.light,
         // ),
         actions: [
-          ThemeButton(false),
+          ThemeButton(),
           10.horizontalSpace,
         ],
       ),

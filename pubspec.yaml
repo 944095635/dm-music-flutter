@@ -40,17 +40,18 @@ dependencies:
   animate_do: ^4.2.0  # 动画组件
   just_audio: ^0.10.5 # 音频播放
   flutter_svg: ^2.2.1 # svg图片支持
-  window_manager: ^0.5.1 # 窗口管理
   shared_preferences: ^2.5.3 # 数据存储
   cached_network_image: ^3.4.1 # 图片缓存
   flutter_styled:
     #path: ../flutter_styled // 本地引用方式
     git: 
        url: https://github.com/DMSkin/flutter_styled.git
-  # device_preview: ^1.3.1 # 效果预览
   crypto: ^3.0.6       # 网易云音乐加解密
   encrypt: ^5.0.3      # 网易云音乐加解密
   pointycastle: ^3.9.1 # 网易云音乐加解密
+
+  # window_manager: ^0.5.1 # 窗口管理
+  # device_preview: ^1.3.1 # 效果预览
 
 dev_dependencies:
   flutter_test:

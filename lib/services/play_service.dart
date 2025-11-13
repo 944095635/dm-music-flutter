@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dm_music/services/app_service.dart';
-import 'package:dm_music/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/models/music.dart';
@@ -65,10 +64,8 @@ class PlayService extends GetxService {
 
   /// 播放音乐
   void playMusic(Music newMusic) {
-    if (PlatformUtils.isPhone) {
-      _player.setUrl(newMusic.source!);
-      _player.play();
-    }
+    _player.setUrl(newMusic.source!);
+    _player.play();
   }
 
   /// 播放歌曲变化监听
