@@ -38,7 +38,7 @@ class FrameEndDrawer extends StatelessWidget {
                       Get.back();
                       //Get.to(() => LoginPage());
                       //Get.to(() => InitPage());
-                      Get.toNamed('/home', id: 1);
+                      Get.toNamed('/dmusic', id: 1);
                     },
                   ),
                   10.verticalSpace,
@@ -52,7 +52,7 @@ class FrameEndDrawer extends StatelessWidget {
                       Get.back();
                       //Get.to(() => LoginPage());
                       //Get.to(() => InitPage());
-                      Get.toNamed('/step2', id: 1);
+                      Get.toNamed('/navidrome', id: 1);
                     },
                   ),
                   20.verticalSpace,

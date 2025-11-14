@@ -1,3 +1,5 @@
+import 'package:dm_music/helpers/cache_helper.dart';
+import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/pages/frame/frame_page.dart';
 import 'package:dm_music/pages/init/init_page.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
@@ -21,18 +23,26 @@ class _SplashPageState extends State<SplashPage> {
     init();
   }
 
+  /// 初始化
   void init() async {
     // 放置服务
     AppService appService = Get.put(AppService());
+    appService.init();
     // 放置服务
     Get.put(PlayService());
     // 放置播放控制器
     Get.lazyPut(() => PlayLogic());
-    await appService.init();
-    await Future.delayed(Durations.extralong4);
-    if (appService.isInit) {
-      Get.offAll(() => FramePage());
+
+    MusicSource? source = await CacheHelper.getSource();
+    if (source != null) {
+      /// 跳至首页
+      Get.offAll(
+        () => FramePage(),
+        arguments: {"route": source.type.route},
+        transition: Transition.fadeIn,
+      );
     } else {
+      await Future.delayed(Durations.extralong4);
       Get.offAll(() => InitPage());
     }
   }

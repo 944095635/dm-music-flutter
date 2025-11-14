@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 
@@ -15,8 +14,6 @@ class FramePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeLogic());
-
     /// 主题
     ThemeData theme = Theme.of(context);
 
@@ -81,16 +78,23 @@ class FramePage extends StatelessWidget {
 
   /// 局部导航
   Widget _buildNavigator() {
+    String route = Get.arguments["route"];
     return Navigator(
       key: Get.nestedKey(1),
-      initialRoute: "/home",
+      initialRoute: route,
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          case "/home":
+          case "/dmusic":
             return GetPageRoute(
               settings: settings,
               transition: Transition.fadeIn,
               page: () => HomePage(),
+            );
+          case "/navidrome":
+            return GetPageRoute(
+              settings: settings,
+              transition: Transition.fadeIn,
+              page: () => Text("xxxx"),
             );
           default:
             return GetPageRoute(

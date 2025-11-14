@@ -15,9 +15,6 @@ class AppService extends GetxService {
   String? _name;
   String get name => _name ?? "";
 
-  /// 是否已经初始化
-  bool isInit = false;
-
   Future init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString("token");
@@ -26,9 +23,6 @@ class AppService extends GetxService {
     if (_token?.isNotEmpty == true) {
       isLogin = true;
     }
-
-    // 读取是否初始化
-    isInit = prefs.getBool(CacheKeys.init.toString()) ?? false;
   }
 
   /// 设置初始化
