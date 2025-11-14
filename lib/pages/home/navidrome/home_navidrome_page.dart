@@ -19,8 +19,10 @@ class HomeNavidromePage extends GetView<HomeNavidromeLogic> {
 
     // 底部容器整体高度 180 + 48
     final double barSafeHeight = 180 + bottomSafeHeight;
-    return controller.obx(
-      (state) => _buildBody(theme, barSafeHeight),
+    return Scaffold(
+      body: controller.obx(
+        (state) => _buildBody(theme, barSafeHeight),
+      ),
     );
   }
 
