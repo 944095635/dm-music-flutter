@@ -38,12 +38,6 @@ class InitLogic extends GetxController {
     updateInputState();
   }
 
-  /// 点击启动
-  void onTapStart() {
-    Get.find<AppService>().inited();
-    Get.offAll(() => HomePage());
-  }
-
   /// 更新输入状态
   void updateInputState() {
     if (type == MusicSourceType.dmusic) {
@@ -56,5 +50,15 @@ class InitLogic extends GetxController {
       inputOK = false;
     }
     update();
+  }
+
+  /// 点击启动
+  void onTapStart() {
+    if (type == MusicSourceType.dmusic) {
+      Get.find<AppService>().inited();
+      Get.offAll(() => HomePage());
+    } else {
+      Get.snackbar("提示", "暂未支持");
+    }
   }
 }
