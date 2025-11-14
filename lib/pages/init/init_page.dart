@@ -1,6 +1,7 @@
 import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/pages/init/init_logic.dart';
 import 'package:dm_music/pages/init/widgets/init_item.dart';
+import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/values/strings.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class InitPage extends GetView<InitLogic> {
       slivers: [
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(Dimensions.pagePadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -79,6 +80,7 @@ class InitPage extends GetView<InitLogic> {
                         },
                       ),
                     ),
+                    Spacer(),
                   ],
                 ),
 
@@ -99,7 +101,7 @@ class InitPage extends GetView<InitLogic> {
           hasScrollBody: false,
           child: SafeArea(
             top: false,
-            minimum: EdgeInsets.symmetric(horizontal: 20),
+            minimum: EdgeInsets.symmetric(horizontal: Dimensions.pagePadding),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: FilledButton(
@@ -116,17 +118,25 @@ class InitPage extends GetView<InitLogic> {
   /// DMusic 播放源的信息
   Widget _buildDMusicInfo(ThemeData theme) {
     return Column(
-      spacing: 5,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           Strings.appName,
           style: theme.textTheme.titleMedium,
         ),
+        10.verticalSpace,
         Text(
           "App官方数据源，支持本地音乐",
           style: TextStyle(
             color: theme.colorScheme.primary.withAlpha(180),
+          ),
+        ),
+        20.verticalSpace,
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            "授权本地权限",
+            style: TextStyle(decoration: TextDecoration.underline),
           ),
         ),
       ],
@@ -139,10 +149,16 @@ class InitPage extends GetView<InitLogic> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
+          "连接到 ${controller.type?.name ?? ""}",
+          style: theme.textTheme.titleMedium,
+        ),
+        10.verticalSpace,
+        Text(
           "服务器",
         ),
         5.verticalSpace,
         TextField(
+          controller: controller.serverController,
           decoration: InputDecoration(hintText: "请输入服务器"),
         ),
         20.verticalSpace,
@@ -151,6 +167,7 @@ class InitPage extends GetView<InitLogic> {
         ),
         5.verticalSpace,
         TextField(
+          controller: controller.usernameController,
           decoration: InputDecoration(hintText: "请输入用户名"),
         ),
         20.verticalSpace,
@@ -159,6 +176,8 @@ class InitPage extends GetView<InitLogic> {
         ),
         5.verticalSpace,
         TextField(
+          obscureText: true,
+          controller: controller.passwordController,
           decoration: InputDecoration(hintText: "请输入密码"),
         ),
       ],
