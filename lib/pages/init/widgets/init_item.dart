@@ -49,6 +49,7 @@ class InitItem extends StatelessWidget {
         ),
         child: Column(
           spacing: 10,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               icon,

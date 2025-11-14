@@ -10,8 +10,12 @@ class MusicSource {
 /// 音乐数据源类型
 enum MusicSourceType {
   /// 支持官方播放源 和 本地音乐源
-  dmusic,
+  dmusic("DMusic"),
 
   /// 音乐数据源
-  navidrome,
+  navidrome("Navidrome");
+
+  final String name;
+
+  const MusicSourceType(this.name);
 }

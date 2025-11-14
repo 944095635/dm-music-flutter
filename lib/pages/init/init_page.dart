@@ -47,7 +47,7 @@ class InitPage extends GetView<InitLogic> {
               children: [
                 Text(
                   "选择播放源",
-                  style: theme.textTheme.bodyLarge,
+                  style: theme.textTheme.titleMedium,
                 ),
 
                 10.verticalSpace,
@@ -79,7 +79,6 @@ class InitPage extends GetView<InitLogic> {
                         },
                       ),
                     ),
-                    Spacer(),
                   ],
                 ),
 
@@ -89,7 +88,7 @@ class InitPage extends GetView<InitLogic> {
                 switch (controller.type) {
                   null => SizedBox.shrink(),
                   MusicSourceType.dmusic => _buildDMusicInfo(theme),
-                  MusicSourceType.navidrome => SizedBox.shrink(),
+                  MusicSourceType.navidrome => _buildInputInfo(theme),
                 },
               ],
             ),
@@ -104,9 +103,7 @@ class InitPage extends GetView<InitLogic> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: FilledButton(
-                onPressed: controller.type != null
-                    ? controller.onTapStart
-                    : null,
+                onPressed: controller.inputOK ? controller.onTapStart : null,
                 child: Text("开始使用"),
               ),
             ),
@@ -124,10 +121,45 @@ class InitPage extends GetView<InitLogic> {
       children: [
         Text(
           Strings.appName,
-          style: theme.textTheme.bodyLarge,
+          style: theme.textTheme.titleMedium,
         ),
         Text(
           "App官方数据源，支持本地音乐",
+          style: TextStyle(
+            color: theme.colorScheme.primary.withAlpha(180),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 输入播放源的信息
+  Widget _buildInputInfo(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          "服务器",
+        ),
+        5.verticalSpace,
+        TextField(
+          decoration: InputDecoration(hintText: "请输入服务器"),
+        ),
+        20.verticalSpace,
+        Text(
+          "用户名",
+        ),
+        5.verticalSpace,
+        TextField(
+          decoration: InputDecoration(hintText: "请输入用户名"),
+        ),
+        20.verticalSpace,
+        Text(
+          "密码",
+        ),
+        5.verticalSpace,
+        TextField(
+          decoration: InputDecoration(hintText: "请输入密码"),
         ),
       ],
     );

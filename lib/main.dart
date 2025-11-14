@@ -86,7 +86,8 @@ class MyApp extends StatelessWidget {
       ),
       textTheme: const TextTheme(
         titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        bodyLarge: TextStyle(fontSize: 17),
+        titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        bodyLarge: TextStyle(fontSize: 17), // 输入框等
         bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
       ),
@@ -139,6 +140,17 @@ class MyApp extends StatelessWidget {
       ),
       // 卡片颜色
       cardColor: Colors.black,
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.black54),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black12),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black26),
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
   }
 
@@ -176,7 +188,8 @@ class MyApp extends StatelessWidget {
       ),
       textTheme: const TextTheme(
         titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        bodyLarge: TextStyle(fontSize: 17),
+        titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        bodyLarge: TextStyle(fontSize: 17), // 输入框等
         bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
       ),
@@ -249,6 +262,17 @@ class MyApp extends StatelessWidget {
       ),
       // 卡片颜色
       cardColor: Colors.white10,
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.white38),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white10),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white24),
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
   }
 }

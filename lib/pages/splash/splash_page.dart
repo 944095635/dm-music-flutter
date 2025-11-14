@@ -29,6 +29,8 @@ class _SplashPageState extends State<SplashPage> {
     // 放置播放控制器
     Get.lazyPut(() => PlayLogic());
     await appService.init();
+    Get.offAll(() => InitPage());
+    return;
     if (appService.isInit) {
       await Future.delayed(Durations.extralong4);
       Get.offAll(() => HomePage());
