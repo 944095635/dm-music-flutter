@@ -101,12 +101,18 @@ class InitPage extends GetView<InitLogic> {
           hasScrollBody: false,
           child: SafeArea(
             top: false,
-            minimum: EdgeInsets.symmetric(horizontal: Dimensions.pagePadding),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: FilledButton(
-                onPressed: controller.inputOK ? controller.onTapStart : null,
-                child: Text("开始使用"),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: Dimensions.pagePadding,
+                  right: Dimensions.pagePadding,
+                  bottom: Dimensions.pagePadding,
+                ),
+                child: FilledButton(
+                  onPressed: controller.inputOK ? controller.onTapStart : null,
+                  child: Text("开始使用"),
+                ),
               ),
             ),
           ),

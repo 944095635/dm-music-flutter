@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
     Get.lazyPut(() => PlayLogic());
     await appService.init();
     await Future.delayed(Durations.extralong4);
-    if (!appService.isInit) {
+    if (appService.isInit) {
       Get.offAll(() => FramePage());
     } else {
       Get.offAll(() => InitPage());
