@@ -1,6 +1,5 @@
 import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/models/play_list.dart';
 import 'package:dm_music/pages/home/home_logic.dart';
 import 'package:dm_music/pages/home/widgets/home_end_drawer.dart';
 import 'package:dm_music/pages/home/widgets/home_music_category.dart';

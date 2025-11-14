@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
       colorScheme: const ColorScheme.light(
         brightness: Brightness.light,
         // 主色调
-        primary: Colors.white,
+        primary: Colors.black,
         //主色调 - 反转
         inversePrimary: Colors.white,
         // 文字颜色
@@ -129,13 +129,16 @@ class MyApp extends StatelessWidget {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
+          minimumSize: WidgetStatePropertyAll(Size.fromHeight(48)),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          foregroundColor: WidgetStatePropertyAll(Colors.black),
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
           overlayColor: WidgetStatePropertyAll(Color(0xFFEEEEEE)),
         ),
       ),
+      // 卡片颜色
+      cardColor: Colors.black,
     );
   }
 
@@ -216,14 +219,36 @@ class MyApp extends StatelessWidget {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
+          minimumSize: WidgetStatePropertyAll(Size.fromHeight(48)),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          side: WidgetStatePropertyAll(BorderSide(color: Colors.white24)),
-          backgroundColor: WidgetStatePropertyAll(Colors.white10),
-          foregroundColor: WidgetStatePropertyAll(Colors.white),
+          side: WidgetStateBorderSide.resolveWith((state) {
+            Color color;
+            if (state.contains(WidgetState.disabled)) {
+              color = Colors.white10;
+            } else {
+              color = Colors.white24;
+            }
+            return BorderSide(color: color);
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((state) {
+            if (state.contains(WidgetState.disabled)) {
+              return Colors.white60;
+            } else {
+              return Colors.white;
+            }
+          }),
+          backgroundColor: WidgetStateColor.resolveWith((state) {
+            if (state.contains(WidgetState.disabled)) {
+              return Colors.black;
+            }
+            return Colors.white10;
+          }),
         ),
       ),
+      // 卡片颜色
+      cardColor: Colors.white10,
     );
   }
 }
