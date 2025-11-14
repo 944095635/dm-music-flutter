@@ -1,3 +1,4 @@
+import 'package:dm_music/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/radius_extension.dart';
 import 'package:get/get.dart';
@@ -35,18 +36,12 @@ class InitItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: selected ? theme.cardColor : null,
-          borderRadius: 10.borderRadius,
-          border: Border.all(
-            color: theme.colorScheme.primary.withAlpha(40),
-          ),
-        ),
+      child: CardWidget(
         padding: EdgeInsets.only(
           top: 20,
           bottom: 15,
         ),
+        selected: selected,
         child: Column(
           spacing: 10,
           mainAxisSize: MainAxisSize.min,
