@@ -5,6 +5,7 @@ import 'package:flutter_styled/radius_extension.dart';
 class CardWidget extends StatelessWidget {
   const CardWidget({
     super.key,
+    this.onTap,
     this.padding,
     required this.child,
     required this.selected,
@@ -16,19 +17,25 @@ class CardWidget extends StatelessWidget {
 
   final EdgeInsets? padding;
 
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: selected ? theme.cardColor : null,
-        borderRadius: 10.borderRadius,
-        border: Border.all(
-          color: theme.colorScheme.primary.withAlpha(20),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: selected ? theme.cardColor : null,
+          borderRadius: 10.borderRadius,
+          border: Border.all(
+            color: theme.colorScheme.primary.withAlpha(20),
+          ),
         ),
+        padding: padding ?? EdgeInsets.all(10),
+        child: child,
       ),
-      padding: padding ?? EdgeInsets.all(10),
-      child: child,
     );
   }
 }

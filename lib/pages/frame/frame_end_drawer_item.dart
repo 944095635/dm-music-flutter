@@ -34,42 +34,39 @@ class FrameEndDrawerItem extends StatelessWidget {
       textColor = theme.colorScheme.primary;
     }
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
+    return CardWidget(
       onTap: onTap,
-      child: CardWidget(
-        selected: selected,
-        child: Row(
-          spacing: 10,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              icon,
-              width: 48,
-              height: 48,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      color: textColor,
-                    ),
+      selected: selected,
+      child: Row(
+        spacing: 10,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            icon,
+            width: 48,
+            height: 48,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    color: textColor,
                   ),
-                  Text(
-                    tag,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: textColor,
-                    ),
+                ),
+                Text(
+                  tag,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: textColor,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
