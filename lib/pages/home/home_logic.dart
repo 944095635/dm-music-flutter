@@ -6,7 +6,6 @@ import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/apis/test_api.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/models/play_list.dart';
-import 'package:dm_music/pages/play/play_page.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +27,6 @@ class HomeLogic extends GetxController with StateMixin {
 
   /// 歌单
   final List<CloudPlayList> playList = List.empty(growable: true);
-
 
   @override
   void onInit() {
@@ -66,11 +64,6 @@ class HomeLogic extends GetxController with StateMixin {
   /// 点击最最新歌曲
   void onTapRecentlyMusic(int index) {
     playService.setPlaylist(newReleases, index: index);
-  }
-
-  /// 跳转到播放页面
-  void onTapPlay() {
-    Get.to(() => PlayPage());
   }
 
   void onTapPlayListItem(CloudPlayList newMusic) async {

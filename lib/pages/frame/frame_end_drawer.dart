@@ -1,6 +1,4 @@
-import 'package:dm_music/pages/init/init_page.dart';
-import 'package:dm_music/pages/init/widgets/init_item.dart';
-import 'package:dm_music/pages/login/login_page.dart';
+import 'package:dm_music/pages/frame/frame_end_drawer_item.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/values/strings.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
@@ -10,8 +8,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// 首页右侧菜单
-class HomeEndDrawer extends StatelessWidget {
-  const HomeEndDrawer({super.key});
+class FrameEndDrawer extends StatelessWidget {
+  const FrameEndDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,39 +19,35 @@ class HomeEndDrawer extends StatelessWidget {
       child: Drawer(
         child: SafeArea(
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             children: [
-              Row(
-                spacing: 10,
-                children: [
-                  Image.asset(
-                    "assets/images/logo.png",
-                    width: 48,
-                    height: 48,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        Strings.appName,
-                      ),
-                      Text(
-                        "v2.0.6",
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              20.verticalSpace,
-
-              FilledButton(
-                onPressed: () {
+              FrameEndDrawerItem(
+                Strings.appName,
+                "assets/images/logo.png",
+                true,
+                tag: "官方播放源",
+                onTap: () {
                   Get.back();
                   //Get.to(() => LoginPage());
-                  Get.to(() => InitPage());
+                  //Get.to(() => InitPage());
+                  Get.toNamed('/home', id: 1);
                 },
-                child: Text("更换播放源"),
               ),
+              10.verticalSpace,
+
+              FrameEndDrawerItem(
+                "Navidrome",
+                "assets/images/navidrome.png",
+                true,
+                tag: "110.33.65.128:5443",
+                onTap: () {
+                  Get.back();
+                  //Get.to(() => LoginPage());
+                  //Get.to(() => InitPage());
+                  Get.toNamed('/step2', id: 1);
+                },
+              ),
+              20.verticalSpace,
 
               if (appService.isLogin) ...{
                 Text(appService.name),

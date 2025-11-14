@@ -5,6 +5,7 @@ import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_buttons.dart';
+import 'package:dm_music/pages/play/play_page.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +16,6 @@ class MusicControl extends GetView<PlayLogic> {
   const MusicControl({
     super.key,
     required this.barHeight,
-    required this.onTapMusic,
     required this.barSafeHeight,
     required this.bottomSafeHeight,
   });
@@ -28,8 +28,6 @@ class MusicControl extends GetView<PlayLogic> {
 
   /// 底部附带安全高度的总高度
   final double barSafeHeight;
-
-  final VoidCallback onTapMusic;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +165,9 @@ class MusicControl extends GetView<PlayLogic> {
               color: theme.bottomSheetTheme.modalBackgroundColor,
             ),
             child: GestureDetector(
-              onTap: onTapMusic,
+              onTap: () {
+                Get.to(() => PlayPage());
+              },
               behavior: HitTestBehavior.opaque,
               child: Obx(
                 () => _buildInfo(theme),

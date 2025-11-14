@@ -1,4 +1,5 @@
 import 'package:dm_music/models/music_source.dart';
+import 'package:dm_music/pages/frame/frame_page.dart';
 import 'package:dm_music/pages/home/home_page.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:flutter/widgets.dart';
@@ -56,7 +57,7 @@ class InitLogic extends GetxController {
   void onTapStart() {
     if (type == MusicSourceType.dmusic) {
       Get.find<AppService>().inited();
-      Get.offAll(() => HomePage());
+      Get.offAll(() => FramePage());
     } else {
       Get.snackbar("提示", "暂未支持");
     }
