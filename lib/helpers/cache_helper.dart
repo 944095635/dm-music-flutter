@@ -37,9 +37,15 @@ class CacheHelper {
   }
 
   /// 设置当前的数据源
-  static Future<bool> setSource(String sourceId) async {
+  static Future<bool> setSourceId(String sourceId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(CacheKeys.sourceId.toString(), sourceId);
+  }
+
+  /// 获取当前的数据源
+  static Future<String?> getSourceId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(CacheKeys.sourceId.toString());
   }
 
   /// 获取当前数据源

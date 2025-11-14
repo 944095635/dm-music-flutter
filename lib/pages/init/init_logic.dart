@@ -75,7 +75,7 @@ class InitLogic extends GetxController {
   void loginByDMusic() async {
     SmartDialog.showLoading(msg: Strings.wait);
     await appService.inited();
-    await CacheHelper.setSource(MusicSourceType.dmusic.id);
+    await CacheHelper.setSourceId(MusicSourceType.dmusic.id);
     SmartDialog.dismiss();
     Get.offAll(
       () => FramePage(),
@@ -114,7 +114,7 @@ class InitLogic extends GetxController {
       );
       await appService.inited();
       await CacheHelper.setSourceList(sourceList);
-      await CacheHelper.setSource(server);
+      await CacheHelper.setSourceId(server);
       SmartDialog.dismiss();
       SmartDialog.showToast("连接成功");
       Get.offAll(

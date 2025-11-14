@@ -88,16 +88,57 @@ class NavidromeApi {
     return httpResult;
   }
 
+  /// 获取播放源
+  static Future<String> getStream(
+    NavidromeData data,
+    String id,
+    //int size,
+  ) async {
+    Uri url = _createUrl(data, "/rest/stream", {
+      "id": id,
+    });
+    return url.toString();
+  }
+
+  /// 获取封面图
+  static Future<String> getCoverUrl(
+    NavidromeData data,
+    String coverArt,
+    //int size,
+  ) async {
+    Uri url = _createUrl(data, "/rest/getCoverArt", {
+      "id": coverArt,
+      //"size": size.toString(),
+    });
+    return url.toString();
+  }
+
   /// ping服务器
   static Future<HttpResult> ping(NavidromeData data) async {
     return _get(data, '/rest/ping.view');
   }
 
-  /// 获取专辑
+  /// 获取专辑列表
   static Future<HttpResult> getAlbumList({
     required NavidromeData data,
     required String type, // 必传 random，newest， highest，frequent，recent
   }) async {
-    return _get(data, '/rest/getAlbumList', {"type": type});
+    return _get(data, '/rest/getAlbumList', {"type": type, "size": "100"});
+  }
+
+  /// 获取专辑
+  static Future<HttpResult> getAlbum(
+    NavidromeData data, {
+    required String id,
+  }) async {
+    return _get(data, '/rest/getAlbum', {"id": id});
+  }
+
+  /// 获取歌曲
+  static Future<HttpResult> getSong({
+    required NavidromeData data,
+    required String id,
+  }) async {
+    return _get(data, '/rest/getSong', {"id": id});
   }
 }

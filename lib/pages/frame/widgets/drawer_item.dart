@@ -2,8 +2,8 @@ import 'package:dm_music/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class FrameEndDrawerItem extends StatelessWidget {
-  const FrameEndDrawerItem(
+class DrawerItem extends StatelessWidget {
+  const DrawerItem(
     this.name,
     this.icon,
     this.selected, {
