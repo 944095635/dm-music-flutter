@@ -1,6 +1,6 @@
 import 'package:dm_music/pages/frame/frame_end_drawer.dart';
 import 'package:dm_music/pages/home/home_page.dart';
-import 'package:dm_music/pages/home/widgets/music_control.dart';
+import 'package:dm_music/pages/frame/widgets/music_control.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';

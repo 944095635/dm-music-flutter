@@ -25,7 +25,7 @@ class FrameEndDrawer extends StatelessWidget {
                 Strings.appName,
                 "assets/images/logo.png",
                 true,
-                tag: "官方播放源",
+                tag: "官方播放源 V2.0.7",
                 onTap: () {
                   Get.back();
                   //Get.to(() => LoginPage());
@@ -39,7 +39,7 @@ class FrameEndDrawer extends StatelessWidget {
                 "Navidrome",
                 "assets/images/navidrome.png",
                 true,
-                tag: "110.33.65.128:5443",
+                tag: "测试数据",
                 onTap: () {
                   Get.back();
                   //Get.to(() => LoginPage());

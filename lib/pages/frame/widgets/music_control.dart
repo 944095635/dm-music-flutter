@@ -1,15 +1,15 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dm_music/models/music.dart';
-import 'package:dm_music/pages/home/widgets/bottom_curve_widget.dart';
-import 'package:dm_music/pages/play/play_logic.dart';
-import 'package:dm_music/pages/home/widgets/music_buttons.dart';
-import 'package:dm_music/pages/play/play_page.dart';
-import 'package:dm_music/widgets/slider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:dm_music/models/music.dart';
+import 'package:dm_music/pages/frame/widgets/bottom_curve_widget.dart';
+import 'package:dm_music/pages/frame/widgets/music_buttons.dart';
+import 'package:dm_music/pages/play/play_logic.dart';
+import 'package:dm_music/pages/play/play_page.dart';
+import 'package:dm_music/widgets/slider.dart';
 
 /// 音乐控制组件
 class MusicControl extends GetView<PlayLogic> {

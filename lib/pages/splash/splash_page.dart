@@ -1,5 +1,4 @@
 import 'package:dm_music/pages/frame/frame_page.dart';
-import 'package:dm_music/pages/home/home_page.dart';
 import 'package:dm_music/pages/init/init_page.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/services/app_service.dart';
@@ -31,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
     Get.lazyPut(() => PlayLogic());
     await appService.init();
     await Future.delayed(Durations.extralong4);
-    if (!appService.isInit) {
+    if (appService.isInit) {
       Get.offAll(() => FramePage());
     } else {
       Get.offAll(() => InitPage());
