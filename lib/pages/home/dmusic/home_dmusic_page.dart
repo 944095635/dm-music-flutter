@@ -3,7 +3,7 @@ import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/pages/home/home_dmusic_logic.dart';
+import 'package:dm_music/pages/home/dmusic/home_dmusic_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
 import 'package:dm_music/themes/dimensions.dart';
