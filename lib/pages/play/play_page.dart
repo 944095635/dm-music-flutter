@@ -59,34 +59,36 @@ class PlayPage extends GetView<PlayLogic> {
               //     ),
               //   ),
               // },
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                height: constraints.maxHeight * .75,
-                child: Center(
-                  child: Obx(
-                    () => CachedNetworkImage(
-                      imageUrl: controller.music.value!.cover,
-                      width: imageSize,
-                      height: imageSize,
-                      memCacheHeight: 20,
-                      memCacheWidth: 20,
-                      fit: BoxFit.fill,
+              if (Get.isDarkMode) ...{
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: constraints.maxHeight * .75,
+                  child: Center(
+                    child: Obx(
+                      () => CachedNetworkImage(
+                        imageUrl: controller.music.value!.cover,
+                        width: imageSize,
+                        height: imageSize,
+                        memCacheHeight: 20,
+                        memCacheWidth: 20,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 150,
-                    sigmaY: 150,
+                ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 150,
+                      sigmaY: 150,
+                    ),
+                    child: SizedBox.expand(),
                   ),
-                  child: SizedBox.expand(),
                 ),
-              ),
+              },
 
               Positioned(
                 left: 20,

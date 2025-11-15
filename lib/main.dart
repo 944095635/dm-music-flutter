@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dm_music/pages/splash/splash_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -71,6 +72,14 @@ class MyApp extends StatelessWidget {
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: Colors.white,
         ),
+      ),
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (context) {
+          return IconButton(
+            onPressed: Get.back,
+            icon: Icon(CupertinoIcons.back),
+          );
+        },
       ),
       colorScheme: const ColorScheme.light(
         brightness: Brightness.light,
@@ -174,6 +183,14 @@ class MyApp extends StatelessWidget {
           systemNavigationBarColor: Colors.black,
         ),
       ),
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (context) {
+          return IconButton(
+            onPressed: Get.back,
+            icon: Icon(CupertinoIcons.back),
+          );
+        },
+      ),
       colorScheme: const ColorScheme.dark(
         brightness: Brightness.dark,
         // 主色调
@@ -248,6 +265,21 @@ class MyApp extends StatelessWidget {
           //   }
           //   return BorderSide(color: color);
           // }),
+          // backgroundBuilder: (context, states, child) {
+          //   return DecoratedBox(
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(8),
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.white38,
+          //           blurStyle: BlurStyle.outer,
+          //           blurRadius: 5,
+          //         ),
+          //       ],
+          //     ),
+          //     child: child,
+          //   );
+          // },
           foregroundColor: WidgetStateProperty.resolveWith((state) {
             if (state.contains(WidgetState.disabled)) {
               return Colors.white60;
