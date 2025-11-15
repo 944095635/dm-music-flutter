@@ -3,6 +3,7 @@ import 'package:dm_music/pages/init/init_logic.dart';
 import 'package:dm_music/pages/init/widgets/init_item.dart';
 import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/values/strings.dart';
+import 'package:dm_music/widgets/sliver_bottom_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
@@ -58,8 +59,8 @@ class InitPage extends GetView<InitLogic> {
                   children: [
                     Expanded(
                       child: InitItem(
-                        "DMusic",
-                        "assets/images/logo.png",
+                        MusicSourceType.dmusic.name,
+                        MusicSourceType.dmusic.icon,
                         controller.type == MusicSourceType.dmusic,
                         onTap: () {
                           controller.changeMusicSource(
@@ -70,8 +71,8 @@ class InitPage extends GetView<InitLogic> {
                     ),
                     Expanded(
                       child: InitItem(
-                        "Navidrome",
-                        "assets/images/navidrome.png",
+                        MusicSourceType.navidrome.name,
+                        MusicSourceType.navidrome.icon,
                         controller.type == MusicSourceType.navidrome,
                         onTap: () {
                           controller.changeMusicSource(
@@ -80,7 +81,6 @@ class InitPage extends GetView<InitLogic> {
                         },
                       ),
                     ),
-                    Spacer(),
                   ],
                 ),
 
@@ -97,25 +97,9 @@ class InitPage extends GetView<InitLogic> {
           ),
         ),
 
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: SafeArea(
-            top: false,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: Dimensions.pagePadding,
-                  right: Dimensions.pagePadding,
-                  bottom: Dimensions.pagePadding,
-                ),
-                child: FilledButton(
-                  onPressed: controller.inputOK ? controller.onTapStart : null,
-                  child: Text("开始使用"),
-                ),
-              ),
-            ),
-          ),
+        SliverBottomWidget.button(
+          "开始使用",
+          onPressed: controller.inputOK ? controller.onTapStart : null,
         ),
       ],
     );

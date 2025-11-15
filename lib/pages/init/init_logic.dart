@@ -127,11 +127,3 @@ class InitLogic extends GetxController {
     }
   }
 }
-
-
-  //  // 要把data 缓存起来
-  //     var rs = await NavidromeApi.getAlbumList(data: data, type: "newest");
-  //     if (rs.status) {
-  //       Map map = rs.data?["albumList"];
-  //       if (map.isNotEmpty) {}
-  //     }

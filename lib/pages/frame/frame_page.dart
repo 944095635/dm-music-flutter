@@ -1,3 +1,4 @@
+import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/pages/home/navidrome/home_navidrome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
@@ -124,28 +125,52 @@ class FramePage extends GetView<FrameLogic> {
       child: Drawer(
         child: CustomScrollView(
           slivers: [
-            SliverSafeArea(
-              sliver: SliverPadding(
-                padding: EdgeInsets.all(Dimensions.pagePadding),
-                sliver: SliverList.separated(
-                  itemCount: controller.sourceList.length,
-                  itemBuilder: (context, index) {
-                    MusicSource source = controller.sourceList[index];
-                    return DrawerItem(
-                      source.type.name,
-                      source.type.icon,
-                      controller.sourceId == source.id,
-                      tag: source.id,
-                      onTap: () {
-                        controller.changeSource(source);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return 10.verticalSpace;
-                  },
+            SliverMainAxisGroup(
+              slivers: [
+                SliverSafeArea(
+                  bottom: false,
+                  minimum: EdgeInsets.symmetric(
+                    horizontal: Dimensions.pagePadding,
+                  ),
+                  sliver: SliverList.separated(
+                    itemCount: controller.sourceList.length,
+                    itemBuilder: (context, index) {
+                      MusicSource source = controller.sourceList[index];
+                      return DrawerItem(
+                        source.type.name,
+                        source.type.icon,
+                        controller.sourceId == source.id,
+                        tag: source.id,
+                        onTap: () {
+                          controller.changeSource(source);
+                        },
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return 10.verticalSpace;
+                    },
+                  ),
                 ),
-              ),
+
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: SafeArea(
+                    top: false,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.all(Dimensions.pagePadding),
+                        child: FilledButton(
+                          onPressed: () {
+                            CacheHelper.setSourceId("");
+                          },
+                          child: Text("清除所有数据"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -153,40 +178,3 @@ class FramePage extends GetView<FrameLogic> {
     );
   }
 }
-
-// SliverToBoxAdapter(
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(Dimensions.pagePadding),
-//                   child: Column(
-//                     children: [
-//                       DrawerItem(
-//                         Strings.appName,
-//                         "assets/images/logo.png",
-//                         true,
-//                         tag: "官方播放源 V2.0.7",
-//                         onTap: () {
-//                           Get.back();
-//                           //Get.to(() => LoginPage());
-//                           //Get.to(() => InitPage());
-//                           Get.toNamed('/dmusic', id: 1);
-//                         },
-//                       ),
-//                       10.verticalSpace,
-
-//                       DrawerItem(
-//                         "Navidrome",
-//                         "assets/images/navidrome.png",
-//                         false,
-//                         tag: "测试数据",
-//                         onTap: () {
-//                           Get.back();
-//                           //Get.to(() => LoginPage());
-//                           //Get.to(() => InitPage());
-//                           Get.toNamed('/navidrome', id: 1);
-//                         },
-//                       ),
-//                       20.verticalSpace,
-//                     ],
-//                   ),
-//                 ),
-//               ),

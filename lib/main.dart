@@ -239,15 +239,15 @@ class MyApp extends StatelessWidget {
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          side: WidgetStateBorderSide.resolveWith((state) {
-            Color color;
-            if (state.contains(WidgetState.disabled)) {
-              color = Colors.white10;
-            } else {
-              color = Colors.white24;
-            }
-            return BorderSide(color: color);
-          }),
+          // side: WidgetStateBorderSide.resolveWith((state) {
+          //   Color color;
+          //   if (state.contains(WidgetState.disabled)) {
+          //     color = Colors.white10;
+          //   } else {
+          //     color = Colors.white24;
+          //   }
+          //   return BorderSide(color: color);
+          // }),
           foregroundColor: WidgetStateProperty.resolveWith((state) {
             if (state.contains(WidgetState.disabled)) {
               return Colors.white60;
@@ -257,7 +257,7 @@ class MyApp extends StatelessWidget {
           }),
           backgroundColor: WidgetStateColor.resolveWith((state) {
             if (state.contains(WidgetState.disabled)) {
-              return Colors.black;
+              return Colors.transparent;
             }
             return Colors.white10;
           }),
