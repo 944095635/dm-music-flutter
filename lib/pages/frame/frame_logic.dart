@@ -27,6 +27,9 @@ class FrameLogic extends GetxController {
       sourceList.addAll(newSourceList);
       update();
     }
+
+    String route = Get.arguments["route"];
+    Get.toNamed(route, id: 1);
   }
 
   /// 切换播放源

@@ -91,10 +91,8 @@ class FramePage extends GetView<FrameLogic> {
 
   /// 局部导航
   Widget _buildNavigator() {
-    String route = Get.arguments["route"];
     return Navigator(
       key: Get.nestedKey(1),
-      initialRoute: route,
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case "/dmusic":
@@ -129,60 +127,57 @@ class FramePage extends GetView<FrameLogic> {
           slivers: [
             SliverSafeArea(
               bottom: false,
-              sliver: SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        MusicSourceType.dmusic.icon,
-                        width: 48,
-                        height: 48,
-                      ),
-                      10.verticalSpace,
-                      Text(
-                        Strings.appName,
-                      ),
-                      Text(
-                        "v2.0.7",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
+              sliver: SliverPadding(
+                padding: const EdgeInsets.all(Dimensions.pagePadding),
+                sliver: SliverList.separated(
+                  itemCount: controller.sourceList.length,
+                  itemBuilder: (context, index) {
+                    MusicSource source = controller.sourceList[index];
+                    return DrawerItem(
+                      source.type.name,
+                      source.type.icon,
+                      controller.sourceId == source.id,
+                      tag: source.id,
+                      onTap: () {
+                        controller.changeSource(source);
+                      },
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return 10.verticalSpace;
+                  },
                 ),
               ),
             ),
 
-            SliverPadding(
-              padding: const EdgeInsets.all(Dimensions.pagePadding),
-              sliver: SliverList.separated(
-                itemCount: controller.sourceList.length,
-                itemBuilder: (context, index) {
-                  MusicSource source = controller.sourceList[index];
-                  return DrawerItem(
-                    source.type.name,
-                    source.type.icon,
-                    controller.sourceId == source.id,
-                    tag: source.id,
-                    onTap: () {
-                      controller.changeSource(source);
-                    },
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return 10.verticalSpace;
-                },
-              ),
-            ),
+            SliverBottomWidget(
+              child: Column(
+                spacing: 10,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    spacing: 5,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        Strings.appName,
+                      ),
+                      Text(
+                        "V2.0.7",
+                      ),
+                    ],
+                  ),
 
-            SliverBottomWidget.button(
-              "清除所有数据",
-              onPressed: () {
-                CacheHelper.setSourceId("");
-              },
+                  FilledButton(
+                    onPressed: () {
+                      CacheHelper.setSourceId("");
+                    },
+                    child: Text(
+                      "清除所有数据",
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
