@@ -3,20 +3,19 @@ import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/pages/home/home_logic.dart';
+import 'package:dm_music/pages/home/home_dmusic_logic.dart';
 import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
 import 'package:dm_music/themes/dimensions.dart';
+import 'package:dm_music/widgets/list_title_widget.dart';
 
-/// 主页
-class HomePage extends GetView<HomeLogic> {
-  const HomePage({super.key});
+/// DMUSIC - 主页
+class HomeDmusicPage extends GetView<HomeDmusicLogic> {
+  const HomeDmusicPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeLogic());
-
-    final ThemeData theme = Theme.of(context);
+    Get.put(HomeDmusicLogic());
 
     /// 底部安全区域 48
     final double bottomSafeHeight = MediaQuery.of(context).padding.bottom;
@@ -25,13 +24,13 @@ class HomePage extends GetView<HomeLogic> {
     final double barSafeHeight = 180 + bottomSafeHeight;
     return Scaffold(
       body: controller.obx(
-        (state) => _buildBody(theme, barSafeHeight),
+        (state) => _buildBody(barSafeHeight),
       ),
     );
   }
 
   /// Body
-  Widget _buildBody(ThemeData theme, double bottomHeight) {
+  Widget _buildBody(double bottomHeight) {
     return CustomScrollView(
       slivers: [
         SliverSafeArea(
@@ -43,13 +42,13 @@ class HomePage extends GetView<HomeLogic> {
           sliver: SliverMainAxisGroup(
             slivers: [
               if (controller.newReleases.isNotEmpty) ...{
-                _buildNew(theme),
+                _buildNew(),
               },
 
-              _buildDMusic(theme),
+              _buildDMusic(),
 
               if (controller.playList.isNotEmpty) ...{
-                _buildPlayList(theme),
+                _buildPlayList(),
               },
             ],
           ),
@@ -59,18 +58,13 @@ class HomePage extends GetView<HomeLogic> {
   }
 
   /// DM 新歌
-  Widget _buildNew(ThemeData theme) {
+  Widget _buildNew() {
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(
-              Dimensions.pagePadding,
-            ),
-            child: Text(
-              "NEW RELEASES",
-              style: theme.textTheme.titleMedium,
-            ),
+          child: ListTitleWidget(
+            "NEW RELEASES", // "最新发布",
+            trailingText: "See All", // "全部",
           ),
         ),
 
@@ -104,18 +98,12 @@ class HomePage extends GetView<HomeLogic> {
   }
 
   /// DM 数据
-  Widget _buildDMusic(ThemeData theme) {
+  Widget _buildDMusic() {
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(
-              Dimensions.pagePadding,
-            ),
-            child: Text(
-              "RECENTLY PLAYED",
-              style: theme.textTheme.titleMedium,
-            ),
+          child: ListTitleWidget(
+            "RECENTLY PLAYED", // "最新发布",
           ),
         ),
 
@@ -152,18 +140,12 @@ class HomePage extends GetView<HomeLogic> {
   }
 
   /// DM 播放列表
-  Widget _buildPlayList(ThemeData theme) {
+  Widget _buildPlayList() {
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(
-              Dimensions.pagePadding,
-            ),
-            child: Text(
-              "PLAY LISTED",
-              style: theme.textTheme.titleMedium,
-            ),
+          child: ListTitleWidget(
+            "PLAY LISTED", // "播放列表",
           ),
         ),
 

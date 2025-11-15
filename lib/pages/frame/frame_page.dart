@@ -1,5 +1,8 @@
 import 'package:dm_music/helpers/cache_helper.dart';
+import 'package:dm_music/pages/home/home_dmusic_page.dart';
 import 'package:dm_music/pages/home/navidrome/home_navidrome_page.dart';
+import 'package:dm_music/values/strings.dart';
+import 'package:dm_music/widgets/sliver_bottom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +11,6 @@ import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/pages/frame/frame_logic.dart';
 import 'package:dm_music/pages/frame/widgets/drawer_item.dart';
 import 'package:dm_music/pages/frame/widgets/music_control.dart';
-import 'package:dm_music/pages/home/home_page.dart';
 import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
@@ -35,7 +37,7 @@ class FramePage extends GetView<FrameLogic> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DMUSIC'),
+        title: const Text(Strings.appName),
         centerTitle: false,
         actions: [
           ThemeButton(),
@@ -99,7 +101,7 @@ class FramePage extends GetView<FrameLogic> {
             return GetPageRoute(
               settings: settings,
               transition: Transition.fadeIn,
-              page: () => HomePage(),
+              page: () => HomeDmusicPage(),
             );
           case "/navidrome":
             return GetPageRoute(
@@ -125,52 +127,62 @@ class FramePage extends GetView<FrameLogic> {
       child: Drawer(
         child: CustomScrollView(
           slivers: [
-            SliverMainAxisGroup(
-              slivers: [
-                SliverSafeArea(
-                  bottom: false,
-                  minimum: EdgeInsets.symmetric(
-                    horizontal: Dimensions.pagePadding,
-                  ),
-                  sliver: SliverList.separated(
-                    itemCount: controller.sourceList.length,
-                    itemBuilder: (context, index) {
-                      MusicSource source = controller.sourceList[index];
-                      return DrawerItem(
-                        source.type.name,
-                        source.type.icon,
-                        controller.sourceId == source.id,
-                        tag: source.id,
-                        onTap: () {
-                          controller.changeSource(source);
-                        },
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return 10.verticalSpace;
-                    },
-                  ),
-                ),
-
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: SafeArea(
-                    top: false,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.all(Dimensions.pagePadding),
-                        child: FilledButton(
-                          onPressed: () {
-                            CacheHelper.setSourceId("");
-                          },
-                          child: Text("清除所有数据"),
+            SliverSafeArea(
+              bottom: false,
+              sliver: SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        MusicSourceType.dmusic.icon,
+                        width: 48,
+                        height: 48,
+                      ),
+                      10.verticalSpace,
+                      Text(
+                        Strings.appName,
+                      ),
+                      Text(
+                        "v2.0.7",
+                        style: TextStyle(
+                          fontSize: 12,
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
+            ),
+
+            SliverPadding(
+              padding: const EdgeInsets.all(Dimensions.pagePadding),
+              sliver: SliverList.separated(
+                itemCount: controller.sourceList.length,
+                itemBuilder: (context, index) {
+                  MusicSource source = controller.sourceList[index];
+                  return DrawerItem(
+                    source.type.name,
+                    source.type.icon,
+                    controller.sourceId == source.id,
+                    tag: source.id,
+                    onTap: () {
+                      controller.changeSource(source);
+                    },
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return 10.verticalSpace;
+                },
+              ),
+            ),
+
+            SliverBottomWidget.button(
+              "清除所有数据",
+              onPressed: () {
+                CacheHelper.setSourceId("");
+              },
             ),
           ],
         ),

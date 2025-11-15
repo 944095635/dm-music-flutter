@@ -7,7 +7,8 @@ import 'package:dm_music/models/music.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/services/play_service.dart';
 
-class HomeLogic extends GetxController with StateMixin {
+/// DMUSCI - 首页逻辑
+class HomeDmusicLogic extends GetxController with StateMixin {
   /// App 服务
   AppService appService = Get.find();
 
