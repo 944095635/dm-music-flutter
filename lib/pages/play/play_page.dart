@@ -93,24 +93,13 @@ class PlayPage extends GetView<PlayLogic> {
               Positioned(
                 left: 20,
                 right: 20,
-                top: 80,
+                top: 0,
                 bottom: 80,
                 child: Column(
                   children: [
                     Expanded(
-                      child: Center(
-                        child: Obx(
-                          () => ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: CachedNetworkImage(
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                              memCacheWidth: 600,
-                              imageUrl: controller.music.value!.cover,
-                            ),
-                          ),
-                        ),
+                      child: Obx(
+                        () => _buildContent(),
                       ),
                     ),
 
@@ -155,6 +144,45 @@ class PlayPage extends GetView<PlayLogic> {
     );
   }
 
+  Widget _buildContent() {
+    if (controller.displayLrc.value) {
+      return ShaderMask(
+        shaderCallback: (Rect bounds) {
+          return LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0x00FFFFFF),
+              Colors.white,
+              Color(0x00FFFFFF),
+            ],
+            stops: [0, 0.5, 1],
+          ).createShader(bounds);
+        },
+        child: SizedBox.expand(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(left: 80, top: 160, right: 40, bottom: 80),
+            child: Text(
+              controller.lrc.value ?? "无",
+            ),
+          ),
+        ),
+      );
+    }
+    return Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: CachedNetworkImage(
+          width: 200,
+          height: 200,
+          fit: BoxFit.cover,
+          memCacheWidth: 600,
+          imageUrl: controller.music.value!.cover,
+        ),
+      ),
+    );
+  }
+
   /// 背景图
   // Widget _buildBackImage() {
   //   return controller.music.value != null
@@ -186,25 +214,35 @@ class PlayPage extends GetView<PlayLogic> {
   /// 歌曲标题
   Widget _buildMusicTitle(ThemeData theme) {
     //debugPrint("_buildMusicTitle");
-    return Column(
-      spacing: 5,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: [
-        Text(
-          controller.music.value?.name ?? "",
-          style: theme.textTheme.bodyLarge,
+        Expanded(
+          child: Column(
+            spacing: 5,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                controller.music.value?.name ?? "",
+                style: theme.textTheme.bodyLarge,
+              ),
+              Text(
+                controller.music.value?.author ?? "",
+                style: theme.textTheme.bodyMedium,
+              ),
+              // 10.verticalSpace,
+              // Text(
+              //   "controller.lyric",
+              //   style: theme.textTheme.bodyMedium!.copyWith(
+              //     color: theme.colorScheme.onSurface.withAlpha(180),
+              //   ),
+              // ),
+            ],
+          ),
         ),
-        Text(
-          controller.music.value?.author ?? "",
-          style: theme.textTheme.bodyMedium,
+        IconButton(
+          onPressed: controller.onTapLrc,
+          icon: Text("词"),
         ),
-        // 10.verticalSpace,
-        // Text(
-        //   "controller.lyric",
-        //   style: theme.textTheme.bodyMedium!.copyWith(
-        //     color: theme.colorScheme.onSurface.withAlpha(180),
-        //   ),
-        // ),
       ],
     );
   }

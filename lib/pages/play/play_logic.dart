@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'package:dm_music/apis/navidrome_api.dart';
+import 'package:dm_music/helpers/cache_helper.dart';
+import 'package:dm_music/models/login_data/navidrome_data.dart';
 import 'package:dm_music/models/music.dart';
+import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +12,12 @@ import 'package:get/get.dart';
 class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 播放服务
   final PlayService playService = Get.find();
+
+  /// 显示歌词
+  final RxBool displayLrc = RxBool(false);
+
+  /// 歌词
+  final RxnString lrc = RxnString();
 
   /// 当前播放音乐
   final Rxn<Music> music = Rxn<Music>();
@@ -74,6 +84,8 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     //监听歌曲变化
     subMusicChange = playService.listenMusicChange((newMusic) {
       music.value = newMusic;
+      // 加载歌词
+      _initLyrics();
       debugPrint("歌曲切换回调:${newMusic.name}");
     });
 
@@ -146,5 +158,33 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 点击下一首按钮
   void onTapNext() {
     playService.playNext();
+  }
+
+  /// 初始化歌词
+  void _initLyrics() async {
+    lrc.value = null;
+    Music? music1 = music.value;
+    if (music1 != null) {
+      MusicSource? source = await CacheHelper.getSource();
+      if (source != null && source.type == MusicSourceType.navidrome) {
+        var data = NavidromeData.fromJson(source.data);
+        var result = await NavidromeApi.getLyrics(
+          data,
+          title: music1.name,
+          artist: music1.author,
+        );
+        if (result.status && result.data != null) {
+          // 成功之后读取数据列表
+          Map lyrics = result.data!["lyrics"];
+          //"artist":"周杰伦","title":"我的地盘","value"
+          lrc.value = lyrics["value"];
+        }
+      }
+    }
+  }
+
+  /// 显示歌词
+  void onTapLrc() {
+    displayLrc.value = !displayLrc.value;
   }
 }

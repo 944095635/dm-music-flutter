@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:dm_music/models/http_result.dart';
 import 'package:dm_music/models/login_data/navidrome_data.dart';
@@ -16,16 +17,33 @@ class NavidromeApi {
 
   static const String ver = "1.16.1";
 
+  static const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  static String? _salt;
+
+  static String? _token;
+
   /// 创建随机“盐”
   static String _createSalt() {
+    if (_salt != null) {
+      return _salt!;
+    }
     final rnd = Random.secure();
-    const chars =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final length = 6 + rnd.nextInt(6); // 6..11 chars
-    return List.generate(
+    _salt = List.generate(
       length,
       (_) => chars[rnd.nextInt(chars.length)],
     ).join();
+    return _salt!;
+  }
+
+  static String _createToken(String password, String s) {
+    if (_token != null) {
+      return _token!;
+    }
+    _token = md5.convert(utf8.encode(password + s)).toString();
+    return _token!;
   }
 
   /// 创建Url对象
@@ -35,7 +53,7 @@ class NavidromeApi {
     Map<String, dynamic>? parameters,
   ]) {
     String s = _createSalt();
-    String t = md5.convert(utf8.encode(data.password + s)).toString();
+    String t = _createToken(data.password, s);
     Map<String, dynamic> queryParameters = {
       "t": t,
       "s": s,
@@ -64,6 +82,7 @@ class NavidromeApi {
     try {
       var url = _createUrl(data, path, parameters);
       var result = await http.get(url);
+      debugPrint("url:$url");
       if (result.statusCode == 200) {
         String jsonBody = result.body;
         var map = json.decode(jsonBody);
@@ -140,5 +159,14 @@ class NavidromeApi {
     required String id,
   }) async {
     return _get(data, '/rest/getSong', {"id": id});
+  }
+
+  /// 获取歌词
+  static Future<HttpResult> getLyrics(
+    NavidromeData data, {
+    String? title,
+    String? artist,
+  }) async {
+    return _get(data, '/rest/getLyrics', {"title": title, "artist": artist});
   }
 }

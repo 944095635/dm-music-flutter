@@ -7,6 +7,9 @@ import 'package:dm_music/models/login_data/navidrome_data.dart';
 import 'package:dm_music/models/music_source.dart';
 
 class HomeNavidromeLogic extends GetxController with StateMixin {
+  /// 播放服务
+  final PlayService playService = Get.find();
+
   /// 专辑列表
   final List<Map> albumList = List.empty(growable: true);
 
@@ -46,7 +49,6 @@ class HomeNavidromeLogic extends GetxController with StateMixin {
 
   /// 点击专辑
   void onTapAlbum(Map album) async {
-    PlayService playService = Get.find();
     // 加载专辑
     String id = album["id"];
     var result = await NavidromeApi.getAlbum(data!, id: id);
