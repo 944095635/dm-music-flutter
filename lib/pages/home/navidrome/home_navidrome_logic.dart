@@ -6,6 +6,7 @@ import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/models/login_data/navidrome_data.dart';
 import 'package:dm_music/models/music_source.dart';
 
+/// 服务主页
 class HomeNavidromeLogic extends GetxController with StateMixin {
   /// 播放服务
   final PlayService playService = Get.find();
