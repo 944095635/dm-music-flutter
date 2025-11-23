@@ -93,9 +93,10 @@ class PlayPage extends GetView<PlayLogic> {
               Positioned(
                 left: 20,
                 right: 20,
-                top: 0,
+                top: 80,
                 bottom: 80,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
                       child: Obx(
@@ -159,11 +160,18 @@ class PlayPage extends GetView<PlayLogic> {
             stops: [0, 0.5, 1],
           ).createShader(bounds);
         },
-        child: SizedBox.expand(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(left: 80, top: 160, right: 40, bottom: 80),
-            child: Text(
-              controller.lrc.value ?? "无",
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: 40,
+            top: 100,
+            right: 20,
+            bottom: 80,
+          ),
+          child: Text(
+            controller.lrc.value ?? "",
+            style: TextStyle(
+              height: 3,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
