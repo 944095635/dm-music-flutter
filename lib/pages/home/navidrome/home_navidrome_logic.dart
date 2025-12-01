@@ -32,16 +32,20 @@ class HomeNavidromeLogic extends GetxController with StateMixin {
       var result = await NavidromeApi.getAlbumList(
         data: data!,
         type: "newest", //"recent", // "newest",
+        // 必传 random，newest， highest，frequent，recent
+        //name: "周杰伦",
       );
       if (result.status && result.data != null) {
         // 成功之后读取数据列表
         Map albumListMap = result.data!["albumList"];
-        List<dynamic> albumMaps = albumListMap["album"];
-        for (var albumMap in albumMaps) {
-          String coverArt = albumMap["coverArt"];
-          String cover = await NavidromeApi.getCoverUrl(data!, coverArt);
-          albumMap["cover"] = cover;
-          albumList.add(albumMap);
+        if (albumListMap.isNotEmpty) {
+          List<dynamic> albumMaps = albumListMap["album"];
+          for (var albumMap in albumMaps) {
+            String coverArt = albumMap["coverArt"];
+            String cover = await NavidromeApi.getCoverUrl(data!, coverArt);
+            albumMap["cover"] = cover;
+            albumList.add(albumMap);
+          }
         }
       }
     }
@@ -63,6 +67,7 @@ class HomeNavidromeLogic extends GetxController with StateMixin {
         music.name = songMap["title"];
         String id = songMap["id"];
         String coverArt = songMap["coverArt"];
+        music.id = id;
         music.author = songMap["artist"];
         music.source = await NavidromeApi.getStream(data!, id);
         music.cover = await NavidromeApi.getCoverUrl(data!, coverArt);

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:dm_music/models/http_result.dart';
 import 'package:dm_music/models/login_data/navidrome_data.dart';
@@ -25,7 +26,7 @@ class NavidromeApi {
   static String? _token;
 
   /// 创建随机“盐”
-  static String _createSalt() {
+  static String createSalt() {
     if (_salt != null) {
       return _salt!;
     }
@@ -38,7 +39,7 @@ class NavidromeApi {
     return _salt!;
   }
 
-  static String _createToken(String password, String s) {
+  static String createToken(String password, String s) {
     if (_token != null) {
       return _token!;
     }
@@ -51,19 +52,23 @@ class NavidromeApi {
     NavidromeData data,
     String path, [
     Map<String, dynamic>? parameters,
+    bool userApi = false,
   ]) {
-    String s = _createSalt();
-    String t = _createToken(data.password, s);
-    Map<String, dynamic> queryParameters = {
-      "t": t,
-      "s": s,
-      "v": ver,
-      "f": "json",
-      "u": data.user,
-      "c": Strings.appName,
-    };
-    if (parameters != null) {
-      queryParameters.addAll(parameters);
+    // String s = createSalt();
+    // String t = createToken(data.password, s);
+    Map<String, dynamic>? queryParameters;
+    if (!userApi) {
+      queryParameters = {
+        "t": data.subsonicToken,
+        "s": data.subsonicSalt,
+        "v": ver,
+        "f": "json",
+        "u": data.user,
+        "c": Strings.appName,
+      };
+      if (parameters != null) {
+        queryParameters.addAll(parameters);
+      }
     }
     return Uri.http(
       data.server,
@@ -77,26 +82,89 @@ class NavidromeApi {
     NavidromeData data,
     String path, [
     Map<String, dynamic>? parameters,
+    bool useApi = false,
   ]) async {
     HttpResult httpResult = HttpResult();
     try {
-      var url = _createUrl(data, path, parameters);
-      var result = await http.get(url);
+      var url = _createUrl(data, path, parameters, useApi);
+      Map<String, String>? headers;
+      if (useApi && data.token != null) {
+        headers = {"x-nd-authorization": "Bearer ${data.token!}"};
+      }
+      var result = await http.get(url, headers: headers);
       debugPrint("url:$url");
       if (result.statusCode == 200) {
         String jsonBody = result.body;
         var map = json.decode(jsonBody);
-        Map subResponse = map["subsonic-response"];
-        String status = subResponse["status"];
-        //debugPrint(status);
-        httpResult.status = status == "ok";
-        if (httpResult.status) {
-          httpResult.data = subResponse;
+        if (useApi) {
+          if (map != null) {
+            httpResult.status = true;
+            httpResult.data = map;
+          }
         } else {
-          Map error = subResponse["error"];
-          // int errorCode = error["code"];
-          String errorMsg = error["message"];
-          httpResult.msg = errorMsg;
+          Map subResponse = map["subsonic-response"];
+          String status = subResponse["status"];
+          //debugPrint(status);
+          httpResult.status = status == "ok";
+          if (httpResult.status) {
+            httpResult.data = subResponse;
+          } else {
+            Map error = subResponse["error"];
+            // int errorCode = error["code"];
+            String errorMsg = error["message"];
+            httpResult.msg = errorMsg;
+          }
+        }
+      }
+    } catch (e) {
+      //debugPrint(e.toString());
+      httpResult.status = false;
+      httpResult.msg = "网络异常";
+    }
+    return httpResult;
+  }
+
+  /// 通用Post函数
+  static Future<HttpResult> _post(
+    NavidromeData data,
+    String path, [
+    Map<String, String>? parameters,
+    bool useApi = false,
+  ]) async {
+    HttpResult httpResult = HttpResult();
+    try {
+      var url = _createUrl(data, path, parameters, useApi);
+      Map<String, String> headers = {"content-type": "application/json"};
+      if (useApi && data.token != null) {
+        headers.addAll({"x-nd-authorization": data.token!});
+      }
+      var result = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(parameters),
+      );
+      debugPrint("url:$url");
+      if (result.statusCode == 200) {
+        String jsonBody = result.body;
+        var map = json.decode(jsonBody);
+        if (useApi) {
+          if (map != null) {
+            httpResult.status = true;
+            httpResult.data = map;
+          }
+        } else {
+          Map subResponse = map["subsonic-response"];
+          String status = subResponse["status"];
+          //debugPrint(status);
+          httpResult.status = status == "ok";
+          if (httpResult.status) {
+            httpResult.data = subResponse;
+          } else {
+            Map error = subResponse["error"];
+            // int errorCode = error["code"];
+            String errorMsg = error["message"];
+            httpResult.msg = errorMsg;
+          }
         }
       }
     } catch (e) {
@@ -141,8 +209,13 @@ class NavidromeApi {
   static Future<HttpResult> getAlbumList({
     required NavidromeData data,
     required String type, // 必传 random，newest， highest，frequent，recent
+    String? name,
   }) async {
-    return _get(data, '/rest/getAlbumList', {"type": type, "size": "100"});
+    return _get(data, '/rest/getAlbumList', {
+      "type": type,
+      "size": "500",
+      "alphabeticalByName": name,
+    });
   }
 
   /// 获取专辑
@@ -161,6 +234,15 @@ class NavidromeApi {
     return _get(data, '/rest/getSong', {"id": id});
   }
 
+  /// 获取歌曲
+  static Future<HttpResult> getSong1({
+    required NavidromeData data,
+    required String id,
+  }) async {
+    //http://183.66.27.24:4533/api/song?id=8ae63f12d122923e5fdc0cfb50ac17e2
+    return _get(data, '/api/song/$id', {}, true);
+  }
+
   /// 获取歌词
   static Future<HttpResult> getLyrics(
     NavidromeData data, {
@@ -168,5 +250,17 @@ class NavidromeApi {
     String? artist,
   }) async {
     return _get(data, '/rest/getLyrics', {"title": title, "artist": artist});
+  }
+
+  /// api 接口登录
+  static Future<HttpResult> login(
+    NavidromeData data,
+    String username,
+    String password,
+  ) {
+    return _post(data, '/auth/login', {
+      "username": username,
+      "password": password,
+    }, true);
   }
 }

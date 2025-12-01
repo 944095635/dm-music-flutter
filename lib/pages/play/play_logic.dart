@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dm_music/apis/navidrome_api.dart';
 import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/models/login_data/navidrome_data.dart';
 import 'package:dm_music/models/music.dart';
+import 'package:dm_music/models/music_lrc.dart';
 import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,10 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   final RxBool displayLrc = RxBool(false);
 
   /// 歌词
-  final RxnString lrc = RxnString();
+  final Rxn<MusicLrc> lrc = Rxn();
+
+  /// 歌词当前行
+  final RxInt lrcLineIndex = RxInt(0);
 
   /// 当前播放音乐
   final Rxn<Music> music = Rxn<Music>();
@@ -168,16 +173,17 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
       MusicSource? source = await CacheHelper.getSource();
       if (source != null && source.type == MusicSourceType.navidrome) {
         var data = NavidromeData.fromJson(source.data);
-        var result = await NavidromeApi.getLyrics(
-          data,
-          title: music1.name,
-          artist: music1.author,
+        var result = await NavidromeApi.getSong1(
+          data: data,
+          id: music1.id ?? "",
         );
         if (result.status && result.data != null) {
-          // 成功之后读取数据列表
-          Map lyrics = result.data!["lyrics"];
-          //"artist":"周杰伦","title":"我的地盘","value"
-          lrc.value = lyrics["value"];
+          if (result.data is Map) {
+            String lyricsStr = result.data["lyrics"];
+            List lyrics = json.decode(lyricsStr);
+            lrc.value = MusicLrc.fromJson(lyrics.first);
+            debugPrint("歌词：${lrc.value}");
+          }
         }
       }
     }

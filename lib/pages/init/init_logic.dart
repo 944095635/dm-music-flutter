@@ -103,8 +103,12 @@ class InitLogic extends GetxController {
       user: username,
       password: password,
     );
-    var result = await NavidromeApi.ping(data);
-    if (result.status) {
+    var loginResult = await NavidromeApi.login(data, username, password);
+    if (loginResult.status) {
+      var loginData = loginResult.data;
+      data.subsonicSalt = loginData["subsonicSalt"];
+      data.subsonicToken = loginData["subsonicToken"];
+      data.token = loginData["token"];
       sourceList.add(
         MusicSource(
           id: server,
@@ -123,7 +127,7 @@ class InitLogic extends GetxController {
       );
     } else {
       SmartDialog.dismiss();
-      SmartDialog.showToast(result.msg ?? "连接失败");
+      SmartDialog.showToast(loginResult.msg ?? "登录失败");
     }
   }
 }

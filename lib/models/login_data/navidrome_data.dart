@@ -9,7 +9,15 @@ class NavidromeData {
   final String user;
   final String password;
 
-  const NavidromeData({
+  /// 盐
+  String? subsonicSalt;
+
+  String? subsonicToken;
+
+  /// api接口使用的token
+  String? token;
+
+  NavidromeData({
     required this.server,
     required this.user,
     required this.password,

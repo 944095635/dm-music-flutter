@@ -217,6 +217,8 @@ class MusicControl extends GetView<PlayLogic> {
                 ),
                 Text(
                   music.author ?? "",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall!.copyWith(
                     fontWeight: FontWeight.w500,
                     color: theme.colorScheme.onSurface.withAlpha(160),

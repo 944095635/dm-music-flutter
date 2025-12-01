@@ -14,6 +14,9 @@ class Music {
   /// 音频链接源
   String? source;
 
+  /// 歌曲Id
+  String? id;
+
   /// 收藏
   RxBool like = RxBool(false);
 }

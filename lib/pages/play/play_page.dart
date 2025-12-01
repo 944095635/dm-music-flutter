@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dm_music/extension/duration_extensions.dart';
 import 'package:dm_music/pages/play/play_buttons.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
+import 'package:dm_music/pages/play/widgets/play_lrc_widget.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 import 'package:flutter/material.dart';
@@ -160,21 +161,7 @@ class PlayPage extends GetView<PlayLogic> {
             stops: [0, 0.5, 1],
           ).createShader(bounds);
         },
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            left: 40,
-            top: 100,
-            right: 20,
-            bottom: 80,
-          ),
-          child: Text(
-            controller.lrc.value ?? "",
-            style: TextStyle(
-              height: 3,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
+        child: PlayLrcWidget(controller.lrc.value),
       );
     }
     return Center(
