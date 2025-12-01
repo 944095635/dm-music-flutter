@@ -181,8 +181,10 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
           if (result.data is Map) {
             String lyricsStr = result.data["lyrics"];
             List lyrics = json.decode(lyricsStr);
-            lrc.value = MusicLrc.fromJson(lyrics.first);
-            debugPrint("歌词：${lrc.value}");
+            if (lyrics.isNotEmpty) {
+              lrc.value = MusicLrc.fromJson(lyrics.first);
+              debugPrint("歌词：${lrc.value}");
+            }
           }
         }
       }
