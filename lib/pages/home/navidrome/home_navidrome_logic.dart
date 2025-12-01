@@ -31,9 +31,8 @@ class HomeNavidromeLogic extends GetxController with StateMixin {
       // 加载专辑
       var result = await NavidromeApi.getAlbumList(
         data: data!,
-        type: "newest", //"recent", // "newest",
+        type: "recent", //"recent", // "newest",
         // 必传 random，newest， highest，frequent，recent
-        //name: "周杰伦",
       );
       if (result.status && result.data != null) {
         // 成功之后读取数据列表
