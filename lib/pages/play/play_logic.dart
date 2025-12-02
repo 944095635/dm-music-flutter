@@ -10,7 +10,6 @@ import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/core/lyric_controller.dart';
 import 'package:flutter_lyric/core/lyric_model.dart';
-import 'package:flutter_lyric/core/lyric_parse.dart';
 import 'package:get/get.dart';
 
 /// 播放逻辑
@@ -95,6 +94,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     //监听歌曲变化
     subMusicChange = playService.listenMusicChange((newMusic) {
       music.value = newMusic;
+      progress.value = 0;
       // 加载歌词
       loadLrc();
       debugPrint("歌曲切换回调:${newMusic.name}");
@@ -196,7 +196,25 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
             }
           }
         }
+      } else if (source != null && source.type == MusicSourceType.dmusic) {
+        if (music1.name.contains("光年之外")) {
+          loadAssetsLrc('assets/lrcs/光年之外.lrc');
+        } else if (music1.name.contains("是一场烟火")) {
+          loadAssetsLrc('assets/lrcs/是一场烟火.lrc');
+        } else if (music1.name.contains("Nu")) {
+          loadAssetsLrc('assets/lrcs/Nu.lrc');
+        }
       }
+    }
+  }
+
+  void loadAssetsLrc(String lrc) async {
+    // 读取光年之外.lrc
+    final String lrcStr = await DefaultAssetBundle.of(
+      Get.context!,
+    ).loadString(lrc);
+    if (lrcStr.isNotEmpty) {
+      lrcController.loadLyric(lrcStr);
     }
   }
 
