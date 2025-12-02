@@ -1,15 +1,14 @@
 import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_lyric/widgets/lyric_view.dart';
+import 'package:flutter_styled/size_extension.dart';
+import 'package:get/get.dart';
 import 'package:dm_music/extension/duration_extensions.dart';
 import 'package:dm_music/pages/play/play_buttons.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
-import 'package:dm_music/pages/play/widgets/play_lrc_widget.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:dm_music/widgets/theme_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_styled/size_extension.dart';
-import 'package:get/get.dart';
 
 class PlayPage extends GetView<PlayLogic> {
   const PlayPage({super.key});
@@ -148,21 +147,7 @@ class PlayPage extends GetView<PlayLogic> {
 
   Widget _buildContent() {
     if (controller.displayLrc.value) {
-      return ShaderMask(
-        shaderCallback: (Rect bounds) {
-          return LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0x00FFFFFF),
-              Colors.white,
-              Color(0x00FFFFFF),
-            ],
-            stops: [0, 0.5, 1],
-          ).createShader(bounds);
-        },
-        child: PlayLrcWidget(controller.lrc.value),
-      );
+      return LyricView(controller: controller.lrcController);
     }
     return Center(
       child: ClipRRect(

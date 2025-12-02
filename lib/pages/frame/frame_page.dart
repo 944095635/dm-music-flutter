@@ -171,6 +171,7 @@ class FramePage extends GetView<FrameLogic> {
                   FilledButton(
                     onPressed: () {
                       CacheHelper.setSourceId("");
+                      CacheHelper.clear();
                     },
                     child: Text(
                       "清除所有数据",

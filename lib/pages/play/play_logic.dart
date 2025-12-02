@@ -8,6 +8,9 @@ import 'package:dm_music/models/music_lrc.dart';
 import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_lyric/core/lyric_controller.dart';
+import 'package:flutter_lyric/core/lyric_model.dart';
+import 'package:flutter_lyric/core/lyric_parse.dart';
 import 'package:get/get.dart';
 
 /// 播放逻辑
@@ -17,9 +20,6 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
   /// 显示歌词
   final RxBool displayLrc = RxBool(false);
-
-  /// 歌词
-  final Rxn<MusicLrc> lrc = Rxn();
 
   /// 歌词当前行
   final RxInt lrcLineIndex = RxInt(0);
@@ -45,6 +45,9 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 播放按钮动画控制器
   late AnimationController playButtonController;
 
+  /// 歌词控制器
+  late LyricController lrcController;
+
   /// 订阅播放状态
   StreamSubscription? subPlayerState;
 
@@ -60,20 +63,21 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 销毁事件
   @override
   void onClose() {
-    //销毁媒体
+    // 销毁媒体
     music.close();
-    //取消订阅
+    // 取消订阅
     subPlayerState?.cancel();
     subMusicPosition?.cancel();
     subMusicDuration?.cancel();
 
-    //销毁动画控制器
+    // 销毁动画控制器
+    lrcController.dispose();
     slideController?.dispose();
     playButtonController.dispose();
 
-    //销毁进度监听
+    // 销毁进度监听
     progress.close();
-    //position.close();
+    // position.close();
     duration.close();
 
     super.onClose();
@@ -86,16 +90,19 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     playButtonController = AnimationController(vsync: this)
       ..duration = Durations.long2;
 
+    lrcController = LyricController();
+
     //监听歌曲变化
     subMusicChange = playService.listenMusicChange((newMusic) {
       music.value = newMusic;
       // 加载歌词
-      _initLyrics();
+      loadLrc();
       debugPrint("歌曲切换回调:${newMusic.name}");
     });
 
     //监听播放状态变化
     subPlayerState = playService.listenPlayerState((playing) {
+      debugPrint("歌曲状态回调:$playing");
       if (playing) {
         slideController?.forward();
         playButtonController.forward();
@@ -107,8 +114,10 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     //监听进度变化
     subMusicPosition = playService.listenMusicPosition((Duration newPosition) {
+      debugPrint("歌曲进度回调:$newPosition");
       // 更新进度
       position.value = newPosition;
+      lrcController.setProgress(newPosition);
       // 拖拽进度条的时候不会更新到进度条上面
       if (!isDragProgress) {
         // 计算百分比
@@ -129,6 +138,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     //监听长度变化
     subMusicDuration = playService.listenMusicDuration((newDuration) {
+      debugPrint("歌曲长度回调:$newDuration");
       duration.value = newDuration;
     });
   }
@@ -156,9 +166,8 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     playService.playNext();
   }
 
-  /// 初始化歌词
-  void _initLyrics() async {
-    lrc.value = null;
+  /// 加载歌词
+  void loadLrc() async {
     Music? music1 = music.value;
     if (music1 != null) {
       MusicSource? source = await CacheHelper.getSource();
@@ -173,8 +182,17 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
             String lyricsStr = result.data["lyrics"];
             List lyrics = json.decode(lyricsStr);
             if (lyrics.isNotEmpty) {
-              lrc.value = MusicLrc.fromJson(lyrics.first);
-              debugPrint("歌词：${lrc.value}");
+              var lrcModel = MusicLrc.fromJson(lyrics.first);
+              List<LyricLine> lines = List.empty(growable: true);
+              for (var lrc in lrcModel.line) {
+                lines.add(
+                  LyricLine(
+                    start: Duration(milliseconds: lrc.start),
+                    text: lrc.value,
+                  ),
+                );
+              }
+              lrcController.loadLyricModel(LyricModel(lines: lines));
             }
           }
         }

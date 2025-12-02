@@ -65,4 +65,10 @@ class CacheHelper {
     }
     return null;
   }
+
+  /// 清除所有缓存
+  static void clear() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
 }

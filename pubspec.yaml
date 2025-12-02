@@ -52,6 +52,9 @@ dependencies:
   pointycastle: ^3.9.1 # 网易云音乐加解密
 
 
+  # 歌词渲染
+  flutter_lyric: ^3.0.0+1
+
   # 音频解码
   media_kit: ^1.2.2            # Primary package.
   media_kit_libs_audio: ^1.0.7 # Native audio dependencies.

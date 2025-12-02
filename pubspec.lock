@@ -286,6 +286,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  flutter_lyric:
+    dependency: "direct main"
+    description:
+      name: flutter_lyric
+      sha256: "9972ebe82ce95f64c61dae8f8c2071ece07e9aa1c71a859f93b4ab18c155c8bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0+1"
   flutter_smart_dialog:
     dependency: "direct main"
     description:

@@ -38,7 +38,6 @@ class PlayService extends GetxService {
   /// 播放歌曲变化监听
   StreamSubscription listenMusicChange(Function(Music music) onData) {
     return _player.stream.playlist.listen((e) {
-      debugPrint("listenMusicChange:$e");
       onData(_playList![e.index]);
     });
   }
