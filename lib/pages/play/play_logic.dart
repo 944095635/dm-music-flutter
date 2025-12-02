@@ -10,7 +10,6 @@ import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/core/lyric_controller.dart';
 import 'package:flutter_lyric/core/lyric_model.dart';
-import 'package:flutter_lyric/core/lyric_parse.dart';
 import 'package:get/get.dart';
 
 /// 播放逻辑
