@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:media_kit/media_kit.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,8 @@ void main() {
   //   ),
   // );
 
+  WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
   runApp(const MyApp());
 }
 

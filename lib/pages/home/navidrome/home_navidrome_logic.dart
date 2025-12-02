@@ -34,7 +34,7 @@ class HomeNavidromeLogic extends GetxController with StateMixin {
         type: "recent", //"recent", // "newest",
         // 必传 random，newest， highest，frequent，recent
       );
-      if (result.status && result.data != null) {
+      if (result.status == true && result.data != null) {
         // 成功之后读取数据列表
         Map albumListMap = result.data!["albumList"];
         if (albumListMap.isNotEmpty) {
@@ -56,7 +56,7 @@ class HomeNavidromeLogic extends GetxController with StateMixin {
     // 加载专辑
     String id = album["id"];
     var result = await NavidromeApi.getAlbum(data!, id: id);
-    if (result.status && result.data != null) {
+    if (result.status == true && result.data != null) {
       // 成功之后读取数据列表
       Map album = result.data!["album"];
       List<dynamic> songMaps = album["song"];

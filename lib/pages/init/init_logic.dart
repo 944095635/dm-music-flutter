@@ -104,7 +104,7 @@ class InitLogic extends GetxController {
       password: password,
     );
     var loginResult = await NavidromeApi.login(data, username, password);
-    if (loginResult.status) {
+    if (loginResult.status == true) {
       var loginData = loginResult.data;
       data.subsonicSalt = loginData["subsonicSalt"];
       data.subsonicToken = loginData["subsonicToken"];

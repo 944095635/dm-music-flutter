@@ -31,27 +31,7 @@ class _PlayLrcWidgetState extends State<PlayLrcWidget> {
       List lines = widget.lrc!.line;
       PlayService playService = Get.find();
       if (widget.lrc != null) {
-        //监听进度变化
-        subMusicPosition = playService.listenMusicPosition((
-          Duration newPosition,
-          double newProgress,
-        ) {
-          int newIndex = -1;
-          for (int i = 0; i < lines.length; i++) {
-            if (lines[i].start <= newPosition.inMilliseconds) {
-              newIndex = i;
-            } else {
-              break;
-            }
-          }
-
-          if (newIndex != _currentIndex) {
-            setState(() {
-              _currentIndex = newIndex;
-            });
-            _scrollToCurrentLine();
-          }
-        });
+        
       }
     }
   }

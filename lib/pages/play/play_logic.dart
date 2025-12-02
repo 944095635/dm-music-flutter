@@ -95,26 +95,8 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     });
 
     //监听播放状态变化
-    subPlayerState = playService.listenPlayerState((state) {
-      // switch (state.processingState) {
-      //   case ProcessingState.idle:
-      //     debugPrint("歌曲状态回调:idle");
-      //     break;
-      //   case ProcessingState.loading:
-      //     debugPrint("歌曲状态回调:loading");
-      //     break;
-      //   case ProcessingState.buffering:
-      //     debugPrint("歌曲状态回调:buffering");
-      //     break;
-      //   case ProcessingState.ready:
-      //     debugPrint("歌曲状态回调:ready");
-      //     break;
-      //   case ProcessingState.completed:
-      //     debugPrint("歌曲状态回调:completed");
-      //     break;
-      // }
-
-      if (state.playing) {
+    subPlayerState = playService.listenPlayerState((playing) {
+      if (playing) {
         slideController?.forward();
         playButtonController.forward();
       } else {
@@ -124,14 +106,22 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     });
 
     //监听进度变化
-    subMusicPosition = playService.listenMusicPosition((
-      Duration newPosition,
-      double newProgress,
-    ) {
+    subMusicPosition = playService.listenMusicPosition((Duration newPosition) {
       // 更新进度
       position.value = newPosition;
       // 拖拽进度条的时候不会更新到进度条上面
       if (!isDragProgress) {
+        // 计算百分比
+        double newProgress =
+            newPosition.inMicroseconds / duration.value.inMicroseconds;
+        // debugPrint("歌曲进度回调1:$progress");
+        if (newProgress > 1) {
+          newProgress = 1;
+        } else if (newProgress < 0) {
+          newProgress = 0;
+        } else if (newProgress.isNaN) {
+          newProgress = 0;
+        }
         progress.value = newProgress;
         //debugPrint("歌曲进度回调:$newProgress");
       }
@@ -149,8 +139,9 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   }
 
   /// 点击进度条
-  onTapProgress(double progress) {
-    if (!playService.playPosition(progress)) {
+  void onTapProgress(double progress) async {
+    bool state = await playService.playPosition(progress);
+    if (!state) {
       this.progress.value = 0;
     }
   }

@@ -106,7 +106,7 @@ class NavidromeApi {
           String status = subResponse["status"];
           //debugPrint(status);
           httpResult.status = status == "ok";
-          if (httpResult.status) {
+          if (httpResult.status == true) {
             httpResult.data = subResponse;
           } else {
             Map error = subResponse["error"];
@@ -157,7 +157,7 @@ class NavidromeApi {
           String status = subResponse["status"];
           //debugPrint(status);
           httpResult.status = status == "ok";
-          if (httpResult.status) {
+          if (httpResult.status == true) {
             httpResult.data = subResponse;
           } else {
             Map error = subResponse["error"];
