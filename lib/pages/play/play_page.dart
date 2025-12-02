@@ -145,6 +145,7 @@ class PlayPage extends GetView<PlayLogic> {
     );
   }
 
+  /// 显示图像或者歌词
   Widget _buildContent() {
     if (controller.displayLrc.value) {
       return LyricView(controller: controller.lrcController);

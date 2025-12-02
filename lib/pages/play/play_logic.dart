@@ -8,8 +8,8 @@ import 'package:dm_music/models/music_lrc.dart';
 import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_lyric/core/lyric_controller.dart';
 import 'package:flutter_lyric/core/lyric_model.dart';
+import 'package:flutter_lyric/flutter_lyric.dart';
 import 'package:get/get.dart';
 
 /// 播放逻辑
@@ -95,6 +95,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     subMusicChange = playService.listenMusicChange((newMusic) {
       music.value = newMusic;
       progress.value = 0;
+      lrcController.setProgress(Duration.zero);
       // 加载歌词
       loadLrc();
       debugPrint("歌曲切换回调:${newMusic.name}");
@@ -204,9 +205,10 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
         } else if (music1.name.contains("Nu")) {
           loadAssetsLrc('assets/lrcs/Nu.lrc');
         } else {
+          lrcController.stopSelection();
           lrcController.loadLyricModel(
             LyricModel(
-              lines: [LyricLine(start: Duration(), text: "暂无歌词")],
+              lines: [LyricLine(start: Duration.zero, text: "暂无歌词")],
             ),
           );
         }
