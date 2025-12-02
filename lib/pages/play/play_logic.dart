@@ -114,7 +114,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     //监听进度变化
     subMusicPosition = playService.listenMusicPosition((Duration newPosition) {
-      debugPrint("歌曲进度回调:$newPosition");
+      // debugPrint("歌曲进度回调:$newPosition");
       // 更新进度
       position.value = newPosition;
       lrcController.setProgress(newPosition);
@@ -203,6 +203,8 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
           loadAssetsLrc('assets/lrcs/是一场烟火.lrc');
         } else if (music1.name.contains("Nu")) {
           loadAssetsLrc('assets/lrcs/Nu.lrc');
+        } else {
+          lrcController.loadLyricModel(LyricModel(lines: []));
         }
       }
     }
