@@ -1,4 +1,5 @@
 import 'package:dm_music/helpers/cache_helper.dart';
+import 'package:dm_music/helpers/network_helper.dart';
 import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/pages/frame/frame_page.dart';
 import 'package:dm_music/pages/init/init_page.dart';
@@ -25,6 +26,9 @@ class _SplashPageState extends State<SplashPage> {
 
   /// 初始化
   void init() async {
+    // 启动网络访问
+    NetworkHelper.init();
+
     // 放置服务
     AppService appService = Get.put(AppService());
     appService.init();
