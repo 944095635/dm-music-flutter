@@ -24,7 +24,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   final RxInt lrcLineIndex = RxInt(0);
 
   /// 当前播放音乐
-  final Rxn<Music> music = Rxn<Music>();
+  Music? music;
 
   /// 当前进度
   final RxDouble progress = 0.0.obs;
@@ -62,8 +62,6 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 销毁事件
   @override
   void onClose() {
-    // 销毁媒体
-    music.close();
     // 取消订阅
     subPlayerState?.cancel();
     subMusicPosition?.cancel();
@@ -93,12 +91,13 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     //监听歌曲变化
     subMusicChange = playService.listenMusicChange((newMusic) {
-      music.value = newMusic;
+      music = newMusic;
       progress.value = 0;
       lrcController.setProgress(Duration.zero);
       // 加载歌词
       loadLrc();
       debugPrint("歌曲切换回调:${newMusic.name}");
+      update();
     });
 
     //监听播放状态变化
@@ -139,7 +138,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     //监听长度变化
     subMusicDuration = playService.listenMusicDuration((newDuration) {
-      debugPrint("歌曲长度回调:$newDuration");
+      // debugPrint("歌曲长度回调:$newDuration");
       duration.value = newDuration;
     });
   }
@@ -169,14 +168,13 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
   /// 加载歌词
   void loadLrc() async {
-    Music? music1 = music.value;
-    if (music1 != null) {
+    if (music != null) {
       MusicSource? source = await CacheHelper.getSource();
       if (source != null && source.type == MusicSourceType.navidrome) {
         var data = NavidromeData.fromJson(source.data);
         var result = await NavidromeApi.getSong1(
           data: data,
-          id: music1.id ?? "",
+          id: music?.id ?? "",
         );
         if (result.status && result.data != null) {
           if (result.data is Map) {
@@ -198,11 +196,11 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
           }
         }
       } else if (source != null && source.type == MusicSourceType.dmusic) {
-        if (music1.name.contains("光年之外")) {
+        if (music!.name.contains("光年之外")) {
           loadAssetsLrc('assets/lrcs/光年之外.lrc');
-        } else if (music1.name.contains("是一场烟火")) {
+        } else if (music!.name.contains("是一场烟火")) {
           loadAssetsLrc('assets/lrcs/是一场烟火.lrc');
-        } else if (music1.name.contains("Nu")) {
+        } else if (music!.name.contains("Nu")) {
           loadAssetsLrc('assets/lrcs/Nu.lrc');
         } else {
           lrcController.stopSelection();
@@ -229,5 +227,6 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 显示歌词
   void onTapLrc() {
     displayLrc.value = !displayLrc.value;
+    update();
   }
 }

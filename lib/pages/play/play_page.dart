@@ -30,7 +30,11 @@ class PlayPage extends GetView<PlayLogic> {
         ],
       ),
       extendBodyBehindAppBar: true,
-      body: _buildBody(theme),
+      body: GetBuilder<PlayLogic>(
+        builder: (controller) {
+          return _buildBody(theme);
+        },
+      ),
     );
   }
 
@@ -48,7 +52,7 @@ class PlayPage extends GetView<PlayLogic> {
             fit: StackFit.expand,
             children: [
               /// 刷新监听 - 背景图
-              // Obx(
+              // Ox(
               //   () => _buildBackImage(),
               // ),
 
@@ -59,22 +63,20 @@ class PlayPage extends GetView<PlayLogic> {
               //     ),
               //   ),
               // },
-              if (Get.isDarkMode) ...{
+              if (Get.isDarkMode && controller.music != null) ...{
                 Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
                   height: constraints.maxHeight * .75,
                   child: Center(
-                    child: Obx(
-                      () => CachedNetworkImage(
-                        imageUrl: controller.music.value!.cover,
-                        width: imageSize,
-                        height: imageSize,
-                        memCacheHeight: 20,
-                        memCacheWidth: 20,
-                        fit: BoxFit.fill,
-                      ),
+                    child: CachedNetworkImage(
+                      imageUrl: controller.music!.cover,
+                      width: imageSize,
+                      height: imageSize,
+                      memCacheHeight: 20,
+                      memCacheWidth: 20,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
@@ -99,9 +101,7 @@ class PlayPage extends GetView<PlayLogic> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: Obx(
-                        () => _buildContent(),
-                      ),
+                      child: _buildContent(),
                     ),
 
                     /// 底部信息区域
@@ -111,9 +111,7 @@ class PlayPage extends GetView<PlayLogic> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Obx(
-                            () => _buildMusicTitle(theme),
-                          ),
+                          child: _buildMusicTitle(theme),
                         ),
 
                         PlayButtons(
@@ -150,6 +148,9 @@ class PlayPage extends GetView<PlayLogic> {
     if (controller.displayLrc.value) {
       return LyricView(controller: controller.lrcController);
     }
+    if (controller.music == null) {
+      return SizedBox.shrink();
+    }
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -158,7 +159,7 @@ class PlayPage extends GetView<PlayLogic> {
           height: 200,
           fit: BoxFit.cover,
           memCacheWidth: 600,
-          imageUrl: controller.music.value!.cover,
+          imageUrl: controller.music!.cover,
         ),
       ),
     );
@@ -203,11 +204,11 @@ class PlayPage extends GetView<PlayLogic> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                controller.music.value?.name ?? "",
+                controller.music?.name ?? "",
                 style: theme.textTheme.bodyLarge,
               ),
               Text(
-                controller.music.value?.author ?? "",
+                controller.music?.author ?? "",
                 style: theme.textTheme.bodyMedium,
               ),
               // 10.verticalSpace,

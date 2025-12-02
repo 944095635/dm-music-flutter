@@ -59,8 +59,8 @@ class PlayService extends GetxService {
 
   /// 设置播放列表
   void setPlaylist(List<Music> list, {int index = 0}) async {
-    _playList = list;
     try {
+      _playList = list;
       _player.open(
         Playlist(list.map((e) => Media(e.source ?? "")).toList(), index: index),
       );

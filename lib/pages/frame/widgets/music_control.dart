@@ -102,9 +102,6 @@ class MusicControl extends GetView<PlayLogic> {
 
   /// 进度条
   Widget _buildSlider() {
-    if (controller.music.value == null) {
-      return SizedBox.shrink();
-    }
     return DMSlider(
       bezier: 16,
       sliderType: SliderType.curve,
@@ -169,8 +166,10 @@ class MusicControl extends GetView<PlayLogic> {
                 Get.to(() => PlayPage());
               },
               behavior: HitTestBehavior.opaque,
-              child: Obx(
-                () => _buildInfo(theme),
+              child: GetBuilder<PlayLogic>(
+                builder: (controller) {
+                  return _buildInfo(theme);
+                },
               ),
             ),
           ),
@@ -181,7 +180,7 @@ class MusicControl extends GetView<PlayLogic> {
 
   /// 歌曲信息 头像 + 名称 歌手 + 红心 监听刷新
   Widget _buildInfo(ThemeData theme) {
-    Music? music = controller.music.value;
+    Music? music = controller.music;
     if (music == null) {
       return SizedBox.shrink();
     }
@@ -239,6 +238,7 @@ class MusicControl extends GetView<PlayLogic> {
             // static const heartBoldSvg = 'assets/svgs/heart_bold.svg';
             // static const heartLineSvg = 'assets/svgs/heart_line.svg';
             music.like.value = !music.like.value;
+            controller.update();
           },
           icon: SvgPicture.asset(
             music.like.value
