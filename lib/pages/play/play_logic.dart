@@ -45,7 +45,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   late AnimationController playButtonController;
 
   /// 歌词控制器
-  late LyricController lrcController;
+  late final LyricController lrcController = LyricController();
 
   /// 订阅播放状态
   StreamSubscription? subPlayerState;
@@ -86,8 +86,6 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     playButtonController = AnimationController(vsync: this)
       ..duration = Durations.long2;
-
-    lrcController = LyricController();
 
     //监听歌曲变化
     subMusicChange = playService.listenMusicChange((newMusic) {

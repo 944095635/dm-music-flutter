@@ -1,7 +1,8 @@
 import 'dart:ui';
+import 'package:dm_music/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_lyric/widgets/lyric_view.dart';
+import 'package:flutter_lyric/flutter_lyric.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/extension/duration_extensions.dart';
@@ -101,7 +102,7 @@ class PlayPage extends GetView<PlayLogic> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: _buildContent(),
+                      child: _buildContent(theme),
                     ),
 
                     /// 底部信息区域
@@ -144,9 +145,14 @@ class PlayPage extends GetView<PlayLogic> {
   }
 
   /// 显示图像或者歌词
-  Widget _buildContent() {
+  Widget _buildContent(ThemeData theme) {
     if (controller.displayLrc.value) {
-      return LyricView(controller: controller.lrcController);
+      return LyricView(
+        controller: controller.lrcController,
+        style: theme.brightness == Brightness.dark
+            ? LyricStylesEx.dark
+            : LyricStylesEx.light,
+      );
     }
     if (controller.music == null) {
       return SizedBox.shrink();

@@ -53,7 +53,7 @@ dependencies:
 
 
   # 歌词渲染
-  flutter_lyric: ^3.0.0+1
+  flutter_lyric: ^3.0.1
 
   # 音频解码
   media_kit: ^1.2.2            # Primary package.
