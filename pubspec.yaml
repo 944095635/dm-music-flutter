@@ -34,29 +34,29 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  get: ^4.7.2
+  get: ^4.7.3
   intl: ^0.19.0       # 时间转换显示
   http: ^1.6.0        # 网络访问
   animate_do: ^4.2.0  # 动画组件
-  flutter_svg: ^2.2.1            # svg图片支持
+  flutter_svg: ^2.2.3            # svg图片支持
   json_annotation: ^4.9.0        # Json
-  shared_preferences: ^2.5.3     # 数据存储
+  shared_preferences: ^2.5.4     # 数据存储
   flutter_smart_dialog: ^4.9.8+9 # 消息弹窗
   cached_network_image: ^3.4.1   # 图片缓存
   flutter_styled:
     #path: ../flutter_styled // 本地引用方式
     git: 
        url: https://github.com/DMSkin/flutter_styled.git
-  crypto: ^3.0.6       # 网易云音乐加解密
+  crypto: ^3.0.7       # 网易云音乐加解密
   encrypt: ^5.0.3      # 网易云音乐加解密
   pointycastle: ^3.9.1 # 网易云音乐加解密
 
 
   # 歌词渲染
-  flutter_lyric: ^3.0.1
+  flutter_lyric: ^3.0.2
 
   # 音频解码
-  media_kit: ^1.2.2            # Primary package.
+  media_kit: ^1.2.6            # Primary package.
   media_kit_libs_audio: ^1.0.7 # Native audio dependencies.
 
   # window_manager: ^0.5.1 # 窗口管理
