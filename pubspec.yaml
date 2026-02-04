@@ -16,10 +16,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.0.8+8
+version: 2.0.9+9
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.10.8
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,7 +39,7 @@ dependencies:
   http: ^1.6.0        # 网络访问
   animate_do: ^4.2.0  # 动画组件
   flutter_svg: ^2.2.3            # svg图片支持
-  json_annotation: ^4.9.0        # Json
+  json_annotation: ^4.10.0       # Json
   shared_preferences: ^2.5.4     # 数据存储
   flutter_smart_dialog: ^4.9.8+9 # 消息弹窗
   cached_network_image: ^3.4.1   # 图片缓存
@@ -71,10 +71,10 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4 # 图标生成
-  build_runner: ^2.10.3           # Build
-  json_serializable: ^6.11.1      # Json
+  build_runner: ^2.10.5           # Build
+  json_serializable: ^6.12.0      # Json
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

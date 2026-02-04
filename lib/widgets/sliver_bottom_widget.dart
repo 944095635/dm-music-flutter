@@ -8,7 +8,7 @@ class SliverBottomWidget extends StatelessWidget {
     required this.child,
   });
 
-  static button(String text, {VoidCallback? onPressed}) {
+  static SliverBottomWidget button(String text, {VoidCallback? onPressed}) {
     return SliverBottomWidget(
       child: FilledButton(
         onPressed: onPressed,

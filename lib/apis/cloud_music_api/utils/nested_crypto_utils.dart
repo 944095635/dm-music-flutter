@@ -17,13 +17,13 @@ final _linuxapiKey = Key.fromUtf8("rFgB&fsadsasadsadash#%2?^eDg:Q");
 
 class NestedCryptoUtils {
   NestedCryptoUtils();
-  Encrypted rsaEncrypt(buffer, key) {
+  Encrypted rsaEncrypt(List<int> buffer, key) {
     var encrypted = Encrypter(RSAExt(publicKey: key));
     var data = encrypted.encryptBytes(buffer);
     return data;
   }
 
-  Encrypted aesEncrypt(buffer, key, iv) {
+  Encrypted aesEncrypt(String buffer, key, iv) {
     var encrypted = Encrypter(AES(key, mode: AESMode.cbc));
     var data = encrypted.encrypt(buffer, iv: _iv);
     return data;
@@ -39,11 +39,9 @@ class NestedCryptoUtils {
   Map<String, dynamic> weapi(Map oldData) {
     String text = json.encode(oldData);
     // 生成随机密钥
-    var secretKey = Encrypted.fromSecureRandom(16)
-        .bytes
-        .map((n) => _base62[(n % 62)])
-        .toList()
-        .join();
+    var secretKey = Encrypted.fromSecureRandom(
+      16,
+    ).bytes.map((n) => _base62[(n % 62)]).toList().join();
     Encrypted first = aesEncrypt(text, _presetKey, _iv);
     Encrypted second = aesEncrypt(first.base64, Key.fromUtf8(secretKey), _iv);
 
@@ -110,7 +108,12 @@ class NoPaddingEncoding extends PKCS1Encoding {
 
   @override
   int processBlock(
-      Uint8List inp, int inpOff, int len, Uint8List out, int outOff) {
+    Uint8List inp,
+    int inpOff,
+    int len,
+    Uint8List out,
+    int outOff,
+  ) {
     if (_forEncryption) {
       return _encodeBlock(inp, inpOff, len, out, outOff);
     } else {
@@ -119,7 +122,12 @@ class NoPaddingEncoding extends PKCS1Encoding {
   }
 
   int _encodeBlock(
-      Uint8List inp, int inpOff, int inpLen, Uint8List out, int outOff) {
+    Uint8List inp,
+    int inpOff,
+    int inpLen,
+    Uint8List out,
+    int outOff,
+  ) {
     if (inpLen > inputBlockSize) {
       throw ArgumentError("Input data too large");
     }
@@ -135,7 +143,12 @@ class NoPaddingEncoding extends PKCS1Encoding {
   }
 
   int _decodeBlock(
-      Uint8List inp, int inpOff, int inpLen, Uint8List out, int outOff) {
+    Uint8List inp,
+    int inpOff,
+    int inpLen,
+    Uint8List out,
+    int outOff,
+  ) {
     var block = Uint8List(outputBlockSize);
     var len = _engine.processBlock(inp, inpOff, inpLen, block, 0);
     block = block.sublist(0, len);
