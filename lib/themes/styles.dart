@@ -32,7 +32,7 @@ class LyricStylesEx {
     selectionAutoResumeMode: SelectionAutoResumeMode.selecting,
     selectionAutoResumeDuration: Duration(milliseconds: 320),
     activeAutoResumeDuration: Duration(milliseconds: 3000),
-    activeHighlightColor: const Color.fromARGB(255, 208, 174, 255),
+    activeHighlightColor: Colors.white,
     switchEnterDuration: Duration(milliseconds: 300),
     switchExitDuration: Duration(milliseconds: 500),
     switchEnterCurve: Curves.easeOutBack,
