@@ -16,10 +16,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.1.0+10
+version: 2.1.1+11
 
 environment:
-  sdk: ^3.11.0
+  sdk: ^3.12.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,15 +33,15 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^1.0.9
   get: ^4.7.3
-  intl: ^0.19.0       # 时间转换显示
+  intl: ^0.20.3       # 时间转换显示
   http: ^1.6.0        # 网络访问
-  animate_do: ^4.2.0  # 动画组件
-  flutter_svg: ^2.2.3            # svg图片支持
-  json_annotation: ^4.11.0       # Json
-  shared_preferences: ^2.5.4     # 数据存储
-  flutter_smart_dialog: ^4.9.8+9 # 消息弹窗
+  animate_do: ^5.1.0  # 动画组件
+  flutter_svg: ^2.3.0            # svg图片支持
+  json_annotation: ^4.12.0       # Json
+  shared_preferences: ^2.5.5     # 数据存储
+  flutter_smart_dialog: ^5.1.1   # 消息弹窗
   cached_network_image: ^3.4.1   # 图片缓存
   flutter_styled:
     #path: ../flutter_styled // 本地引用方式
@@ -53,7 +53,7 @@ dependencies:
 
 
   # 歌词渲染
-  flutter_lyric: ^3.0.2
+  flutter_lyric: ^3.0.7
 
   # 音频解码
   media_kit: ^1.2.6            # Primary package.
