@@ -1,7 +1,7 @@
 import 'dart:ui';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dm_music/values/http_keys.dart';
 
 /// 音乐卡片
 class MusicNewItem extends StatelessWidget {
@@ -32,6 +32,7 @@ class MusicNewItem extends StatelessWidget {
             fit: BoxFit.cover,
             memCacheHeight: 350,
             memCacheWidth: 350,
+            httpHeaders: HttpKeys.headers,
           ),
           Align(
             alignment: Alignment.bottomCenter,

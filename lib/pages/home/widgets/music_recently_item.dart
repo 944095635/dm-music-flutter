@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dm_music/models/music.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_styled/size_extension.dart';
+import 'package:dm_music/models/music.dart';
+import 'package:dm_music/values/http_keys.dart';
 
 /// 最近播放子项
 class MusicRecentlyItem extends StatelessWidget {
@@ -27,6 +28,7 @@ class MusicRecentlyItem extends StatelessWidget {
                   memCacheHeight: 350,
                   memCacheWidth: 350,
                   imageUrl: music.cover,
+                  httpHeaders: HttpKeys.headers,
                 ),
               ),
             ),

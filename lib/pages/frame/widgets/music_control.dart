@@ -9,6 +9,7 @@ import 'package:dm_music/pages/frame/widgets/bottom_curve_widget.dart';
 import 'package:dm_music/pages/frame/widgets/music_buttons.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/pages/play/play_page.dart';
+import 'package:dm_music/values/http_keys.dart';
 import 'package:dm_music/widgets/slider.dart';
 
 /// 音乐控制组件
@@ -196,6 +197,7 @@ class MusicControl extends GetView<PlayLogic> {
             fit: BoxFit.fill,
             memCacheHeight: 150,
             memCacheWidth: 150,
+            httpHeaders: HttpKeys.headers,
           ),
         ),
         Expanded(

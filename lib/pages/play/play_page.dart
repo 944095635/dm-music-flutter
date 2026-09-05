@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:dm_music/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_lyric/flutter_lyric.dart';
@@ -8,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:dm_music/extension/duration_extensions.dart';
 import 'package:dm_music/pages/play/play_buttons.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
+import 'package:dm_music/themes/styles.dart';
+import 'package:dm_music/values/http_keys.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 
@@ -78,6 +79,7 @@ class PlayPage extends GetView<PlayLogic> {
                       memCacheHeight: 20,
                       memCacheWidth: 20,
                       fit: BoxFit.fill,
+                      httpHeaders: HttpKeys.headers,
                     ),
                   ),
                 ),
@@ -166,6 +168,7 @@ class PlayPage extends GetView<PlayLogic> {
           fit: BoxFit.cover,
           memCacheWidth: 600,
           imageUrl: controller.music!.cover,
+          httpHeaders: HttpKeys.headers,
         ),
       ),
     );

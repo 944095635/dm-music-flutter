@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:dm_music/models/music_source.dart';
-import 'package:dm_music/values/cache_keys.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dm_music/models/music_source.dart';
+import 'package:dm_music/values/cache_keys.dart';
 
 /// 缓存助手
 class CacheHelper {
@@ -30,7 +30,10 @@ class CacheHelper {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       String sourceListJson = json.encode(sourceList);
-      return prefs.setString(CacheKeys.sourceList.toString(), sourceListJson);
+      return await prefs.setString(
+        CacheKeys.sourceList.toString(),
+        sourceListJson,
+      );
     } catch (e) {
       return false;
     }

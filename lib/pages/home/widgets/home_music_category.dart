@@ -1,6 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_styled/radius_extension.dart';
+import 'package:dm_music/values/http_keys.dart';
 
 class HomeMusicCategory extends StatelessWidget {
   const HomeMusicCategory(
@@ -28,6 +29,7 @@ class HomeMusicCategory extends StatelessWidget {
         width: 48,
         height: 48,
         fit: BoxFit.cover,
+        httpHeaders: HttpKeys.headers,
       );
     } else {
       logoWidget = Image.asset(
