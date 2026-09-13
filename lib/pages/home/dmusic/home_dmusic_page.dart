@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/home/dmusic/home_dmusic_logic.dart';
-import 'package:dm_music/pages/home/widgets/music_new_item.dart';
 import 'package:dm_music/pages/home/widgets/music_recently_item.dart';
 import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/widgets/list_title_widget.dart';
@@ -47,9 +45,7 @@ class HomeDmusicPage extends GetView<HomeDmusicLogic> {
 
               _buildDMusic(),
 
-              if (controller.playList.isNotEmpty) ...{
-                _buildPlayList(),
-              },
+            
             ],
           ),
         ),
@@ -104,77 +100,6 @@ class HomeDmusicPage extends GetView<HomeDmusicLogic> {
         SliverToBoxAdapter(
           child: ListTitleWidget(
             "RECENTLY PLAYED", // "最新发布",
-          ),
-        ),
-
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.pagePadding,
-          ),
-          sliver: SliverGrid.builder(
-            itemCount: controller.songs.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 3 / 3.5,
-            ),
-            itemBuilder: (context, index) {
-              Music music = controller.songs[index];
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  controller.onTapMusic(index);
-                },
-                child: MusicNewItem(
-                  music: music.name,
-                  cover: music.cover,
-                  author: music.author ?? "",
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// DM 播放列表
-  Widget _buildPlayList() {
-    return SliverMainAxisGroup(
-      slivers: [
-        SliverToBoxAdapter(
-          child: ListTitleWidget(
-            "PLAY LISTED", // "播放列表",
-          ),
-        ),
-
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.pagePadding,
-          ),
-          sliver: SliverGrid.builder(
-            itemCount: controller.songs.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 3 / 3.5,
-            ),
-            itemBuilder: (context, index) {
-              CloudPlayList music = controller.playList[index];
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  controller.onTapPlayListItem(music);
-                },
-                child: MusicNewItem(
-                  music: music.name,
-                  cover: music.cover,
-                  author: music.author ?? "",
-                ),
-              );
-            },
           ),
         ),
       ],
