@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:dm_music/pages/splash/splash_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:dm_music/pages/splash/splash_page.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
           statusBarBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: Colors.white,
+          systemStatusBarContrastEnforced: false,
         ),
       ),
       actionIconTheme: ActionIconThemeData(
@@ -184,6 +185,7 @@ class MyApp extends StatelessWidget {
           statusBarBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.light,
           systemNavigationBarColor: Colors.black,
+          systemStatusBarContrastEnforced: false,
         ),
       ),
       actionIconTheme: ActionIconThemeData(

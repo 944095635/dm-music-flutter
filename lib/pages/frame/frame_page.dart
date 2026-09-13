@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:inspire_blur/inspire_blur.dart';
 import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/models/music_source.dart';
 import 'package:dm_music/pages/frame/frame_logic.dart';
@@ -59,7 +60,10 @@ class FramePage extends GetView<FrameLogic> {
           ),
           10.horizontalSpace,
         ],
-        flexibleSpace: BlurWidget(
+        flexibleSpace: Inspire.backdropBlur(
+          config: InspireBlurConfig.topToBottom(
+            sigma: 60,
+          ),
           child: SizedBox.expand(),
         ),
       ),

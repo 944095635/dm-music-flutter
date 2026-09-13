@@ -51,6 +51,9 @@ dependencies:
   encrypt: ^5.0.3      # 网易云音乐加解密
   pointycastle: ^3.9.1 # 网易云音乐加解密
 
+  # 渐变模糊
+  inspire_blur: ^0.4.1
+
 
   # 歌词渲染
   flutter_lyric: ^3.0.7

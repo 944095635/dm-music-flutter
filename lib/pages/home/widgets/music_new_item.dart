@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:inspire_blur/inspire_blur.dart';
 import 'package:dm_music/values/http_keys.dart';
 
 /// 音乐卡片
@@ -27,49 +28,59 @@ class MusicNewItem extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          CachedNetworkImage(
-            imageUrl: cover,
-            fit: BoxFit.cover,
-            memCacheHeight: 350,
-            memCacheWidth: 350,
-            httpHeaders: HttpKeys.headers,
+          Inspire.childBlur(
+            config: InspireBlurConfig.bottomToTop(
+              sigma: 55,
+              extent: 0.5,
+              fadeCurve: Curves.easeInOutQuad,
+            ),
+            child: CachedNetworkImage(
+              imageUrl: cover,
+              fit: BoxFit.cover,
+              memCacheHeight: 350,
+              memCacheWidth: 350,
+              httpHeaders: HttpKeys.headers,
+            ),
           ),
+
+          // Additional tint to make the fade look more pronounced
+          Positioned.fill(
+            child: Inspire.tint.bottomToTop(
+              color: Colors.black,
+              opacity: .68,
+              extent: 0.5,
+              curve: Curves.easeOut,
+            ),
+          ),
+
           Align(
             alignment: Alignment.bottomCenter,
-            child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 15,
-                  sigmaY: 15,
-                ),
-                child: Container(
-                  color: theme.bottomSheetTheme.modalBackgroundColor!.withAlpha(
-                    100,
+            child: Container(
+              // color: theme.bottomSheetTheme.modalBackgroundColor!.withAlpha(
+              //   100,
+              // ),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    music,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                      color: theme.colorScheme.onSurface.withAlpha(160),
+                    ),
                   ),
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        music,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                          color: theme.colorScheme.onSurface.withAlpha(160),
-                        ),
-                      ),
-                      Text(
-                        author,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall!.copyWith(
-                          color: theme.colorScheme.onSurface.withAlpha(120),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    author,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall!.copyWith(
+                      color: theme.colorScheme.onSurface.withAlpha(120),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
