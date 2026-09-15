@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
     final double curveHeight = buttonHeight + bottomSafeHeight;
 
     // 底部容器整体高度
-    final double controllerHeight = 80 + buttonHeight + bottomSafeHeight;
+    final double controllerHeight = 84 + buttonHeight + bottomSafeHeight;
 
     return Stack(
       fit: .expand,
