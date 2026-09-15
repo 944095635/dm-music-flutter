@@ -18,7 +18,6 @@ class MusicHotItem extends StatelessWidget {
     // 封面
     final imageWidget = CachedNetworkImage(
       fit: .cover,
-      memCacheWidth: 350,
       memCacheHeight: 350,
       imageUrl: music.cover,
     );

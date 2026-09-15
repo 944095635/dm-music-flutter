@@ -67,9 +67,8 @@ class PlayInfoCard extends StatelessWidget {
             imageUrl: music.cover,
             width: 45,
             height: 45,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             memCacheWidth: 150,
-            memCacheHeight: 150,
           ),
         ),
         Expanded(
