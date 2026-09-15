@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/page/settings/settings_logic.dart';
+import 'package:dm_music/page/settings/settings_title_item.dart';
+import 'package:dm_music/service/app_service.dart';
 
 /// 设置页面
 class SettingsPage extends GetView<SettingsLogic> {
@@ -25,37 +27,36 @@ class SettingsPage extends GetView<SettingsLogic> {
     return ListView(
       padding: EdgeInsets.all(16),
       children: [
-        Container(
-          width: 100,
+        SettingsTitleItem("language".tr),
+        Align(
           alignment: Alignment.centerLeft,
-          child: CupertinoSlidingSegmentedControl<int>(
-            groupValue: Get.locale?.languageCode == "zh" ? 0 : 1,
+          child: CupertinoSlidingSegmentedControl<String>(
+            groupValue: Get.locale?.languageCode,
             children: {
-              0: Text("中文"),
-              1: Text("English"),
+              "zh": Text("中文"),
+              "en": Text("English"),
             },
-            onValueChanged: (value) {
-              var locale = value == 0 ? Locale('zh', 'CN') : Locale('en', 'US');
-              Get.updateLocale(locale);
-            },
+            onValueChanged: controller.updateLanguage,
           ),
         ),
 
-        Text("注:渐变模糊非常考验设备性能，如遇卡顿可切换为磨砂质感"),
+        SizedBox(height: 20),
 
-        Container(
-          width: 100,
+        SettingsTitleItem(
+          "performance_mode".tr,
+          subTitle: "performance_mode_note".tr,
+        ),
+
+        Align(
           alignment: Alignment.centerLeft,
-          child: CupertinoSlidingSegmentedControl<int>(
+          child: CupertinoSlidingSegmentedControl<bool>(
             // proportionalWidth: true,
-            groupValue: controller.performanceMode ? 0 : 1,
+            groupValue: AppService.performanceMode,
             children: {
-              0: Text("磨砂质感"),
-              1: Text("渐变模糊"),
+              true: Text("performance_mode_1".tr),
+              false: Text("performance_mode_2".tr),
             },
-            onValueChanged: (value) {
-              controller.updatePerformanceMode(value == 0);
-            },
+            onValueChanged: controller.updatePerformanceMode,
           ),
         ),
       ],

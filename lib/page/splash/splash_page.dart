@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inspire_blur/inspire_blur.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:dm_music/helper/cache_helper.dart';
 import 'package:dm_music/helper/network_helper.dart';
 import 'package:dm_music/page/home/home_page.dart';
+import 'package:dm_music/service/app_service.dart';
 
 /// 启动屏
 class SplashPage extends StatefulWidget {
@@ -42,7 +45,13 @@ class _SplashPageState extends State<SplashPage> {
     //if (!kDebugMode) {
     // 初始化音频解码
     MediaKit.ensureInitialized();
-    //}
+
+    // 读取性能模式
+    AppService.performanceMode =
+        await CacheHelper.getBool(.performanceMode) ?? true;
+    if (!AppService.performanceMode) {
+      await Inspire.warmUp();
+    }
 
     await Future.delayed(Duration(seconds: 1));
 

@@ -5,13 +5,13 @@ import 'package:dm_music/model/music.dart';
 
 /// 热门音乐项
 class MusicHotItem extends StatelessWidget {
-  const new(this.music, {super.key, this.isBlur = true});
+  const new(this.music, {super.key, this.performance = true});
 
   /// 音乐模型
   final Music music;
 
-  /// 是否开启模糊
-  final bool isBlur;
+  /// 是否开启性能模式
+  final bool performance;
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +40,7 @@ class MusicHotItem extends StatelessWidget {
         fit: .expand,
         children: [
           // 判断是否开启模糊
-          if (isBlur) ...{
-            Inspire.childBlur(
-              mode: .imageFilter,
-              config: InspireBlurConfig.bottomToTop(
-                sigma: 30,
-                extent: 0.55,
-                fadeCurve: Curves.easeInOutQuad,
-              ),
-              child: imageWidget,
-            ),
-            Inspire.tint.bottomToTop(
-              color: Colors.black,
-              opacity: .8,
-              extent: 0.6,
-              curve: Curves.easeOut,
-            ),
-          } else ...{
+          if (performance) ...{
             imageWidget,
 
             DecoratedBox(
@@ -72,6 +56,22 @@ class MusicHotItem extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+          } else ...{
+            Inspire.childBlur(
+              mode: .imageFilter,
+              config: InspireBlurConfig.bottomToTop(
+                sigma: 30,
+                extent: 0.55,
+                fadeCurve: Curves.easeInOutQuad,
+              ),
+              child: imageWidget,
+            ),
+            Inspire.tint.bottomToTop(
+              color: Colors.black,
+              opacity: .8,
+              extent: 0.6,
+              curve: Curves.easeOut,
             ),
           },
 

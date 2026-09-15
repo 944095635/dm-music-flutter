@@ -14,6 +14,7 @@ import 'package:dm_music/page/home/widget/music_play_info_card.dart';
 import 'package:dm_music/page/play/play_logic.dart';
 import 'package:dm_music/page/play/play_page.dart';
 import 'package:dm_music/page/settings/settings_page.dart';
+import 'package:dm_music/service/app_service.dart';
 import 'package:dm_music/service/play_service.dart';
 import 'package:dm_music/widget/blur_widget.dart';
 import 'package:dm_music/widget/bottom_curve_widget.dart';
@@ -28,9 +29,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  /// 是否开启模糊
-  bool isBlur = false;
-
   // 放置主页逻辑
   final homeLogic = Get.put(HomeLogic());
 
@@ -53,8 +51,11 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(width: 5),
         ],
-        flexibleSpace: isBlur
-            ? Stack(
+        flexibleSpace: AppService.performanceMode
+            ? BlurWidget(
+                child: SizedBox.expand(),
+              )
+            : Stack(
                 fit: StackFit.expand,
                 children: [
                   Inspire.backdropBlur(
@@ -71,9 +72,6 @@ class _HomePageState extends State<HomePage> {
                     curve: Curves.easeOut,
                   ),
                 ],
-              )
-            : BlurWidget(
-                child: SizedBox.expand(),
               ),
       ),
       extendBodyBehindAppBar: true,
@@ -103,8 +101,12 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       fit: .expand,
       children: [
-        homeLogic.obx(
-          (state) => buildList(controllerHeight),
+        RefreshIndicator(
+          edgeOffset: 80,
+          onRefresh: homeLogic.refreshData,
+          child: homeLogic.obx(
+            (state) => buildList(controllerHeight),
+          ),
         ),
 
         // 底部播放区域
@@ -222,10 +224,9 @@ class _HomePageState extends State<HomePage> {
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: CachedNetworkImage(
-                            memCacheWidth: 200,
                             memCacheHeight: 200,
                             imageUrl: music.cover,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fitHeight,
                           ),
                         );
                       },
@@ -259,13 +260,12 @@ class _HomePageState extends State<HomePage> {
                   return GestureDetector(
                     behavior: .opaque,
                     onTap: () {
-                      homeLogic.openPlay = true;
-                      homeLogic.update();
+                      homeLogic.onPlay(music);
                       playLogic.playMusic(homeLogic.newMusic, index: index);
                     },
                     child: MusicHotItem(
                       music,
-                      isBlur: isBlur,
+                      performance: AppService.performanceMode,
                     ),
                   );
                 },
@@ -296,8 +296,7 @@ class _HomePageState extends State<HomePage> {
                     return GestureDetector(
                       behavior: .opaque,
                       onTap: () {
-                        homeLogic.openPlay = true;
-                        homeLogic.update();
+                        homeLogic.onPlay(music);
                         playLogic.playMusic(
                           homeLogic.popularMusic,
                           index: index,
@@ -305,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: MusicHotItem(
                         music,
-                        isBlur: isBlur,
+                        performance: AppService.performanceMode,
                       ),
                     );
                   },

@@ -3,22 +3,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:dm_music/helper/cache_helper.dart';
 import 'package:dm_music/page/splash/splash_page.dart';
 import 'package:dm_music/value/translations_keys.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // 初始化应用语言
+  final savedLanguage = await CacheHelper.getString(.language);
+  final locale = savedLanguage == 'zh'
+      ? const Locale('zh', 'CN')
+      : const Locale('en', 'US');
+  runApp(MyApp(locale));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp(this.locale, {super.key});
+
+  /// 应用语言
+  final Locale locale;
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'DMusic',
       themeMode: ThemeMode.dark, // 强制[暗黑模式]
-      locale: Locale('en', 'US'), // 支持的语言
+      locale: locale, // 支持的语言
       translations: TranslationsKeys(), // 翻译键
       fallbackLocale: Locale('en', 'US'), // 回退语言
       darkTheme: ThemeData(

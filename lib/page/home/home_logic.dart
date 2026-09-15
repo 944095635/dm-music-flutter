@@ -44,6 +44,7 @@ class HomeLogic extends GetxController with StateMixin {
         ),
       );
       var data = json.decode(response.body);
+      newMusic.clear();
       for (var element in data) {
         newMusic.add(Music.fromJson(element));
       }
@@ -57,10 +58,16 @@ class HomeLogic extends GetxController with StateMixin {
         Uri.parse('http://music.dmskin.com/music/popular/popular.json'),
       );
       final data = json.decode(response.body);
+      popularMusic.clear();
       for (var element in data) {
         popularMusic.add(Music.fromJson(element));
       }
     } catch (_) {}
+  }
+
+  /// 刷新数据
+  Future<void> refreshData() async {
+    await initMusic();
   }
 
   /// 播放音乐 - 插入最近播放列表
