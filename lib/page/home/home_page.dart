@@ -14,6 +14,7 @@ import 'package:dm_music/page/home/widget/music_play_info_card.dart';
 import 'package:dm_music/page/play/play_logic.dart';
 import 'package:dm_music/page/settings/settings_page.dart';
 import 'package:dm_music/pages/frame/widgets/bottom_curve_widget.dart';
+import 'package:dm_music/service/play_service.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/slider.dart';
 
@@ -121,7 +122,6 @@ class _HomePageState extends State<HomePage> {
                   height: controllerHeight,
                   child: SlideInUp(
                     from: 105,
-                    animate: logic.slideController?.isCompleted ?? false,
                     controller: (slideController) {
                       logic.slideController = slideController;
                     },
@@ -171,9 +171,9 @@ class _HomePageState extends State<HomePage> {
                   bottom: bottomSafeHeight,
                   child: MusicControl(
                     logic.btnController,
-                    onPlayPause: logic.playPause,
-                    onPrevious: logic.playPrevious,
-                    onNext: logic.playNext,
+                    onPlayPause: PlayService.playOrPause,
+                    onPrevious: PlayService.playPrevious,
+                    onNext: PlayService.playNext,
                   ),
                 ),
               ],
@@ -255,8 +255,7 @@ class _HomePageState extends State<HomePage> {
                     return GestureDetector(
                       behavior: .opaque,
                       onTap: () {
-                        playLogic.playMusic(music);
-                        homeLogic.onPlay(music);
+                        playLogic.playMusic(homeLogic.newMusic, index: index);
                       },
                       child: MusicHotItem(
                         music,

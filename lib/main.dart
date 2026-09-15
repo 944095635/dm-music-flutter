@@ -43,6 +43,11 @@ class MyApp extends StatelessWidget {
           bodyLarge: TextStyle(fontSize: 17), // 输入框等
           bodySmall: TextStyle(fontSize: 12),
         ),
+        //进度条风格
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Colors.white54,
+          linearTrackColor: Colors.white24,
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: const SplashPage(),
@@ -108,11 +113,7 @@ class MyApp extends StatelessWidget {
         bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
       ),
-      //进度条风格
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.white54,
-        linearTrackColor: Colors.white24,
-      ),
+
       drawerTheme: const DrawerThemeData(
         width: 260,
         backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),

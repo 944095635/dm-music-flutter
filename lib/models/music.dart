@@ -12,7 +12,9 @@ class Music {
   late String cover;
 
   /// 音频链接源
-  String? source;
+  String? _source;
+  String get source => _source ?? "";
+  set source(String value) => _source = value;
 
   /// 歌曲Id
   String? id;

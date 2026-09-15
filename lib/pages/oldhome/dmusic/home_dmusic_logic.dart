@@ -3,17 +3,9 @@ import 'package:dm_music/apis/cloud_music_api/cloud_music_api.dart';
 import 'package:dm_music/apis/cloud_music_api/models/cloud_music.dart';
 import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/services/app_service.dart';
-import 'package:dm_music/services/play_service.dart';
 
 /// DMUSCI - 首页逻辑
 class HomeDmusicLogic extends GetxController with StateMixin {
-  /// App 服务
-  AppService appService = Get.find();
-
-  /// 播放服务
-  final PlayService playService = Get.find();
-
   /// 最近播放列表 // 从dmskin服务器拉取
   final List<Music> songs = List.empty(growable: true);
 
@@ -50,12 +42,12 @@ class HomeDmusicLogic extends GetxController with StateMixin {
 
   /// 点击音乐卡片
   void onTapMusic(int index) {
-    playService.setPlaylist(songs, index: index);
+    //playService.setPlaylist(songs, index: index);
   }
 
   /// 点击最最新歌曲
   void onTapRecentlyMusic(int index) {
-    playService.setPlaylist(newReleases, index: index);
+    //playService.setPlaylist(newReleases, index: index);
   }
 
   void onTapPlayListItem(CloudPlayList newMusic) async {
@@ -70,10 +62,10 @@ class HomeDmusicLogic extends GetxController with StateMixin {
           ..author = newSong.author?.join(",") ?? ""
           ..name = newSong.name
           ..cover = newSong.cover!
-          ..source = newSong.source,
+          ..source = newSong.source ?? "",
       );
     }
-    playService.setPlaylist(songs);
+    // playService.setPlaylist(songs);
   }
 }
 

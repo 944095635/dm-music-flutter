@@ -40,10 +40,10 @@ class _SplashPageState extends State<SplashPage> {
   /// 初始化
   void init() async {
     // 临时解决热重启闪退的问题
-    if (!kDebugMode) {
-      // 初始化音频解码
-      MediaKit.ensureInitialized();
-    }
+    //if (!kDebugMode) {
+    // 初始化音频解码
+    MediaKit.ensureInitialized();
+    //}
 
     await Future.delayed(Duration(seconds: 1));
 

@@ -71,6 +71,9 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     // 监听播放状态变化
     subscriptions.add(PlayService.onStateChange(stateChange));
 
+    /// 监听歌曲切换
+    subscriptions.add(PlayService.onMusicChange(musicChange));
+
     // 监听歌曲长度变化
     subscriptions.add(PlayService.onDurationChange(durationChange));
 
@@ -106,32 +109,32 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   /// 播放状态改变
   void stateChange(bool playing) {
     isPlaying = playing;
-    debugPrint("歌曲状态回调:$playing");
     if (playing) {
+      debugPrint("展示正在播放的歌曲信息");
       slideController?.forward();
       btnController.forward();
     } else {
+      debugPrint("隐藏正在播放的歌曲信息");
       slideController?.reverse();
       btnController.reverse();
     }
   }
 
-  /// 播放音乐
-  void playMusic(Music music) {
-    isPlaying = true;
+  /// 监听歌曲切换
+  void musicChange(Music? music) {
+    if (music == null) return;
+    progress.value = 0;
     currentMusic.value = music;
-    PlayService.play(music.source);
+    debugPrint("歌曲切换回调:${music.name}");
     update();
   }
 
-  /// 播放或者暂停
-  void playPause() {
-    PlayService.playOrPause();
+  /// 播放音乐
+  void playMusic(List<Music> musics, {int index = 0}) async {
+    currentMusic.value = musics[index];
+    PlayService.setPlaylist(musics, index: index);
+    PlayService.play();
   }
-
-  void playPrevious() {}
-
-  void playNext() {}
 
   /// 点击进度条
   void onTapProgress(double value) async {

@@ -19,7 +19,7 @@ class HomeLogic extends GetxController with StateMixin {
 
   /// 初始化热门音乐
   Future<void> initMusic() async {
-    // await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     var response = await http.get(
       Uri.parse('http://music.dmskin.com/music/music_hot.json'),
     );

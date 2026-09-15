@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/models/music_source.dart';
-import 'package:dm_music/pages/frame/frame_logic.dart';
 import 'package:dm_music/pages/frame/widgets/drawer_item.dart';
 import 'package:dm_music/pages/frame/widgets/music_control.dart';
 import 'package:dm_music/pages/oldhome/dmusic/home_dmusic_page.dart';
@@ -15,13 +13,11 @@ import 'package:dm_music/widgets/sliver_bottom_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 
 /// 主页
-class FramePage extends GetView<FrameLogic> {
+class FramePage extends GetView {
   const FramePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(FrameLogic());
-
     /// 主题
     ThemeData theme = Theme.of(context);
 
@@ -64,7 +60,7 @@ class FramePage extends GetView<FrameLogic> {
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,
-      endDrawer: GetBuilder<FrameLogic>(
+      endDrawer: GetBuilder(
         builder: (controller) {
           return _buildDrawer();
         },
@@ -162,10 +158,7 @@ class FramePage extends GetView<FrameLogic> {
                   ),
 
                   FilledButton(
-                    onPressed: () {
-                      CacheHelper.setSourceId("");
-                      CacheHelper.clear();
-                    },
+                    onPressed: () {},
                     child: Text(
                       "清除所有数据",
                     ),

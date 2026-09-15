@@ -1,18 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_lyric/core/lyric_model.dart';
 import 'package:flutter_lyric/flutter_lyric.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/models/music.dart';
-import 'package:dm_music/models/music_source.dart';
-import 'package:dm_music/services/play_service.dart';
 
 /// 播放逻辑
 class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
-  /// 播放服务
-  final PlayService playService = Get.find();
-
   /// 显示歌词
   final RxBool displayLrc = RxBool(false);
 
@@ -82,104 +75,40 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
 
     playButtonController = AnimationController(vsync: this)
       ..duration = Durations.long2;
-
-    //监听歌曲变化
-    subMusicChange = playService.listenMusicChange((newMusic) {
-      music = newMusic;
-      progress.value = 0;
-      lrcController.setProgress(Duration.zero);
-      // 加载歌词
-      loadLrc();
-      debugPrint("歌曲切换回调:${newMusic.name}");
-      update();
-    });
-
-    //监听播放状态变化
-    subPlayerState = playService.listenPlayerState((playing) {
-      debugPrint("歌曲状态回调:$playing");
-      if (playing) {
-        slideController?.forward();
-        playButtonController.forward();
-      } else {
-        slideController?.reverse();
-        playButtonController.reverse();
-      }
-    });
-
-    //监听进度变化
-    subMusicPosition = playService.listenMusicPosition((Duration newPosition) {
-      // debugPrint("歌曲进度回调:$newPosition");
-      // 更新进度
-      position.value = newPosition;
-      lrcController.setProgress(newPosition);
-      // 拖拽进度条的时候不会更新到进度条上面
-      if (!isDragProgress) {
-        // 计算百分比
-        double newProgress =
-            newPosition.inMicroseconds / duration.value.inMicroseconds;
-        // debugPrint("歌曲进度回调1:$progress");
-        if (newProgress > 1) {
-          newProgress = 1;
-        } else if (newProgress < 0) {
-          newProgress = 0;
-        } else if (newProgress.isNaN) {
-          newProgress = 0;
-        }
-        progress.value = newProgress;
-        //debugPrint("歌曲进度回调:$newProgress");
-      }
-    });
-
-    //监听长度变化
-    subMusicDuration = playService.listenMusicDuration((newDuration) {
-      // debugPrint("歌曲长度回调:$newDuration");
-      duration.value = newDuration;
-    });
   }
 
   /// 点击播放按钮
-  void onTapPlay() {
-    playService.playOrPause();
-  }
+  void onTapPlay() {}
 
   /// 点击进度条
-  void onTapProgress(double progress) async {
-    bool state = await playService.playPosition(progress);
-    if (!state) {
-      this.progress.value = 0;
-    }
-  }
+  void onTapProgress(double progress) async {}
 
   /// 点击上一首按钮
-  void onTapPrevious() {
-    playService.playPrevious();
-  }
+  void onTapPrevious() {}
 
   /// 点击下一首按钮
-  void onTapNext() {
-    playService.playNext();
-  }
+  void onTapNext() {}
 
   /// 加载歌词
   void loadLrc() async {
     if (music != null) {
-      MusicSource? source = await CacheHelper.getSource();
-      if (source != null && source.type == MusicSourceType.dmusic) {
-        if (music!.name.contains("光年之外")) {
-          loadAssetsLrc('assets/lrcs/光年之外.lrc');
-        } else if (music!.name.contains("是一场烟火")) {
-          loadAssetsLrc('assets/lrcs/是一场烟火.lrc');
-        } else if (music!.name.contains("Nu")) {
-          loadAssetsLrc('assets/lrcs/Nu.lrc');
-        } else {
-          lrcController.stopSelection();
-          lrcController.loadLyricModel(
-            LyricModel(
-              lines: [LyricLine(start: Duration.zero, text: "暂无歌词")],
-            ),
-          );
-        }
-      }
+      // MusicSource? source = await CacheHelper.getString(CacheKeys.language);
+      // if (source != null && source.type == MusicSourceType.dmusic) {
+      //   if (music!.name.contains("光年之外")) {
+      //     loadAssetsLrc('assets/lrcs/光年之外.lrc');
+      //   } else if (music!.name.contains("是一场烟火")) {
+      //     loadAssetsLrc('assets/lrcs/是一场烟火.lrc');
+      //   } else if (music!.name.contains("Nu")) {
+      //     loadAssetsLrc('assets/lrcs/Nu.lrc');
+      //   } else {
+      //     lrcController.stopSelection();
+      //     lrcController.loadLyricModel(
+      //       LyricModel(
+      //         lines: [LyricLine(start: Duration.zero, text: "暂无歌词")],
+      //       ),
+      //     );
+      //   }
+      // }
     }
   }
 
