@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/pages/home/navidrome/home_navidrome_logic.dart';
-import 'package:dm_music/pages/home/widgets/music_new_item.dart';
+import 'package:dm_music/pages/oldhome/navidrome/home_navidrome_logic.dart';
+import 'package:dm_music/pages/oldhome/widgets/music_new_item.dart';
 import 'package:dm_music/themes/dimensions.dart';
 
 /// 首页

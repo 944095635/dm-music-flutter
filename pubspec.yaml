@@ -45,6 +45,9 @@ dependencies:
   hugeicons: ^1.1.7                     # 图标资源
   cached_network_image: ^4.0.0
 
+  # 渐变模糊(性能有问题)
+  inspire_blur: ^0.4.1
+
   # 动画
   animate_do: ^5.1.0
 

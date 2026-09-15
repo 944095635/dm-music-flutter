@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       builder: FlutterSmartDialog.init(),
       navigatorObservers: [FlutterSmartDialog.observer],
       defaultTransition: Platform.isAndroid ? Transition.rightToLeft : null,
-      home: SplashPage(),
+      home: const SplashPage(),
     );
   }
 

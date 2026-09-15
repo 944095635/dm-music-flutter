@@ -1,14 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/helpers/network_helper.dart';
-import 'package:dm_music/models/music_source.dart';
-import 'package:dm_music/pages/frame/frame_page.dart';
-import 'package:dm_music/pages/init/init_page.dart';
-import 'package:dm_music/pages/play/play_logic.dart';
-import 'package:dm_music/services/app_service.dart';
-import 'package:dm_music/services/play_service.dart';
+import 'package:dm_music/pages/home/home_page.dart';
 
 /// 启动屏
 class SplashPage extends StatefulWidget {
@@ -25,36 +20,6 @@ class _SplashPageState extends State<SplashPage> {
     init();
   }
 
-  /// 初始化
-  void init() async {
-    // 初始化音频解码
-    MediaKit.ensureInitialized();
-
-    // 启动网络访问
-    NetworkHelper.init();
-
-    // 放置服务
-    AppService appService = Get.put(AppService());
-    appService.init();
-    // 放置服务
-    Get.put(PlayService());
-    // 放置播放控制器
-    Get.lazyPut(() => PlayLogic());
-
-    MusicSource? source = await CacheHelper.getSource();
-    if (source != null) {
-      /// 跳至首页
-      Get.offAll(
-        () => FramePage(),
-        arguments: {"route": source.type.route},
-        transition: Transition.fadeIn,
-      );
-    } else {
-      await Future.delayed(Durations.extralong4);
-      Get.offAll(() => InitPage());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,5 +34,43 @@ class _SplashPageState extends State<SplashPage> {
         ),
       ),
     );
+  }
+
+  /// 初始化
+  void init() async {
+    // 初始化音频解码
+    MediaKit.ensureInitialized();
+
+    await Future.delayed(Duration(seconds: 1));
+
+    // iOS 专用网络初始化（解决首次安装无网络问题）
+    if (Platform.isIOS) {
+      await _initIOSNetwork();
+    }
+
+    /// 跳至首页
+    Get.offAll(() => HomePage(), transition: .fadeIn);
+  }
+
+  /// iOS 网络初始化（循环调用 NetworkHelper.init() 直到成功）
+  Future<void> _initIOSNetwork() async {
+    const int maxRetries = 30;
+    const Duration retryDelay = Duration(seconds: 5);
+
+    for (int i = 0; i < maxRetries; i++) {
+      try {
+        await NetworkHelper.init();
+        debugPrint("iOS 网络初始化成功（第 ${i + 1} 次尝试）");
+        return;
+      } catch (e) {
+        debugPrint("iOS 网络初始化第 ${i + 1} 次尝试失败: $e");
+      }
+
+      if (i < maxRetries - 1) {
+        await Future.delayed(retryDelay);
+      }
+    }
+
+    debugPrint("iOS 网络初始化达到最大重试次数");
   }
 }
