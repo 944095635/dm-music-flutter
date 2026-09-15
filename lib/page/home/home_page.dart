@@ -245,13 +245,46 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              // 热门音乐
+              // 最新音乐
+              SliverGrid.builder(
+                itemCount: homeLogic.newMusic.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 3 / 3.5,
+                ),
+                itemBuilder: (context, index) {
+                  final music = homeLogic.newMusic[index];
+                  return GestureDetector(
+                    behavior: .opaque,
+                    onTap: () {
+                      homeLogic.openPlay = true;
+                      homeLogic.update();
+                      playLogic.playMusic(homeLogic.newMusic, index: index);
+                    },
+                    child: MusicHotItem(
+                      music,
+                      isBlur: isBlur,
+                    ),
+                  );
+                },
+              ),
+
+              // "热门音乐" 标题
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: MusicCategoryItem("hot_tracks".tr),
+                ),
+              ),
+
               SliverPadding(
                 padding: homeLogic.openPlay
                     ? EdgeInsets.only(bottom: controllerHeight)
                     : EdgeInsets.zero,
                 sliver: SliverGrid.builder(
-                  itemCount: homeLogic.newMusic.length,
+                  itemCount: homeLogic.hotMusic.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 10,
@@ -259,13 +292,13 @@ class _HomePageState extends State<HomePage> {
                     childAspectRatio: 3 / 3.5,
                   ),
                   itemBuilder: (context, index) {
-                    final music = homeLogic.newMusic[index];
+                    final music = homeLogic.hotMusic[index];
                     return GestureDetector(
                       behavior: .opaque,
                       onTap: () {
                         homeLogic.openPlay = true;
                         homeLogic.update();
-                        playLogic.playMusic(homeLogic.newMusic, index: index);
+                        playLogic.playMusic(homeLogic.hotMusic, index: index);
                       },
                       child: MusicHotItem(
                         music,

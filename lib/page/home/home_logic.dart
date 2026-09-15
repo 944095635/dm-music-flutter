@@ -11,6 +11,9 @@ class HomeLogic extends GetxController with StateMixin {
   /// 最新官方音乐
   final List<Music> newMusic = [];
 
+  /// 热门音乐
+  final List<Music> hotMusic = [];
+
   /// 是否已经开启播放
   bool openPlay = false;
 
@@ -22,17 +25,42 @@ class HomeLogic extends GetxController with StateMixin {
 
   /// 初始化热门音乐
   Future<void> initMusic() async {
-    await Future.delayed(const Duration(seconds: 2));
-    var response = await http.get(
-      Uri.parse('http://music.dmskin.com/music/new_releases/new_releases.json'),
-    );
-    var data = json.decode(response.body);
-    for (var element in data) {
-      newMusic.add(Music.fromJson(element));
-    }
+    await initNewMusic();
+
+    await initHotMusic();
+
+    await Future.delayed(const Duration(seconds: 1));
 
     // 更新状态
     change(null, status: RxStatus.success());
+  }
+
+  /// 初始化最新音乐
+  Future<void> initNewMusic() async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+          'http://music.dmskin.com/music/new_releases/new_releases.json',
+        ),
+      );
+      var data = json.decode(response.body);
+      for (var element in data) {
+        newMusic.add(Music.fromJson(element));
+      }
+    } catch (_) {}
+  }
+
+  /// 初始化热门音乐
+  Future<void> initHotMusic() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://music.dmskin.com/music/hot_tracks/hot_tracks.json'),
+      );
+      final data = json.decode(response.body);
+      for (var element in data) {
+        hotMusic.add(Music.fromJson(element));
+      }
+    } catch (_) {}
   }
 
   /// 播放音乐 - 插入最近播放列表
