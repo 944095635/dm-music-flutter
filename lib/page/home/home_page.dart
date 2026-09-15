@@ -6,13 +6,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:inspire_blur/inspire_blur.dart';
+import 'package:dm_music/page/home/home_logic.dart';
+import 'package:dm_music/page/home/play_logic.dart';
+import 'package:dm_music/page/home/widget/music_category_item.dart';
+import 'package:dm_music/page/home/widget/music_control.dart';
+import 'package:dm_music/page/home/widget/music_hot_item.dart';
+import 'package:dm_music/page/home/widget/music_play_info_card.dart';
 import 'package:dm_music/pages/frame/widgets/bottom_curve_widget.dart';
-import 'package:dm_music/pages/home/home_logic.dart';
-import 'package:dm_music/pages/home/play_logic.dart';
-import 'package:dm_music/pages/home/widget/music_category_item.dart';
-import 'package:dm_music/pages/home/widget/music_control.dart';
-import 'package:dm_music/pages/home/widget/music_hot_item.dart';
-import 'package:dm_music/pages/home/widget/music_play_info_card.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
 import 'package:dm_music/widgets/slider.dart';
 
@@ -41,13 +41,13 @@ class _HomePageState extends State<HomePage> {
         title: const Text('DMusic'),
         actions: [
           IconButton(
-            icon: HugeIcon(icon: HugeIcons.strokeRoundedBodySoap),
+            icon: HugeIcon(icon: HugeIcons.strokeRoundedSettings04),
             onPressed: () {
               isBlur = !isBlur;
               setState(() {});
             },
           ),
-          SizedBox(width: 10),
+          SizedBox(width: 5),
         ],
         flexibleSpace: isBlur
             ? Stack(
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
       fit: .expand,
       children: [
         homeLogic.obx(
-          (state) => buildList(),
+          (state) => buildList(controllerHeight),
         ),
 
         // 底部播放区域
@@ -183,51 +183,53 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 构建列表组件
-  Widget buildList() {
+  Widget buildList(double controllerHeight) {
     return CustomScrollView(
       scrollCacheExtent: ScrollCacheExtent.pixels(2000),
       slivers: [
-        // "最新发布" 标题
-        SliverSafeArea(
-          bottom: false,
-          minimum: EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverToBoxAdapter(
-            child: MusicCategoryItem("RECENTLY PLAYED"),
-          ),
-        ),
-
-        // 测试数据
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 120,
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              scrollDirection: Axis.horizontal,
-              itemCount: homeLogic.hotMusic.length,
-              itemBuilder: (context, index) {
-                final music = homeLogic.hotMusic[index];
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    memCacheWidth: 200,
-                    memCacheHeight: 200,
-                    imageUrl: music.cover,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(width: 10);
-              },
+        if (homeLogic.playMusic.isNotEmpty) ...{
+          // "最近播放" 标题
+          SliverSafeArea(
+            bottom: false,
+            minimum: EdgeInsets.symmetric(horizontal: 12),
+            sliver: SliverToBoxAdapter(
+              child: MusicCategoryItem("RECENTLY PLAYED"),
             ),
           ),
-        ),
 
-        // "热门音乐" 标题
+          // 测试数据
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 120,
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                scrollDirection: Axis.horizontal,
+                itemCount: homeLogic.playMusic.length,
+                itemBuilder: (context, index) {
+                  final music = homeLogic.playMusic[index];
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      memCacheWidth: 200,
+                      memCacheHeight: 200,
+                      imageUrl: music.cover,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(width: 10);
+                },
+              ),
+            ),
+          ),
+        },
+
+        // "最近发布" 标题
         SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           sliver: SliverToBoxAdapter(
-            child: MusicCategoryItem("HOT MUSIC"),
+            child: MusicCategoryItem("NEW RELEASES"),
           ),
         ),
 
@@ -237,10 +239,10 @@ class _HomePageState extends State<HomePage> {
             top: 10,
             left: 10,
             right: 10,
-            bottom: 10,
+            bottom: 10 + controllerHeight,
           ),
           sliver: SliverGrid.builder(
-            itemCount: homeLogic.hotMusic.length,
+            itemCount: homeLogic.newMusic.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 10,
@@ -248,10 +250,13 @@ class _HomePageState extends State<HomePage> {
               childAspectRatio: 3 / 3.5,
             ),
             itemBuilder: (context, index) {
-              final music = homeLogic.hotMusic[index];
+              final music = homeLogic.newMusic[index];
               return GestureDetector(
                 behavior: .opaque,
-                onTap: () => playLogic.playMusic(music),
+                onTap: () {
+                  playLogic.playMusic(music);
+                  homeLogic.onPlay(music);
+                },
                 child: MusicHotItem(
                   music,
                   isBlur: isBlur,

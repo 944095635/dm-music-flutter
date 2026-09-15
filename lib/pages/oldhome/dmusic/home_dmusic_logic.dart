@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:dm_music/apis/cloud_music_api/cloud_music_api.dart';
 import 'package:dm_music/apis/cloud_music_api/models/cloud_music.dart';
 import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
-import 'package:dm_music/apis/test_api.dart';
 import 'package:dm_music/models/music.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/services/play_service.dart';
@@ -31,10 +30,6 @@ class HomeDmusicLogic extends GetxController with StateMixin {
   }
 
   void _initData() async {
-    /// DMSkin 服务器的数据
-    songs.addAll(TestApi.getMusicList());
-    //recentlyPlayed.addAll(TestApi.getMusicList1());
-
     // 获取最新音乐
     List<CloudMusic> newSongsData = await CloudMusicApi.personalizedNewsong();
     for (var newSong in newSongsData) {

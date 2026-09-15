@@ -5,8 +5,11 @@ import 'package:dm_music/model/music.dart';
 
 /// 主页逻辑
 class HomeLogic extends GetxController with StateMixin {
-  /// 热门音乐
-  final List<Music> hotMusic = [];
+  /// 最近播放列表
+  final List<Music> playMusic = [];
+
+  /// 最新官方音乐
+  final List<Music> newMusic = [];
 
   @override
   void onInit() {
@@ -22,7 +25,24 @@ class HomeLogic extends GetxController with StateMixin {
     );
     var data = json.decode(response.body);
     for (var element in data) {
-      hotMusic.add(Music.fromJson(element));
+      newMusic.add(Music.fromJson(element));
+    }
+
+    // 更新状态
+    change(null, status: RxStatus.success());
+  }
+
+  /// 播放音乐 - 插入最近播放列表
+  void onPlay(Music music) {
+    // 移除重复项
+    if (playMusic.contains(music)) {
+      playMusic.remove(music);
+    }
+    // 插入到最前面
+    playMusic.insert(0, music);
+    // 数量超过10项，移除最后一项
+    if (playMusic.length > 10) {
+      playMusic.removeLast();
     }
 
     // 更新状态
