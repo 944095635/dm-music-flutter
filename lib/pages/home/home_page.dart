@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:animate_do/animate_do.dart';
@@ -82,7 +83,12 @@ class _HomePageState extends State<HomePage> {
     final double buttonHeight = 100;
 
     /// 底部安全区域 48
-    final double bottomSafeHeight = MediaQuery.of(context).padding.bottom;
+    final double bottomSafeHeight;
+    if (Platform.isIOS) {
+      bottomSafeHeight = 0;
+    } else {
+      bottomSafeHeight = MediaQuery.of(context).padding.bottom;
+    }
 
     //弧形区域高度(不包含歌曲信息的区域) 控制区域高度 + 底部安全区域高度
     final double curveHeight = buttonHeight + bottomSafeHeight;

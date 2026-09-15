@@ -1,16 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:dm_music/apis/navidrome_api.dart';
-import 'package:dm_music/helpers/cache_helper.dart';
-import 'package:dm_music/models/login_data/navidrome_data.dart';
-import 'package:dm_music/models/music.dart';
-import 'package:dm_music/models/music_lrc.dart';
-import 'package:dm_music/models/music_source.dart';
-import 'package:dm_music/services/play_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/core/lyric_model.dart';
 import 'package:flutter_lyric/flutter_lyric.dart';
 import 'package:get/get.dart';
+import 'package:dm_music/helpers/cache_helper.dart';
+import 'package:dm_music/models/music.dart';
+import 'package:dm_music/models/music_source.dart';
+import 'package:dm_music/services/play_service.dart';
 
 /// 播放逻辑
 class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
@@ -168,32 +164,7 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
   void loadLrc() async {
     if (music != null) {
       MusicSource? source = await CacheHelper.getSource();
-      if (source != null && source.type == MusicSourceType.navidrome) {
-        var data = NavidromeData.fromJson(source.data);
-        var result = await NavidromeApi.getSong1(
-          data: data,
-          id: music?.id ?? "",
-        );
-        if (result.status && result.data != null) {
-          if (result.data is Map) {
-            String lyricsStr = result.data["lyrics"];
-            List lyrics = json.decode(lyricsStr);
-            if (lyrics.isNotEmpty) {
-              var lrcModel = MusicLrc.fromJson(lyrics.first);
-              List<LyricLine> lines = List.empty(growable: true);
-              for (var lrc in lrcModel.line) {
-                lines.add(
-                  LyricLine(
-                    start: Duration(milliseconds: lrc.start),
-                    text: lrc.value,
-                  ),
-                );
-              }
-              lrcController.loadLyricModel(LyricModel(lines: lines));
-            }
-          }
-        }
-      } else if (source != null && source.type == MusicSourceType.dmusic) {
+      if (source != null && source.type == MusicSourceType.dmusic) {
         if (music!.name.contains("光年之外")) {
           loadAssetsLrc('assets/lrcs/光年之外.lrc');
         } else if (music!.name.contains("是一场烟火")) {

@@ -8,7 +8,6 @@ import 'package:dm_music/pages/frame/frame_logic.dart';
 import 'package:dm_music/pages/frame/widgets/drawer_item.dart';
 import 'package:dm_music/pages/frame/widgets/music_control.dart';
 import 'package:dm_music/pages/oldhome/dmusic/home_dmusic_page.dart';
-import 'package:dm_music/pages/oldhome/navidrome/home_navidrome_page.dart';
 import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/values/strings.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
@@ -100,12 +99,6 @@ class FramePage extends GetView<FrameLogic> {
               settings: settings,
               transition: Transition.fadeIn,
               page: () => HomeDmusicPage(),
-            );
-          case "/navidrome":
-            return GetPageRoute(
-              settings: settings,
-              transition: Transition.fadeIn,
-              page: () => HomeNavidromePage(),
             );
           default:
             return GetPageRoute(
