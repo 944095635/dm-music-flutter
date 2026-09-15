@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// 设置页面
 class SettingsPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("设置"),
+        title: Text("settings".tr),
       ),
       body: buildBody(),
     );
@@ -26,12 +27,15 @@ class _SettingsPageState extends State<SettingsPage> {
       padding: EdgeInsets.all(16),
       children: [
         CupertinoSlidingSegmentedControl<int>(
-          groupValue: 0,
+          groupValue: Get.locale?.languageCode == "zh" ? 0 : 1,
           children: {
             0: Text("中文"),
-            1: Text("英文"),
+            1: Text("English"),
           },
-          onValueChanged: (value) {},
+          onValueChanged: (value) {
+            var locale = value == 0 ? Locale('zh', 'CN') : Locale('en', 'US');
+            Get.updateLocale(locale);
+          },
         ),
 
         Text("注:渐变模糊非常考验设备性能，如遇卡顿可切换为磨砂质感"),

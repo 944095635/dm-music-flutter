@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: MusicCategoryItem("RECENTLY PLAYED"),
+                    child: MusicCategoryItem("recently_played".tr),
                   ),
                 ),
 
@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: MusicCategoryItem("NEW RELEASES"),
+                  child: MusicCategoryItem("new_releases".tr),
                 ),
               ),
 

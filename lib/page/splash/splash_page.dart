@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
@@ -38,8 +39,11 @@ class _SplashPageState extends State<SplashPage> {
 
   /// 初始化
   void init() async {
-    // 初始化音频解码
-    MediaKit.ensureInitialized();
+    // 临时解决热重启闪退的问题
+    if (!kDebugMode) {
+      // 初始化音频解码
+      MediaKit.ensureInitialized();
+    }
 
     await Future.delayed(Duration(seconds: 1));
 

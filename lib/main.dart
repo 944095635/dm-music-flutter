@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/page/splash/splash_page.dart';
+import 'package:dm_music/value/translations_keys.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +16,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'DMusic',
+      themeMode: ThemeMode.dark, // 强制[暗黑模式]
+      locale: Locale('zh', 'CN'), // 支持的语言
+      translations: TranslationsKeys(), // 翻译键
+      fallbackLocale: Locale('en', 'US'), // 回退语言
+      darkTheme: ThemeData(
+        fontFamily: "MiSans",
+        brightness: Brightness.dark,
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.transparent,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: Brightness.dark,
+            systemStatusBarContrastEnforced: false,
+            systemNavigationBarColor: Colors.black,
+            statusBarIconBrightness: Brightness.light,
+          ),
+        ),
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(fontSize: 24, fontWeight: .bold),
+          bodyLarge: TextStyle(fontSize: 17), // 输入框等
+          bodySmall: TextStyle(fontSize: 12),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+      home: const SplashPage(),
+    );
+
     return GetMaterialApp(
       title: 'DMusic',
       darkTheme: _getDarkTheme(),
