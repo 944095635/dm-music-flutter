@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
-import 'package:dm_music/models/music.dart';
 import 'package:dm_music/pages/oldhome/dmusic/home_dmusic_logic.dart';
-import 'package:dm_music/pages/oldhome/widgets/music_new_item.dart';
-import 'package:dm_music/pages/oldhome/widgets/music_recently_item.dart';
-import 'package:dm_music/themes/dimensions.dart';
-import 'package:dm_music/widgets/list_title_widget.dart';
 
 /// DMUSIC - 主页
 class HomeDmusicPage extends GetView<HomeDmusicLogic> {
@@ -41,140 +34,8 @@ class HomeDmusicPage extends GetView<HomeDmusicLogic> {
           ),
           sliver: SliverMainAxisGroup(
             slivers: [
-              if (controller.newReleases.isNotEmpty) ...{
-                _buildNew(),
-              },
-
-              _buildDMusic(),
-
-              if (controller.playList.isNotEmpty) ...{
-                _buildPlayList(),
-              },
+             
             ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// DM 新歌
-  Widget _buildNew() {
-    return SliverMainAxisGroup(
-      slivers: [
-        SliverToBoxAdapter(
-          child: ListTitleWidget(
-            "NEW RELEASES", // "最新发布",
-            trailingText: "See All", // "全部",
-          ),
-        ),
-
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 200,
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(
-                horizontal: Dimensions.pagePadding,
-              ),
-              itemCount: controller.newReleases.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                Music music = controller.newReleases[index];
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    controller.onTapRecentlyMusic(index);
-                  },
-                  child: MusicRecentlyItem(music),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return 10.horizontalSpace;
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// DM 数据
-  Widget _buildDMusic() {
-    return SliverMainAxisGroup(
-      slivers: [
-        SliverToBoxAdapter(
-          child: ListTitleWidget(
-            "RECENTLY PLAYED", // "最新发布",
-          ),
-        ),
-
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.pagePadding,
-          ),
-          sliver: SliverGrid.builder(
-            itemCount: controller.songs.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 3 / 3.5,
-            ),
-            itemBuilder: (context, index) {
-              Music music = controller.songs[index];
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  controller.onTapMusic(index);
-                },
-                child: MusicNewItem(
-                  music: music.name,
-                  cover: music.cover,
-                  author: music.author ?? "",
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// DM 播放列表
-  Widget _buildPlayList() {
-    return SliverMainAxisGroup(
-      slivers: [
-        SliverToBoxAdapter(
-          child: ListTitleWidget(
-            "PLAY LISTED", // "播放列表",
-          ),
-        ),
-
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.pagePadding,
-          ),
-          sliver: SliverGrid.builder(
-            itemCount: controller.songs.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 3 / 3.5,
-            ),
-            itemBuilder: (context, index) {
-              CloudPlayList music = controller.playList[index];
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  controller.onTapPlayListItem(music);
-                },
-                child: MusicNewItem(
-                  music: music.name,
-                  cover: music.cover,
-                  author: music.author ?? "",
-                ),
-              );
-            },
           ),
         ),
       ],

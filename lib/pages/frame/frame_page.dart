@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/models/music_source.dart';
-import 'package:dm_music/pages/frame/widgets/drawer_item.dart';
 import 'package:dm_music/pages/frame/widgets/music_control.dart';
-import 'package:dm_music/pages/oldhome/dmusic/home_dmusic_page.dart';
-import 'package:dm_music/themes/dimensions.dart';
 import 'package:dm_music/values/strings.dart';
 import 'package:dm_music/widgets/blur_widget.dart';
-import 'package:dm_music/widgets/sliver_bottom_widget.dart';
 import 'package:dm_music/widgets/theme_button.dart';
 
 /// 主页
@@ -60,15 +55,10 @@ class FramePage extends GetView {
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,
-      endDrawer: GetBuilder(
-        builder: (controller) {
-          return _buildDrawer();
-        },
-      ),
+     
       body: Stack(
         fit: StackFit.expand,
         children: [
-          _buildNavigator(),
 
           /// 底部音乐控制组件
           Align(
@@ -80,94 +70,6 @@ class FramePage extends GetView {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  /// 局部导航
-  Widget _buildNavigator() {
-    return Navigator(
-      key: Get.nestedKey(1),
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case "/dmusic":
-            return GetPageRoute(
-              settings: settings,
-              transition: Transition.fadeIn,
-              page: () => HomeDmusicPage(),
-            );
-          default:
-            return GetPageRoute(
-              settings: settings,
-              transition: Transition.fadeIn,
-              page: () => SizedBox(),
-            );
-        }
-      },
-    );
-  }
-
-  /// 右滑菜单
-  Widget _buildDrawer() {
-    return BlurWidget(
-      radius: BorderRadius.circular(15),
-      child: Drawer(
-        child: CustomScrollView(
-          slivers: [
-            SliverSafeArea(
-              bottom: false,
-              sliver: SliverPadding(
-                padding: const EdgeInsets.all(Dimensions.pagePadding),
-                sliver: SliverList.separated(
-                  itemCount: controller.sourceList.length,
-                  itemBuilder: (context, index) {
-                    MusicSource source = controller.sourceList[index];
-                    return DrawerItem(
-                      source.type.name,
-                      source.type.icon,
-                      controller.sourceId == source.id,
-                      tag: source.id,
-                      onTap: () {
-                        controller.changeSource(source);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return 10.verticalSpace;
-                  },
-                ),
-              ),
-            ),
-
-            SliverBottomWidget(
-              child: Column(
-                spacing: 10,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    spacing: 5,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        Strings.appName,
-                      ),
-                      Text(
-                        "V2.0.7",
-                      ),
-                    ],
-                  ),
-
-                  FilledButton(
-                    onPressed: () {},
-                    child: Text(
-                      "清除所有数据",
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

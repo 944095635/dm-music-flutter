@@ -12,6 +12,7 @@ import 'package:dm_music/page/home/widget/music_control.dart';
 import 'package:dm_music/page/home/widget/music_hot_item.dart';
 import 'package:dm_music/page/home/widget/music_play_info_card.dart';
 import 'package:dm_music/page/play/play_logic.dart';
+import 'package:dm_music/page/play/play_page.dart';
 import 'package:dm_music/page/settings/settings_page.dart';
 import 'package:dm_music/pages/frame/widgets/bottom_curve_widget.dart';
 import 'package:dm_music/service/play_service.dart';
@@ -125,7 +126,13 @@ class _HomePageState extends State<HomePage> {
                     controller: (slideController) {
                       logic.slideController = slideController;
                     },
-                    child: PlayInfoCard(logic.currentMusic.value!),
+                    child: GestureDetector(
+                      behavior: .opaque,
+                      onTap: () {
+                        Get.to(() => const PlayPage());
+                      },
+                      child: PlayInfoCard(logic.currentMusic.value!),
+                    ),
                   ),
                 ),
 
