@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - media_kit_libs_ios_audio (1.0.4):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - media_kit_libs_ios_audio (from `.symlinks/plugins/media_kit_libs_ios_audio/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  media_kit_libs_ios_audio:
+    :path: ".symlinks/plugins/media_kit_libs_ios_audio/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
+  media_kit_libs_ios_audio: 905e6323b72e65c63ab9262b2e473f52c024a3a8
+
+PODFILE CHECKSUM: 3ba3a73b1b12adcf321a227a745625fe0888cc82
+
+COCOAPODS: 1.17.0
