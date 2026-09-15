@@ -14,10 +14,10 @@ import 'package:dm_music/page/home/widget/music_play_info_card.dart';
 import 'package:dm_music/page/play/play_logic.dart';
 import 'package:dm_music/page/play/play_page.dart';
 import 'package:dm_music/page/settings/settings_page.dart';
-import 'package:dm_music/pages/frame/widgets/bottom_curve_widget.dart';
 import 'package:dm_music/service/play_service.dart';
-import 'package:dm_music/widgets/blur_widget.dart';
-import 'package:dm_music/widgets/slider.dart';
+import 'package:dm_music/widget/blur_widget.dart';
+import 'package:dm_music/widget/bottom_curve_widget.dart';
+import 'package:dm_music/widget/slider.dart';
 
 /// 主页
 class HomePage extends StatefulWidget {
@@ -298,7 +298,10 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         homeLogic.openPlay = true;
                         homeLogic.update();
-                        playLogic.playMusic(homeLogic.popularMusic, index: index);
+                        playLogic.playMusic(
+                          homeLogic.popularMusic,
+                          index: index,
+                        );
                       },
                       child: MusicHotItem(
                         music,

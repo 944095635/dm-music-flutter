@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:dm_music/helpers/network_helper.dart';
+import 'package:dm_music/helper/network_helper.dart';
 import 'package:dm_music/page/home/home_page.dart';
 
 /// 启动屏

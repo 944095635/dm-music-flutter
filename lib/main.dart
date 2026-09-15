@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:dm_music/page/splash/splash_page.dart';
 import 'package:dm_music/value/translations_keys.dart';
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'DMusic',
       themeMode: ThemeMode.dark, // 强制[暗黑模式]
-      locale: Locale('zh', 'CN'), // 支持的语言
+      locale: Locale('en', 'US'), // 支持的语言
       translations: TranslationsKeys(), // 翻译键
       fallbackLocale: Locale('en', 'US'), // 回退语言
       darkTheme: ThemeData(
@@ -37,16 +36,32 @@ class MyApp extends StatelessWidget {
             statusBarIconBrightness: Brightness.light,
           ),
         ),
+        actionIconTheme: ActionIconThemeData(
+          backButtonIconBuilder: (context) {
+            return IconButton(
+              onPressed: Get.back,
+              icon: Icon(CupertinoIcons.back),
+            );
+          },
+        ),
         scaffoldBackgroundColor: Colors.black,
         textTheme: const TextTheme(
           titleLarge: TextStyle(fontSize: 24, fontWeight: .bold),
           bodyLarge: TextStyle(fontSize: 17), // 输入框等
           bodySmall: TextStyle(fontSize: 12),
         ),
-        //进度条风格
         progressIndicatorTheme: const ProgressIndicatorThemeData(
+          //进度条风格
           color: Colors.white54,
           linearTrackColor: Colors.white24,
+        ),
+        sliderTheme: const SliderThemeData(
+          trackHeight: 2,
+          thumbColor: Colors.white,
+          overlayColor: Colors.white12,
+          activeTrackColor: Colors.white54,
+          inactiveTrackColor: Colors.white12,
+          overlayShape: RoundSliderOverlayShape(overlayRadius: 12),
         ),
       ),
       defaultTransition: Platform.isAndroid ? Transition.rightToLeft : null,
@@ -54,25 +69,14 @@ class MyApp extends StatelessWidget {
       home: const SplashPage(),
     );
 
-    return GetMaterialApp(
-      // builder: DevicePreview.appBuilder,
-      builder: FlutterSmartDialog.init(),
-      navigatorObservers: [FlutterSmartDialog.observer],
-      home: const SplashPage(),
-    );
+    // builder: DevicePreview.appBuilder,
+    // builder: FlutterSmartDialog.init(),
+    // navigatorObservers: [FlutterSmartDialog.observer],
   }
 
   /// 黑色主题
   ThemeData getDarkTheme() {
     return ThemeData(
-      actionIconTheme: ActionIconThemeData(
-        backButtonIconBuilder: (context) {
-          return IconButton(
-            onPressed: Get.back,
-            icon: Icon(CupertinoIcons.back),
-          );
-        },
-      ),
       colorScheme: const ColorScheme.dark(
         brightness: Brightness.dark,
         // 主色调
@@ -95,11 +99,6 @@ class MyApp extends StatelessWidget {
         bodyMedium: TextStyle(fontSize: 15),
         bodySmall: TextStyle(fontSize: 12),
       ),
-
-      // drawerTheme: const DrawerThemeData(
-      //   width: 260,
-      //   backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-      // ),
       bottomSheetTheme: const BottomSheetThemeData(
         showDragHandle: true,
         shape: RoundedRectangleBorder(
@@ -120,14 +119,7 @@ class MyApp extends StatelessWidget {
         // activeColor: Colors.white,
         // activeTrackColor: Colors.white30,
       ),
-      sliderTheme: const SliderThemeData(
-        trackHeight: 2.5,
-        thumbColor: Colors.white,
-        activeTrackColor: Colors.white54,
-        inactiveTrackColor: Colors.white12,
-        overlayColor: Colors.white12,
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 10),
-      ),
+
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
           minimumSize: WidgetStatePropertyAll(Size.fromHeight(48)),
