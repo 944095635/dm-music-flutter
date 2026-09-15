@@ -11,6 +11,9 @@ class HomeLogic extends GetxController with StateMixin {
   /// 最新官方音乐
   final List<Music> newMusic = [];
 
+  /// 是否已经开启播放
+  bool openPlay = false;
+
   @override
   void onInit() {
     super.onInit();

@@ -49,19 +49,15 @@ class MyApp extends StatelessWidget {
           linearTrackColor: Colors.white24,
         ),
       ),
+      defaultTransition: Platform.isAndroid ? Transition.rightToLeft : null,
       debugShowCheckedModeBanner: false,
       home: const SplashPage(),
     );
 
     return GetMaterialApp(
-      title: 'DMusic',
-      darkTheme: _getDarkTheme(),
-      themeMode: ThemeMode.dark,
-      debugShowCheckedModeBanner: false,
       // builder: DevicePreview.appBuilder,
       builder: FlutterSmartDialog.init(),
       navigatorObservers: [FlutterSmartDialog.observer],
-      defaultTransition: Platform.isAndroid ? Transition.rightToLeft : null,
       home: const SplashPage(),
     );
   }
@@ -69,20 +65,6 @@ class MyApp extends StatelessWidget {
   /// 黑色主题
   ThemeData _getDarkTheme() {
     return ThemeData(
-      useMaterial3: true,
-      fontFamily: "MiSans",
-      appBarTheme: const AppBarTheme(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: Colors.black,
-        ),
-      ),
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder: (context) {
           return IconButton(
@@ -114,10 +96,10 @@ class MyApp extends StatelessWidget {
         bodySmall: TextStyle(fontSize: 12),
       ),
 
-      drawerTheme: const DrawerThemeData(
-        width: 260,
-        backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-      ),
+      // drawerTheme: const DrawerThemeData(
+      //   width: 260,
+      //   backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+      // ),
       bottomSheetTheme: const BottomSheetThemeData(
         showDragHandle: true,
         shape: RoundedRectangleBorder(

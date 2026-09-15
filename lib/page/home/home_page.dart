@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                     child: GestureDetector(
                       behavior: .opaque,
                       onTap: () {
-                        Get.to(() => const PlayPage());
+                        Get.to(() => const PlayPage(), transition: .fadeIn);
                       },
                       child: PlayInfoCard(logic.currentMusic.value!),
                     ),
@@ -198,7 +198,6 @@ class _HomePageState extends State<HomePage> {
       slivers: [
         // 添加安全区域 + 左右12边距
         SliverSafeArea(
-          bottom: false,
           minimum: EdgeInsets.symmetric(horizontal: 12),
           sliver: SliverMainAxisGroup(
             slivers: [
@@ -248,7 +247,9 @@ class _HomePageState extends State<HomePage> {
 
               // 热门音乐
               SliverPadding(
-                padding: EdgeInsets.only(bottom: controllerHeight + 10),
+                padding: homeLogic.openPlay
+                    ? EdgeInsets.only(bottom: controllerHeight)
+                    : EdgeInsets.zero,
                 sliver: SliverGrid.builder(
                   itemCount: homeLogic.newMusic.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -262,6 +263,8 @@ class _HomePageState extends State<HomePage> {
                     return GestureDetector(
                       behavior: .opaque,
                       onTap: () {
+                        homeLogic.openPlay = true;
+                        homeLogic.update();
                         playLogic.playMusic(homeLogic.newMusic, index: index);
                       },
                       child: MusicHotItem(

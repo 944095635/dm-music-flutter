@@ -4,10 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_lyric/flutter_lyric.dart';
 import 'package:flutter_styled/size_extension.dart';
 import 'package:get/get.dart';
-import 'package:dm_music/extension/duration_extensions.dart';
 import 'package:dm_music/pages/play/play_buttons.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/themes/styles.dart';
+import 'package:dm_music/util/time_utils.dart';
 import 'package:dm_music/values/http_keys.dart';
 import 'package:dm_music/widgets/slider.dart';
 import 'package:dm_music/widgets/theme_button.dart';
@@ -251,14 +251,14 @@ class PlayPage extends GetView<PlayLogic> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                controller.position.value.format(),
+                TimeUtils.formatTime(controller.position.value),
                 style: TextStyle(
                   fontSize: 12,
                   color: textColor,
                 ),
               ),
               Text(
-                controller.duration.value.format(),
+                TimeUtils.formatTime(controller.duration.value),
                 style: TextStyle(
                   fontSize: 12,
                   color: textColor,
