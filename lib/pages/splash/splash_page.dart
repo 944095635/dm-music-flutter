@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:dm_music/helpers/cache_helper.dart';
 import 'package:dm_music/helpers/network_helper.dart';
 import 'package:dm_music/models/music_source.dart';
@@ -6,8 +9,6 @@ import 'package:dm_music/pages/init/init_page.dart';
 import 'package:dm_music/pages/play/play_logic.dart';
 import 'package:dm_music/services/app_service.dart';
 import 'package:dm_music/services/play_service.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 /// 启动屏
 class SplashPage extends StatefulWidget {
@@ -26,6 +27,9 @@ class _SplashPageState extends State<SplashPage> {
 
   /// 初始化
   void init() async {
+    // 初始化音频解码
+    MediaKit.ensureInitialized();
+
     // 启动网络访问
     NetworkHelper.init();
 
