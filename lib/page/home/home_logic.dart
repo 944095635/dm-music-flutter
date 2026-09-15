@@ -11,8 +11,8 @@ class HomeLogic extends GetxController with StateMixin {
   /// 最新官方音乐
   final List<Music> newMusic = [];
 
-  /// 热门音乐
-  final List<Music> hotMusic = [];
+  /// 流行音乐
+  final List<Music> popularMusic = [];
 
   /// 是否已经开启播放
   bool openPlay = false;
@@ -27,7 +27,7 @@ class HomeLogic extends GetxController with StateMixin {
   Future<void> initMusic() async {
     await initNewMusic();
 
-    await initHotMusic();
+    await initPopularMusic();
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -50,15 +50,15 @@ class HomeLogic extends GetxController with StateMixin {
     } catch (_) {}
   }
 
-  /// 初始化热门音乐
-  Future<void> initHotMusic() async {
+  /// 初始化流行音乐
+  Future<void> initPopularMusic() async {
     try {
       final response = await http.get(
-        Uri.parse('http://music.dmskin.com/music/hot_tracks/hot_tracks.json'),
+        Uri.parse('http://music.dmskin.com/music/popular/popular.json'),
       );
       final data = json.decode(response.body);
       for (var element in data) {
-        hotMusic.add(Music.fromJson(element));
+        popularMusic.add(Music.fromJson(element));
       }
     } catch (_) {}
   }

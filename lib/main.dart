@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
   }
 
   /// 黑色主题
-  ThemeData _getDarkTheme() {
+  ThemeData getDarkTheme() {
     return ThemeData(
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder: (context) {

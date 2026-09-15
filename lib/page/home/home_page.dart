@@ -271,11 +271,11 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
 
-              // "热门音乐" 标题
+              // "流行音乐" 标题
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: MusicCategoryItem("hot_tracks".tr),
+                  child: MusicCategoryItem("popular".tr),
                 ),
               ),
 
@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                     ? EdgeInsets.only(bottom: controllerHeight)
                     : EdgeInsets.zero,
                 sliver: SliverGrid.builder(
-                  itemCount: homeLogic.hotMusic.length,
+                  itemCount: homeLogic.popularMusic.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 10,
@@ -292,13 +292,13 @@ class _HomePageState extends State<HomePage> {
                     childAspectRatio: 3 / 3.5,
                   ),
                   itemBuilder: (context, index) {
-                    final music = homeLogic.hotMusic[index];
+                    final music = homeLogic.popularMusic[index];
                     return GestureDetector(
                       behavior: .opaque,
                       onTap: () {
                         homeLogic.openPlay = true;
                         homeLogic.update();
-                        playLogic.playMusic(homeLogic.hotMusic, index: index);
+                        playLogic.playMusic(homeLogic.popularMusic, index: index);
                       },
                       child: MusicHotItem(
                         music,

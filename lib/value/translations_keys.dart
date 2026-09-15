@@ -12,6 +12,7 @@ class TranslationsKeys extends Translations {
       'blur': '模糊',
       'recently_played': '最近播放',
       'new_releases': '新歌推荐',
+      'popular': '流行推荐',
     },
     'en_US': {
       'hello': 'Hello World',
@@ -21,6 +22,7 @@ class TranslationsKeys extends Translations {
       'blur': 'Blur',
       'recently_played': 'RECENTLY PLAYED',
       'new_releases': 'NEW RELEASES',
+      'popular': 'POPULAR',
     },
   };
 }
