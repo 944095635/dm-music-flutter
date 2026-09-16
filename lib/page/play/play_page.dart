@@ -85,7 +85,7 @@ class PlayPage extends GetView<PlayLogic> {
                     padding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
-                      bottom: 120,
+                      bottom: 80,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
