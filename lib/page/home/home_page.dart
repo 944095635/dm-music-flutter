@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
   /// 构建列表组件
   Widget buildList(double controllerHeight) {
     return CustomScrollView(
-      scrollCacheExtent: ScrollCacheExtent.pixels(2000),
+      scrollCacheExtent: ScrollCacheExtent.pixels(5000),
       slivers: [
         // 添加安全区域 + 左右12边距
         SliverSafeArea(
