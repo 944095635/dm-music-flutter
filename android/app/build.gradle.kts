@@ -27,6 +27,10 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // 排除 x86 和 x86_64
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+        }
     }
 
     buildTypes {
@@ -35,6 +39,20 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+        dex {
+            useLegacyPackaging = true
+        }
+        // 排除 x86 和 x86_64
+        exclude("lib/x86/*")
+        exclude("lib/x86_64/*")
+        exclude("lib/x86/libaosl.so")
+        exclude("lib/x86_64/libaosl.so")
     }
 }
 
