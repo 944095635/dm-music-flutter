@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:dm_music/model/music.dart';
+import 'package:dm_music/value/http_keys.dart';
 import 'package:dm_music/widget/blur_widget.dart';
 
 /// 正在播放到的音乐卡片
@@ -69,6 +70,7 @@ class PlayInfoCard extends StatelessWidget {
             height: 45,
             fit: BoxFit.cover,
             memCacheWidth: 150,
+            httpHeaders: HttpKeys.headers,
           ),
         ),
         Expanded(

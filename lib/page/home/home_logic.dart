@@ -30,8 +30,6 @@ class HomeLogic extends GetxController with StateMixin {
 
     await initRecommendMusic();
 
-    await Future.delayed(const Duration(seconds: 1));
-
     // 更新状态
     change(null, status: RxStatus.success());
   }
