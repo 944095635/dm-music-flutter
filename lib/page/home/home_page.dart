@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:inspire_blur/inspire_blur.dart';
@@ -10,6 +9,7 @@ import 'package:dm_music/page/home/home_logic.dart';
 import 'package:dm_music/page/home/widget/music_category_item.dart';
 import 'package:dm_music/page/home/widget/music_control.dart';
 import 'package:dm_music/page/home/widget/music_hot_item.dart';
+import 'package:dm_music/page/home/widget/music_new_item.dart';
 import 'package:dm_music/page/home/widget/music_play_info_card.dart';
 import 'package:dm_music/page/play/play_logic.dart';
 import 'package:dm_music/page/play/play_page.dart';
@@ -200,44 +200,13 @@ class _HomePageState extends State<HomePage> {
       slivers: [
         // 添加安全区域 + 左右12边距
         SliverSafeArea(
-          minimum: EdgeInsets.symmetric(horizontal: 12),
+          minimum: EdgeInsets.only(
+            left: 12,
+            right: 12,
+            bottom: controllerHeight,
+          ),
           sliver: SliverMainAxisGroup(
             slivers: [
-              if (homeLogic.playMusic.isNotEmpty) ...{
-                // "最近播放" 标题
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: MusicCategoryItem("recently_played".tr),
-                  ),
-                ),
-
-                // 最近播放数据
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 120,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: homeLogic.playMusic.length,
-                      itemBuilder: (context, index) {
-                        final music = homeLogic.playMusic[index];
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            memCacheHeight: 200,
-                            imageUrl: music.cover,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(width: 10);
-                      },
-                    ),
-                  ),
-                ),
-              },
-
               // "最近发布" 标题
               SliverToBoxAdapter(
                 child: Padding(
@@ -246,30 +215,56 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              // 最新音乐
-              SliverGrid.builder(
+              SliverList.separated(
                 itemCount: homeLogic.newMusic.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 3 / 3.5,
-                ),
                 itemBuilder: (context, index) {
                   final music = homeLogic.newMusic[index];
                   return GestureDetector(
                     behavior: .opaque,
                     onTap: () {
-                      homeLogic.onPlay(music);
                       playLogic.playMusic(homeLogic.newMusic, index: index);
                     },
-                    child: MusicHotItem(
-                      music,
+                    child: MusicNewItem(
+                      name: music.name,
+                      cover: music.cover,
+                      author: music.author,
                       performance: AppService.performanceMode,
                     ),
                   );
                 },
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 10);
+                },
               ),
+
+              // 最新音乐
+              // SliverToBoxAdapter(
+              //   child: SizedBox(
+              //     height: 120,
+              //     child: ListView.separated(
+              //       scrollDirection: Axis.horizontal,
+              //       itemCount: homeLogic.newMusic.length,
+              //       itemBuilder: (context, index) {
+              //         final music = homeLogic.newMusic[index];
+              //         return GestureDetector(
+              //           behavior: .opaque,
+              //           onTap: () {
+              //             playLogic.playMusic(homeLogic.newMusic, index: index);
+              //           },
+              //           child: MusicNewItem(
+              //             name: music.name,
+              //             cover: music.cover,
+              //             author: music.author,
+              //             performance: AppService.performanceMode,
+              //           ),
+              //         );
+              //       },
+              //       separatorBuilder: (context, index) {
+              //         return SizedBox(width: 10);
+              //       },
+              //     ),
+              //   ),
+              // ),
 
               // "流行音乐" 标题
               SliverToBoxAdapter(
@@ -279,36 +274,65 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              SliverPadding(
-                padding: homeLogic.openPlay
-                    ? EdgeInsets.only(bottom: controllerHeight)
-                    : EdgeInsets.zero,
-                sliver: SliverGrid.builder(
-                  itemCount: homeLogic.popularMusic.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 3 / 3.5,
-                  ),
-                  itemBuilder: (context, index) {
-                    final music = homeLogic.popularMusic[index];
-                    return GestureDetector(
-                      behavior: .opaque,
-                      onTap: () {
-                        homeLogic.onPlay(music);
-                        playLogic.playMusic(
-                          homeLogic.popularMusic,
-                          index: index,
-                        );
-                      },
-                      child: MusicHotItem(
-                        music,
-                        performance: AppService.performanceMode,
-                      ),
-                    );
-                  },
+              SliverGrid.builder(
+                itemCount: homeLogic.popularMusic.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 3 / 3.5,
                 ),
+                itemBuilder: (context, index) {
+                  final music = homeLogic.popularMusic[index];
+                  return GestureDetector(
+                    behavior: .opaque,
+                    onTap: () {
+                      playLogic.playMusic(
+                        homeLogic.popularMusic,
+                        index: index,
+                      );
+                    },
+                    child: MusicHotItem(
+                      name: music.name,
+                      cover: music.cover,
+                      author: music.author,
+                      performance: AppService.performanceMode,
+                    ),
+                  );
+                },
+              ),
+
+              // "推荐歌单" 标题
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: MusicCategoryItem("recommend_playlist".tr),
+                ),
+              ),
+
+              SliverGrid.builder(
+                itemCount: homeLogic.recommendMusic.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 3 / 3.5,
+                ),
+                itemBuilder: (context, index) {
+                  final music = homeLogic.recommendMusic[index];
+                  return GestureDetector(
+                    behavior: .opaque,
+                    onTap: () {
+                      playLogic.playMusicList(music);
+                    },
+                    child: MusicHotItem(
+                      performance: AppService.performanceMode,
+                      name: music.name,
+                      cover: music.cover,
+                      author: music.author ?? '',
+                    ),
+                  );
+                },
               ),
             ],
           ),

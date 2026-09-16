@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dm_music/apis/cloud_music_api/cloud_music_api.dart';
+import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/model/music.dart';
 import 'package:dm_music/service/play_service.dart';
 
@@ -142,5 +144,26 @@ class PlayLogic extends GetxController with GetSingleTickerProviderStateMixin {
     if (!state) {
       progress.value = 0;
     }
+  }
+
+  /// 播放网易云歌单
+  void playMusicList(CloudPlayList playlist) async {
+    // 获取最新音乐
+    final newSongsData = await CloudMusicApi.playListDetail(
+      data: {"id": playlist.id},
+    );
+    final List<Music> musics = List.empty(growable: true);
+    for (var newSong in newSongsData) {
+      musics.add(
+        Music(
+          author: newSong.author?.join(",") ?? "",
+          name: newSong.name,
+          source: newSong.source ?? "",
+          cover: newSong.cover ?? "",
+        ),
+      );
+    }
+    PlayService.setPlaylist(musics);
+    PlayService.play();
   }
 }

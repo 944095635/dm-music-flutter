@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:inspire_blur/inspire_blur.dart';
-import 'package:dm_music/model/music.dart';
+import 'package:dm_music/value/http_keys.dart';
 
 /// 热门音乐项
 class MusicHotItem extends StatelessWidget {
-  const new(this.music, {super.key, this.performance = true});
-
-  /// 音乐模型
-  final Music music;
+  const new({
+    super.key,
+    this.performance = true,
+    required this.name,
+    required this.author,
+    required this.cover,
+  });
 
   /// 是否开启性能模式
   final bool performance;
+
+  /// 音乐名称
+  final String name;
+
+  /// 音乐作者
+  final String author;
+
+  /// 封面
+  final String cover;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +31,8 @@ class MusicHotItem extends StatelessWidget {
     final imageWidget = CachedNetworkImage(
       fit: .cover,
       memCacheHeight: 350,
-      imageUrl: music.cover,
+      imageUrl: cover,
+      httpHeaders: HttpKeys.headers,
     );
 
     // shaderCallback: (Rect bounds) {
@@ -80,10 +93,10 @@ class MusicHotItem extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: .end,
-              crossAxisAlignment: .stretch,
+              crossAxisAlignment: .start,
               children: [
                 Text(
-                  music.name,
+                  name,
                   maxLines: 1,
                   overflow: .ellipsis,
                   style: TextStyle(
@@ -91,7 +104,7 @@ class MusicHotItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  music.author,
+                  author,
                   maxLines: 1,
                   overflow: .ellipsis,
                   style: TextStyle(

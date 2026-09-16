@@ -1,21 +1,20 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:dm_music/apis/cloud_music_api/cloud_music_api.dart';
+import 'package:dm_music/apis/cloud_music_api/models/cloud_play_list.dart';
 import 'package:dm_music/model/music.dart';
 
 /// 主页逻辑
 class HomeLogic extends GetxController with StateMixin {
-  /// 最近播放列表
-  final List<Music> playMusic = [];
-
   /// 最新官方音乐
   final List<Music> newMusic = [];
 
   /// 流行音乐
   final List<Music> popularMusic = [];
 
-  /// 是否已经开启播放
-  bool openPlay = false;
+  /// 推荐歌单
+  final List<CloudPlayList> recommendMusic = [];
 
   @override
   void onInit() {
@@ -28,6 +27,8 @@ class HomeLogic extends GetxController with StateMixin {
     await initNewMusic();
 
     await initPopularMusic();
+
+    await initRecommendMusic();
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -65,25 +66,17 @@ class HomeLogic extends GetxController with StateMixin {
     } catch (_) {}
   }
 
+  /// 初始化推荐歌单
+  Future<void> initRecommendMusic() async {
+    try {
+      final playList = await CloudMusicApi.playlist();
+      recommendMusic.clear();
+      recommendMusic.addAll(playList);
+    } catch (_) {}
+  }
+
   /// 刷新数据
   Future<void> refreshData() async {
     await initMusic();
-  }
-
-  /// 播放音乐 - 插入最近播放列表
-  void onPlay(Music music) {
-    // 移除重复项
-    if (playMusic.contains(music)) {
-      playMusic.remove(music);
-    }
-    // 插入到最前面
-    playMusic.insert(0, music);
-    // 数量超过10项，移除最后一项
-    if (playMusic.length > 10) {
-      playMusic.removeLast();
-    }
-
-    // 更新状态
-    change(null, status: RxStatus.success());
   }
 }

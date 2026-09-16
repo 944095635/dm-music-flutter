@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:dm_music/page/home/widget/music_control.dart';
 import 'package:dm_music/page/play/play_logic.dart';
 import 'package:dm_music/service/play_service.dart';
+import 'package:dm_music/value/http_keys.dart';
 import 'package:dm_music/widget/slider.dart';
 
 /// 播放页
@@ -47,6 +48,7 @@ class PlayPage extends GetView<PlayLogic> {
                     memCacheHeight: 20,
                     memCacheWidth: 20,
                     fit: BoxFit.fill,
+                    httpHeaders: HttpKeys.headers,
                   ),
                 ),
               ),
@@ -74,6 +76,7 @@ class PlayPage extends GetView<PlayLogic> {
                     fit: BoxFit.cover,
                     memCacheWidth: 600,
                     imageUrl: controller.currentMusic.value!.cover,
+                    httpHeaders: HttpKeys.headers,
                   ),
                 ),
                 Expanded(
