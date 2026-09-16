@@ -46,4 +46,9 @@
     </queries>
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 后台音频播放必需 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 </manifest>
