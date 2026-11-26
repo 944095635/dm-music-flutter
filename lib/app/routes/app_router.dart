@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -31,7 +32,18 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.play,
-      builder: (context, state) => const PlayView(),
+      pageBuilder: (context, state) {
+        // Android 渐显进入；iOS 沿用平台默认（横滑进入 + 边缘侧滑返回）。
+        if (defaultTargetPlatform == TargetPlatform.android) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const PlayView(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child),
+          );
+        }
+        return MaterialPage(key: state.pageKey, child: const PlayView());
+      },
     ),
   ],
 );
