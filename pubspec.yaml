@@ -36,7 +36,7 @@ dependencies:
   cached_network_image: ^4.0.7
 
   # 网易云接口加密
-  pointycastle: ^3.9.1
+  pointycastle: ^4.0.0
 
   # 路由与状态管理
   go_router: ^18.1.4
