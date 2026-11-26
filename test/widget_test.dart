@@ -15,6 +15,7 @@ class _FakeHomeRepository extends HomeRepository {
   @override
   Future<List<Music>> fetchNewReleases() async => const [
         Music(
+          id: 'new1',
           name: '新歌一',
           author: '歌手甲',
           source: '',
@@ -25,6 +26,7 @@ class _FakeHomeRepository extends HomeRepository {
   @override
   Future<List<Music>> fetchPopular() async => const [
         Music(
+          id: 'pop1',
           name: '流行一',
           author: '歌手乙',
           source: '',
@@ -49,7 +51,7 @@ class _DelayedHomeRepository extends HomeRepository {
 class _PartialFailureRepository extends HomeRepository {
   @override
   Future<List<Music>> fetchNewReleases() async => const [
-        Music(name: '新歌一', author: '歌手甲', source: '', cover: ''),
+        Music(id: 'new1', name: '新歌一', author: '歌手甲', source: '', cover: ''),
       ];
 
   @override
@@ -104,7 +106,7 @@ void main() {
 
     // 只完成新歌一组，仍需等待流行组，列表仍不显示。
     repo.newReleases.complete(const [
-      Music(name: '新歌一', author: '歌手甲', source: '', cover: ''),
+      Music(id: 'new1', name: '新歌一', author: '歌手甲', source: '', cover: ''),
     ]);
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -112,7 +114,7 @@ void main() {
 
     // 两组都完成后才渲染列表。
     repo.popular.complete(const [
-      Music(name: '流行一', author: '歌手乙', source: '', cover: ''),
+      Music(id: 'pop1', name: '流行一', author: '歌手乙', source: '', cover: ''),
     ]);
     await tester.pumpAndSettle();
     expect(find.byType(CircularProgressIndicator), findsNothing);

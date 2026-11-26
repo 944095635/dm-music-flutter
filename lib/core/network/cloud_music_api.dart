@@ -131,6 +131,7 @@ class CloudMusicApi {
     return rows
         .map(
           (row) => Music(
+            id: row.id,
             name: row.name,
             author: row.author,
             source: urls[row.id] ?? '',

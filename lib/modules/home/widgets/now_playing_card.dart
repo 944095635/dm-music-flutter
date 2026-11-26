@@ -33,7 +33,7 @@ class NowPlayingCard extends ConsumerWidget {
     // 只订阅收藏集合的派生布尔值：其他曲目收藏变化时本卡不重建。
     final isFavorite = ref.watch(
       favoritesProvider.select(
-        (state) => state.value?.contains(music.source) ?? false,
+        (state) => state.value?.contains(music.id) ?? false,
       ),
     );
 
@@ -104,7 +104,7 @@ class NowPlayingCard extends ConsumerWidget {
                 // 喜欢按钮：切换本地收藏，贴图自带颜色，已收藏实心、未收藏空心。
                 IconButton(
                   onPressed: () =>
-                      ref.read(favoritesProvider.notifier).toggle(music.source),
+                      ref.read(favoritesProvider.notifier).toggle(music.id),
                   icon: Image.asset(
                     isFavorite ? _favoriteFilledAsset : _favoriteOutlineAsset,
                     width: AppSizes.icon,
