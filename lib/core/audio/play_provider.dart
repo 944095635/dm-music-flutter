@@ -29,6 +29,9 @@ final sequenceStateStreamProvider = StreamProvider<SequenceState?>((ref) {
 final playProvider = NotifierProvider<PlayNotifier, PlayState>(PlayNotifier.new);
 
 class PlayNotifier extends Notifier<PlayState> {
+  /// 播放请求代次：每次发起新播放递增，用于丢弃过期的异步请求。
+  int _playGeneration = 0;
+
   @override
   PlayState build() {
     // 各路流变化时合并更新聚合状态，页面只需 watch 本 provider。
@@ -91,15 +94,26 @@ class PlayNotifier extends Notifier<PlayState> {
   }
 
   /// 用 [list] 替换当前播放队列，并从第 [index] 首开始播放。
+  ///
+  /// 正在缓冲时切歌会让 just_audio 中断上一次加载并抛
+  /// [PlayerInterruptedException]（平台侧 code 'abort'），这是预期行为，
+  /// 在此捕获避免冒泡成未处理异常导致崩溃。并发请求只让最后一次生效。
   Future<void> playFromList(List<Music> list, {int index = 0}) async {
     if (list.isEmpty) return;
+    final generation = ++_playGeneration;
     final safeIndex = index.clamp(0, list.length - 1);
-    final sources = await Future.wait(list.map(_buildCacheSource));
-    final player = ref.read(audioPlayerProvider);
-    // 重播时清掉上一轮的完成标记，让进度事件重新生效。
-    state = state.copyWith(completed: false);
-    await player.setAudioSources(sources, initialIndex: safeIndex);
-    await player.play();
+    try {
+      final sources = await Future.wait(list.map(_buildCacheSource));
+      // 构建音源期间又有新请求，本次已过期，放弃以免打断新播放。
+      if (generation != _playGeneration) return;
+      final player = ref.read(audioPlayerProvider);
+      // 重播时清掉上一轮的完成标记，让进度事件重新生效。
+      state = state.copyWith(completed: false);
+      await player.setAudioSources(sources, initialIndex: safeIndex);
+      await player.play();
+    } on PlayerInterruptedException {
+      // 加载被后续请求中断，属正常现象，忽略。
+    }
   }
 
   /// 播放或暂停。
