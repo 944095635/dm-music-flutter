@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:dm_music/app/routes/app_routes.dart';
-import 'package:dm_music/app/routes/fade_pop_page.dart';
 import 'package:dm_music/modules/home/views/home_view.dart';
 import 'package:dm_music/modules/play/views/play_view.dart';
 import 'package:dm_music/modules/splash/views/splash_view.dart';
@@ -32,11 +31,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.play,
-      // 渐显进入；iOS 左侧边缘可跟手侧滑返回，松手淡出或回弹。
-      pageBuilder: (context, state) => FadePopPage(
-        key: state.pageKey,
-        child: const PlayView(),
-      ),
+      builder: (context, state) => const PlayView(),
     ),
   ],
 );
