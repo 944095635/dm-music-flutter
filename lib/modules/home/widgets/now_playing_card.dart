@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:dm_music/app/routes/app_router.dart';
-import 'package:dm_music/app/routes/app_routes.dart';
 import 'package:dm_music/app/theme/app_sizes.dart';
 import 'package:dm_music/core/audio/play_provider.dart';
 import 'package:dm_music/core/favorites/favorites_provider.dart';
+import 'package:dm_music/modules/play/views/play_view.dart';
 import 'package:dm_music/shared/widgets/blur_view.dart';
 
 /// 首页底部播放区的信息卡：展示当前曲目的封面、歌名与作者，并可切换喜欢状态。
@@ -40,7 +40,7 @@ class NowPlayingCard extends ConsumerWidget {
     // 整卡点击进入全屏播放页。收藏按钮等子控件的点击会优先命中自身，
     // 不会冒泡到这里触发跳转。
     return GestureDetector(
-      onTap: () => appRouter.push(AppRoutes.play),
+      onTap: () => AppRouter.to(const PlayView()),
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: topRadius,

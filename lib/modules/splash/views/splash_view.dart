@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
 
-import 'package:dm_music/app/routes/app_routes.dart';
 import 'package:dm_music/app/routes/app_router.dart';
+import 'package:dm_music/modules/home/views/home_view.dart';
 
 /// 启动页：展示 Logo，停留 2 秒后跳转首页。
 ///
-/// 跳转用全局 [appRouter].go() 覆盖路由栈，启动页不会留在回退栈中。
-/// 首页路由配有渐显过渡，跳转时平滑呈现。
+/// 跳转用 [AppRouter].off() 替换当前页，启动页不留在回退栈中。
+/// 首页以渐显过渡呈现。
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
 
@@ -35,8 +35,8 @@ class _SplashViewState extends State<SplashView> {
 
   void _navigateToHome() {
     if (!mounted) return;
-    // go() 覆盖当前栈（非 push），启动页不会留在回退栈中。
-    appRouter.go(AppRoutes.home);
+    // off() 替换当前页（非 push），启动页不会留在回退栈中；渐显进入首页。
+    AppRouter.off(const HomeView(), fade: true);
   }
 
   @override
