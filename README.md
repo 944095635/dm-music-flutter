@@ -12,7 +12,7 @@
 
 | 首页 | 播放页 |
 | :--: | :--: |
-| <img src="preview/image1.png" width="280" alt="首页"> | <img src="preview/image2.png" width="280" alt="播放页"> |
+| <img src="preview/image1.png" width="320" alt="首页"> | <img src="preview/image2.png" width="320" alt="播放页"> |
 
 ## 功能特性
 
