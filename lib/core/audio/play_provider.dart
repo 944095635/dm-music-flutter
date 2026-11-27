@@ -26,7 +26,9 @@ final sequenceStateStreamProvider = StreamProvider<SequenceState?>((ref) {
 });
 
 /// 聚合后的播放状态，供页面读取。
-final playProvider = NotifierProvider<PlayNotifier, PlayState>(PlayNotifier.new);
+final playProvider = NotifierProvider<PlayNotifier, PlayState>(
+  PlayNotifier.new,
+);
 
 class PlayNotifier extends Notifier<PlayState> {
   /// 播放请求代次：每次发起新播放递增，用于丢弃过期的异步请求。
@@ -93,26 +95,56 @@ class PlayNotifier extends Notifier<PlayState> {
     return source;
   }
 
+  /// 解析实际可播放的队列与起始下标。
+  ///
+  /// 无播放地址的曲目（版权 / VIP，source 为空）无法加载，直接剔除出队列。
+  /// 起始曲目被剔除时顺延到其后最近的可播曲目，之后没有则回退到之前最近的一首；
+  /// 全部不可播时队列为空。
+  static ({List<Music> queue, int startIndex}) resolvePlaybackQueue(
+    List<Music> list, {
+    int index = 0,
+  }) {
+    final queue = <Music>[];
+    final originalIndexes = <int>[];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].source.isNotEmpty) {
+        queue.add(list[i]);
+        originalIndexes.add(i);
+      }
+    }
+    if (queue.isEmpty) return (queue: queue, startIndex: 0);
+
+    final safeIndex = index.clamp(0, list.length - 1);
+    var startIndex = originalIndexes.indexWhere((i) => i >= safeIndex);
+    if (startIndex < 0) startIndex = queue.length - 1;
+    return (queue: queue, startIndex: startIndex);
+  }
+
   /// 用 [list] 替换当前播放队列，并从第 [index] 首开始播放。
+  ///
+  /// 无播放地址的曲目会被剔除，起始位置按 [resolvePlaybackQueue] 的规则重定位。
   ///
   /// 正在缓冲时切歌会让 just_audio 中断上一次加载并抛
   /// [PlayerInterruptedException]（平台侧 code 'abort'），这是预期行为，
   /// 在此捕获避免冒泡成未处理异常导致崩溃。并发请求只让最后一次生效。
   Future<void> playFromList(List<Music> list, {int index = 0}) async {
-    if (list.isEmpty) return;
+    final (:queue, :startIndex) = resolvePlaybackQueue(list, index: index);
+    if (queue.isEmpty) return;
     final generation = ++_playGeneration;
-    final safeIndex = index.clamp(0, list.length - 1);
     try {
-      final sources = await Future.wait(list.map(_buildCacheSource));
+      final sources = await Future.wait(queue.map(_buildCacheSource));
       // 构建音源期间又有新请求，本次已过期，放弃以免打断新播放。
       if (generation != _playGeneration) return;
       final player = ref.read(audioPlayerProvider);
       // 重播时清掉上一轮的完成标记，让进度事件重新生效。
       state = state.copyWith(completed: false);
-      await player.setAudioSources(sources, initialIndex: safeIndex);
+      await player.setAudioSources(sources, initialIndex: startIndex);
       await player.play();
     } on PlayerInterruptedException {
       // 加载被后续请求中断，属正常现象，忽略。
+    } on PlayerException {
+      // 音源加载失败（断网、地址失效等）。点击播放是 fire-and-forget 调用，
+      // 不捕获会冒泡成未处理异常；与歌单入口一致，静默处理。
     }
   }
 
